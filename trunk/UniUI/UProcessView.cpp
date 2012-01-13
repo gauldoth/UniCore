@@ -9,7 +9,7 @@
 #include <QSortFilterProxyModel>
 
 #include "UProcessModel.h"
-#include "ULog.h"
+#include "../UniCore/ULog.h"
 
 namespace uni
 {

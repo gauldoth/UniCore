@@ -10,7 +10,7 @@
 
 #include <boost/foreach.hpp>
 
-#include "ULog.h"
+#include "../UniCore/ULog.h"
 
 namespace uni
 {

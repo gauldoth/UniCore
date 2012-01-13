@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #define AUTO_LINK_LIB_NAME "UniUI"
-#include "AutoLink.h"
+#include "../UniCore/AutoLink.h"
 
 class QCheckBox;
 class QComboBox;
