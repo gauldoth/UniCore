@@ -8,8 +8,8 @@
 
 #include <QTimer>
 
-#include "ULog.h"
-#include "UProcess.h"
+#include "../UniCore/ULog.h"
+#include "../UniCore/UProcess.h"
 
 namespace uni
 {

@@ -2,7 +2,7 @@
 #define UNIUI_UPROCESSVIEW_H
 
 #define AUTO_LINK_LIB_NAME "UniUI"
-#include "AutoLink.h"
+#include "../UniCore/AutoLink.h"
 
 #include <QTableView>
 
