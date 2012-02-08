@@ -15,7 +15,7 @@ namespace uni
 
 //! 显示内存的视图。
 /*!
-    该视图可以增加
+    
 */
 class UMemoryTable : public QTableView
 {
@@ -26,7 +26,7 @@ public:
     virtual ~UMemoryTable();
 
 public slots:
-
+private:
 };
 
 }//namespace uni

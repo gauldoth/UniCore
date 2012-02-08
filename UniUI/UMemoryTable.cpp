@@ -7,7 +7,7 @@ UMemoryTable::UMemoryTable( QWidget *parent /*= 0*/ )
 :QTableView(parent)
 {
     //setHorizontalHeader();
-    
+
 }
 
 UMemoryTable::~UMemoryTable()
