@@ -1,5 +1,7 @@
 ﻿#include "UProcess.h"
 
+#include <assert.h>
+
 #include "psapi.h"
 
 #include "ULog.h"
@@ -10,6 +12,29 @@ using namespace std;
 
 namespace uni
 {
+
+bool EnableDebugPrivilege()
+{
+    HANDLE hToken;
+
+    if(!OpenProcessToken(GetCurrentProcess(),
+        TOKEN_ADJUST_PRIVILEGES,
+        &hToken))
+    {
+        UERROR<<"OpenProcessToken失败。"<<lasterr;
+        return false;
+    }
+
+    bool result = SetTokenPrivilege(hToken,SE_DEBUG_NAME,true);
+
+    if(!CloseHandle(hToken))
+    {
+        UERROR<<"CloseHandle失败。"<<lasterr;
+        result = false;
+    }
+
+    return result;
+}
 
 wstring GetProcessName(unsigned int pid)
 {
@@ -76,27 +101,18 @@ bool SetTokenPrivilege(HANDLE hToken,wchar_t *privilege,bool enabled)
     return true;
 }
 
-bool EnableDebugPrivilege()
+std::wstring GetCurrentProcessDirectory()
 {
-    HANDLE hToken;
-
-    if(!OpenProcessToken(GetCurrentProcess(),
-        TOKEN_ADJUST_PRIVILEGES,
-        &hToken))
-    {
-        UERROR<<"OpenProcessToken失败。"<<lasterr;
-        return false;
-    }
-
-    bool result = SetTokenPrivilege(hToken,SE_DEBUG_NAME,true);
-
-    if(!CloseHandle(hToken))
-    {
-        UERROR<<"CloseHandle失败。"<<lasterr;
-        result = false;
-    }
-
+    std::wstring result;
+    wchar_t path[MAX_PATH] = L"";
+    assert(GetModuleFileName(NULL,path,MAX_PATH));
+    assert(GetLastError() != ERROR_INSUFFICIENT_BUFFER);
+    wchar_t *exeFileName = wcsrchr(path,L'\\');
+    assert(exeFileName);
+    exeFileName[0] = L'\0';
+    result = path;
     return result;
 }
+
 
 }//namespace uni
