@@ -14,6 +14,19 @@
 namespace uni
 {
 
+    
+//! 授予当前进程调试权限。
+/*!
+    \return 是否成功。
+*/
+bool EnableDebugPrivilege();
+
+//! 获得当前进程所在路径。
+/*!
+    \return 当前进程的可执行文件所在路径。
+*/
+std::wstring GetCurrentProcessDirectory();
+
 //! 获得进程名。
 /*!
     \param pid 进程id。
@@ -30,11 +43,6 @@ std::wstring GetProcessName(unsigned int pid);
 */
 bool SetTokenPrivilege(HANDLE hToken,wchar_t *privilege,bool enabled);
 
-//! 授予当前进程调试权限。
-/*!
-    \return 是否成功。
-*/
-bool EnableDebugPrivilege();
 
 }//namespace uni
 
