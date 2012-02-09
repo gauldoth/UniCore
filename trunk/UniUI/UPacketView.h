@@ -10,17 +10,30 @@
 #include <QMap>
 #include <QWidget>
 
+#define AUTO_LINK_LIB_NAME "UniUI"
+#include "../UniCore/AutoLink.h"
+
+
+class QCheckBox;
+class QGroupBox;
+
 namespace uni
 {
 
 class UPacketList;
 class UPacketListModel;
+class UPacketMonitor;
+class UPacketMonitorModel;
 
-class PacketInfo
+struct PacketInfo
 {
+    PacketInfo()
+        :id(0),visible(true)
+    {
+    }
     int id;
     QString name;
-    bool filter;
+    bool visible;  //!< 该封包是否可见。
 };
 
 class UPacketView : public QWidget
@@ -33,7 +46,18 @@ public:
 private:
     void setupUI();
     void createPacketListGroupBox();
+    void createPacketMonitorGroupBox();
     QMap<int,PacketInfo> packetInfos_;
+    QList<QByteArray> packets_;
+
+    QGroupBox *packetListGroupBox_;
+    uni::UPacketList *packetList_;
+    uni::UPacketListModel *packetListModel_;
+    QCheckBox *selectAllCheckBox_;
+
+    QGroupBox *packetMonitorGroupBox_;
+    uni::UPacketMonitor *packetMonitor_;
+    uni::UPacketMonitorModel *packetMonitorModel_;
 };
 
 }//namespace uni

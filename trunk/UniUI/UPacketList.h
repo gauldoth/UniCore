@@ -10,6 +10,9 @@
 
 #include <QTableView>
 
+#define AUTO_LINK_LIB_NAME "UniUI"
+#include "../UniCore/AutoLink.h"
+
 namespace uni
 {
 
