@@ -7,7 +7,7 @@
 namespace uni
 {
 
-UPacketListModel::UPacketListModel(QMap<int,PacketInfo> *packetInfos,QWidget *parent /*= 0*/ )
+UPacketListModel::UPacketListModel(QList<PacketInfo> *packetInfos,QWidget *parent /*= 0*/ )
 :packetInfos_(packetInfos)
 {
 
@@ -31,37 +31,32 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
             }
         case 1:
             {
-                QMapIterator<int,PacketInfo> it(*packetInfos_);
-                int i = 0;
-                while(it.hasNext())
+                switch(packetInfos_->at(index.row()).type)
                 {
-                    it.next();
-                    if(i == index.row())
+                case SendType:
                     {
-                        return it.value().id;
+                        return tr("Send");
                     }
-                    i++;
+                case RecvType:
+                    {
+                        return tr("Recv");
+                    }
+                default:
+                    {
+                        return tr("Unknown");
+                    }
                 }
-
-                return QVariant();
                 break;
             }
         case 2:
             {
-                QMapIterator<int,PacketInfo> it(*packetInfos_);
-                int i = 0;
-                while(it.hasNext())
-                {
-                    it.next();
-                    if(i == index.row())
-                    {
-                        return it.value().name;
-                    }
-                    i++;
-                }
-
-                return QVariant();
+                //将封包ID格式化为8位16进制。
+                return tr("%1").arg(QString::number(packetInfos_->at(index.row()).id,16),8,QChar(' '));
                 break;
+            }
+        case 3:
+            {
+                return packetInfos_->at(index.row()).name;
             }
         default:
             {
@@ -73,23 +68,9 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
     {
         if(index.column() == 0)
         {
-            QMapIterator<int,PacketInfo> it(*packetInfos_);
-            int i = 0;
-            while(it.hasNext())
+            if(packetInfos_->at(index.row()).visible)
             {
-                it.next();
-                if(i == index.row())
-                {
-                    if(it.value().visible)
-                    {
-                        return Qt::Checked;
-                    }
-                    else
-                    {
-                        return Qt::Unchecked;
-                    }
-                }
-                i++;
+                return Qt::Checked;
             }
         }
         return Qt::Unchecked;
@@ -104,7 +85,61 @@ int UPacketListModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/ ) 
 
 int UPacketListModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
-    return 3;
+    return 4;
+}
+
+void UPacketListModel::addPacketID(PacketType type,int packetID)
+{
+    beginInsertRows(QModelIndex(),rowCount(),rowCount());
+    PacketInfo packetInfo;
+    packetInfo.id = packetID;
+    packetInfo.type = type;
+    //查看是否已经存在。
+    for(int i = 0; i < packetInfos_->size(); i++)
+    {
+        if(packetInfos_->at(i).id == packetInfo.id
+            && packetInfos_->at(i).type == packetInfo.type)
+        {
+            return;
+        }
+    }
+    packetInfos_->push_back(packetInfo);
+    endInsertRows();
+}
+
+QVariant UPacketListModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
+{
+    if(orientation == Qt::Horizontal
+        && role == Qt::DisplayRole)
+    {
+        switch(section)
+        {
+        case 0:
+            {
+                return tr("Visible");
+                break;
+            }
+        case 1:
+            {
+                return tr("Type");
+                break;
+            }
+        case 2:
+            {
+                return tr("ID");
+                break;
+            }
+        case 3:
+            {
+                return tr("Name");
+                break;
+            }
+        default:
+            {
+            }
+        }
+    }
+    return QVariant();
 }
 
 }//namespace uni

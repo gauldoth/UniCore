@@ -24,6 +24,13 @@ class UPacketList;
 class UPacketListModel;
 class UPacketMonitor;
 class UPacketMonitorModel;
+class UPacketMonitorProxyModel;
+
+enum PacketType
+{
+    RecvType,  //!< 接收的封包。
+    SendType,  //!< 发送的封包。
+};
 
 struct PacketInfo
 {
@@ -32,8 +39,16 @@ struct PacketInfo
     {
     }
     int id;
+    PacketType type;
     QString name;
     bool visible;  //!< 该封包是否可见。
+};
+
+struct Packet
+{
+    int id;
+    PacketType type;
+    QByteArray content;
 };
 
 class UPacketView : public QWidget
@@ -43,12 +58,18 @@ class UPacketView : public QWidget
 public:
     explicit UPacketView(QWidget *parent = 0);
     virtual ~UPacketView();
+
+public slots:
+    //! 添加封包。
+    void addPacket(PacketType type,const char *packet,int packetSize);
 private:
     void setupUI();
     void createPacketListGroupBox();
     void createPacketMonitorGroupBox();
-    QMap<int,PacketInfo> packetInfos_;
-    QList<QByteArray> packets_;
+    //! 更新封包的过滤条件。
+    void updateFilters();
+    QList<PacketInfo> packetInfos_;
+    QList<Packet> packets_;
 
     QGroupBox *packetListGroupBox_;
     uni::UPacketList *packetList_;
@@ -57,6 +78,7 @@ private:
 
     QGroupBox *packetMonitorGroupBox_;
     uni::UPacketMonitor *packetMonitor_;
+    UPacketMonitorProxyModel *packetMonitorProxyModel_;
     uni::UPacketMonitorModel *packetMonitorModel_;
 };
 
