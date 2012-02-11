@@ -3,12 +3,16 @@
 #include <QCheckBox>
 #include <QHBoxLayout>
 #include <QGroupBox>
+#include <QSortFilterProxyModel>
 #include <QVBoxLayout>
+
+#include "../UniCore/UMemory.h"
 
 #include "UPacketList.h"
 #include "UPacketListModel.h"
 #include "UPacketMonitor.h"
 #include "UPacketMonitorModel.h"
+#include "UPacketMonitorProxyModel.h"
 
 namespace uni
 {
@@ -16,7 +20,7 @@ namespace uni
 UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 :QWidget(parent)
 {
-
+    setupUI();
 }
 
 UPacketView::~UPacketView()
@@ -39,7 +43,7 @@ void UPacketView::createPacketListGroupBox()
 
     mainLayout->addWidget(selectAllCheckBox_);
     mainLayout->addLayout(bottomLayout);
-    packetMonitorGroupBox_->setLayout(mainLayout);
+    packetListGroupBox_->setLayout(mainLayout);
 
 }
 
@@ -49,8 +53,8 @@ void UPacketView::setupUI()
     createPacketMonitorGroupBox();
 
     QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(packetListGroupBox_);
-    layout->addWidget(packetMonitorGroupBox_);
+    layout->addWidget(packetListGroupBox_,1);
+    layout->addWidget(packetMonitorGroupBox_,2);
     setLayout(layout);
 }
 
@@ -58,7 +62,53 @@ void UPacketView::createPacketMonitorGroupBox()
 {
     packetMonitorGroupBox_ = new QGroupBox(tr("Packet Monitor"),this);
     packetMonitor_ = new UPacketMonitor(this);
-    packetMonitorModel_ = new UPacketMonitorModel(this);
+    packetMonitorModel_ = new UPacketMonitorModel(&packetInfos_,&packets_,this);
+    packetMonitorProxyModel_ = new UPacketMonitorProxyModel(this);
+    packetMonitorProxyModel_->setDynamicSortFilter(true);
+    packetMonitorProxyModel_->setSourceModel(packetMonitorModel_);
+    packetMonitor_->setModel(packetMonitorProxyModel_);
+
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(packetMonitor_);
+    packetMonitorGroupBox_->setLayout(layout);
+}
+
+void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
+{
+    //假如是新类型的封包，则在封包列表添加封包。
+    //在封包监视器中添加封包。
+    int packetID = GetAt<unsigned short>(packet,0);
+    bool found = false;
+    for(int i = 0; i < packetInfos_.size(); i++)
+    {
+        if(packetInfos_[i].id == packetID 
+            && packetInfos_[i].type == type)
+        {
+            found = true;
+            break;
+        }
+    }
+
+    if(!found)
+    {
+        packetListModel_->addPacketID(type,packetID);
+        packetList_->resizeColumnsToContents();
+        updateFilters();
+    }
+    //添加封包。
+    packetMonitorModel_->addPacket(type,packet,packetSize);
+    packetMonitor_->resizeColumnsToContents();
+    packetMonitor_->resizeRowsToContents();
+}
+
+void UPacketView::updateFilters()
+{
+     QMap<PacketType,QSet<int> > filters;
+     for(int i = 0; i < packetInfos_.size(); i++)
+     {
+         filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+     }
+     packetMonitorProxyModel_->setFilters(filters);
 }
 
 }//namespace uni
