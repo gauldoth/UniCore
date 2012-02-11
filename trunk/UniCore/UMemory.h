@@ -13,7 +13,7 @@ namespace uni
 template<typename RetType,typename BaseType>
 inline RetType &GetAt(BaseType base,int offset)
 {
-    char *basePtr = reinterpret_cast<char *>(base);
+    char *basePtr = (char *)base;
     basePtr += offset;
     return *reinterpret_cast<RetType *>(basePtr);
 }
@@ -22,7 +22,7 @@ inline RetType &GetAt(BaseType base,int offset)
 template<typename RetType,typename BaseType>
 inline RetType &GetAt(BaseType base,int offset1,int offset2)
 {
-    char *basePtr = reinterpret_cast<char *>(base);
+    char *basePtr = (char *)base;
     basePtr += offset1;
     basePtr = *reinterpret_cast<char **>(basePtr);
     basePtr += offset2;
@@ -33,7 +33,7 @@ inline RetType &GetAt(BaseType base,int offset1,int offset2)
 template<typename RetType,typename BaseType>
 inline RetType &GetAt(BaseType base,int offset1,int offset2,int offset3)
 {
-    char *basePtr = reinterpret_cast<char *>(base);
+    char *basePtr = (char *)base;
     basePtr += offset1;
     basePtr = *reinterpret_cast<char **>(basePtr);
     basePtr += offset2;
@@ -46,7 +46,7 @@ inline RetType &GetAt(BaseType base,int offset1,int offset2,int offset3)
 template<typename RetType,typename BaseType>
 inline RetType &GetAt(BaseType base,int offset1,int offset2,int offset3,int offset4)
 {
-    char *basePtr = reinterpret_cast<char *>(base);
+    char *basePtr = (char *)base;
     basePtr += offset1;
     basePtr = *reinterpret_cast<char **>(basePtr);
     basePtr += offset2;
