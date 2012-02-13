@@ -6,6 +6,7 @@
 #include <QSortFilterProxyModel>
 #include <QVBoxLayout>
 
+#include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
 
 #include "UPacketList.h"
@@ -45,6 +46,8 @@ void UPacketView::createPacketListGroupBox()
     mainLayout->addLayout(bottomLayout);
     packetListGroupBox_->setLayout(mainLayout);
 
+    connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
+    connect(selectAllCheckBox_,SIGNAL(stateChanged(int)),this,SLOT(onSelectAllCheckBoxChanged(int)));
 }
 
 void UPacketView::setupUI()
@@ -103,12 +106,29 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
 
 void UPacketView::updateFilters()
 {
-     QMap<PacketType,QSet<int> > filters;
-     for(int i = 0; i < packetInfos_.size(); i++)
-     {
-         filters[packetInfos_[i].type].insert(packetInfos_[i].id);
-     }
-     packetMonitorProxyModel_->setFilters(filters);
+    QMap<PacketType,QSet<int> > filters;
+    for(int i = 0; i < packetInfos_.size(); i++)
+    {
+        if(packetInfos_[i].visible)
+        {
+            filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+        }
+    }
+    packetMonitorProxyModel_->setFilters(filters);
+    packetMonitor_->resizeColumnsToContents();
+    packetMonitor_->resizeRowsToContents();
+}
+
+void UPacketView::onSelectAllCheckBoxChanged( int state )
+{
+    if(state == Qt::Checked)
+    {
+        packetListModel_->selectAll();
+    }
+    else
+    {
+        packetListModel_->deselectAll();
+    }
 }
 
 }//namespace uni

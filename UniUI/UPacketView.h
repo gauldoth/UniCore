@@ -62,12 +62,15 @@ public:
 public slots:
     //! 添加封包。
     void addPacket(PacketType type,const char *packet,int packetSize);
+    //! 更新封包的过滤条件。
+    void updateFilters();
+private slots:
+    void onSelectAllCheckBoxChanged( int state );
 private:
     void setupUI();
     void createPacketListGroupBox();
     void createPacketMonitorGroupBox();
-    //! 更新封包的过滤条件。
-    void updateFilters();
+   
     QList<PacketInfo> packetInfos_;
     QList<Packet> packets_;
 
