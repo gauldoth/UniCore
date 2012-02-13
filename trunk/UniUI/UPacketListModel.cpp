@@ -10,7 +10,7 @@ namespace uni
 UPacketListModel::UPacketListModel(QList<PacketInfo> *packetInfos,QWidget *parent /*= 0*/ )
 :packetInfos_(packetInfos)
 {
-
+    
 }
 
 UPacketListModel::~UPacketListModel()
@@ -26,7 +26,7 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
         {
         case 0:
             {
-                return QVariant();
+                return tr("");
                 break;
             }
         case 1:
@@ -57,6 +57,7 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
         case 3:
             {
                 return packetInfos_->at(index.row()).name;
+                break;
             }
         default:
             {
@@ -72,8 +73,12 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
             {
                 return Qt::Checked;
             }
+            else
+            {
+                return Qt::Unchecked;
+            }
         }
-        return Qt::Unchecked;
+        return QVariant();
     }
     return QVariant();
 }
@@ -140,6 +145,64 @@ QVariant UPacketListModel::headerData( int section, Qt::Orientation orientation,
         }
     }
     return QVariant();
+}
+
+Qt::ItemFlags UPacketListModel::flags( const QModelIndex &index ) const
+{
+    if(!index.isValid())
+    {
+        return 0;
+    }
+
+    if(index.column() == 0)
+    {
+        return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
+    }
+
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+bool UPacketListModel::setData( const QModelIndex &index, const QVariant &value, int role /*= Qt::EditRole*/ )
+{
+    if(index.column() == 0 && role == Qt::CheckStateRole)
+    {
+        if(value == Qt::Checked)
+        {
+            (*packetInfos_)[index.row()].visible = true; 
+        }
+        else
+        {
+            (*packetInfos_)[index.row()].visible = false;
+        }
+        emit dataChanged(index,index);
+        emit visibilityChanged();
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void UPacketListModel::selectAll()
+{
+    for(int i = 0; i < packetInfos_->size(); i++)
+    {
+        (*packetInfos_)[i].visible = true;
+    }
+    
+    emit dataChanged(index(0,0),index(rowCount(),0));
+    emit visibilityChanged();
+}
+
+void UPacketListModel::deselectAll()
+{
+    for(int i = 0; i < packetInfos_->size(); i++)
+    {
+        (*packetInfos_)[i].visible = false;
+    }
+    emit dataChanged(index(0,0),index(rowCount(),0));
+    emit visibilityChanged();
 }
 
 }//namespace uni

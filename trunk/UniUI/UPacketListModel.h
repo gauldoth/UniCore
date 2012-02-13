@@ -27,11 +27,27 @@ public:
     explicit UPacketListModel(QList<PacketInfo> *packetInfos,QWidget *parent = 0);
     virtual ~UPacketListModel();
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+
     virtual QVariant headerData(int section, Qt::Orientation orientation,
         int role = Qt::DisplayRole) const;
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
     void addPacketID(PacketType type,int packetID);
+public slots:
+    //! 全选。
+    /*!
+        所有封包类型都允许输出。
+    */
+    void selectAll();
+    //! 全部取消选择。
+    /*!
+        所有封包类型都不允许输出。
+    */
+    void deselectAll();
+signals:
+    void visibilityChanged();
 private:
     QList<PacketInfo> *packetInfos_;
 };
