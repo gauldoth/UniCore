@@ -26,11 +26,11 @@ class UPacketMonitorProxyModel : public QSortFilterProxyModel
 public:
     explicit UPacketMonitorProxyModel(QObject *parent = 0);
     virtual ~UPacketMonitorProxyModel();
-    void setFilters(QMap<PacketType,QSet<int> > filters);
+    void setFilters(QMap<UPacketView::PacketType,QSet<int> > filters);
 protected:
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 private:
-    QMap<PacketType,QSet<int> > filters_; 
+    QMap<UPacketView::PacketType,QSet<int> > filters_; 
 };
 
 }//namespace uni

@@ -7,8 +7,9 @@
 namespace uni
 {
 
-UPacketListModel::UPacketListModel(QList<PacketInfo> *packetInfos,QWidget *parent /*= 0*/ )
-:packetInfos_(packetInfos)
+UPacketListModel::UPacketListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent /*= 0*/ )
+:QAbstractTableModel(parent)
+,packetInfos_(packetInfos)
 {
     
 }
@@ -33,11 +34,11 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
             {
                 switch(packetInfos_->at(index.row()).type)
                 {
-                case SendType:
+                case UPacketView::SendType:
                     {
                         return tr("Send");
                     }
-                case RecvType:
+                case UPacketView::RecvType:
                     {
                         return tr("Recv");
                     }
@@ -91,25 +92,6 @@ int UPacketListModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/ ) 
 int UPacketListModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
     return 4;
-}
-
-void UPacketListModel::addPacketID(PacketType type,int packetID)
-{
-    beginInsertRows(QModelIndex(),rowCount(),rowCount());
-    PacketInfo packetInfo;
-    packetInfo.id = packetID;
-    packetInfo.type = type;
-    //查看是否已经存在。
-    for(int i = 0; i < packetInfos_->size(); i++)
-    {
-        if(packetInfos_->at(i).id == packetInfo.id
-            && packetInfos_->at(i).type == packetInfo.type)
-        {
-            return;
-        }
-    }
-    packetInfos_->push_back(packetInfo);
-    endInsertRows();
 }
 
 QVariant UPacketListModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
@@ -203,6 +185,16 @@ void UPacketListModel::deselectAll()
     }
     emit dataChanged(index(0,0),index(rowCount(),0));
     emit visibilityChanged();
+}
+
+void UPacketListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
+{
+    beginInsertRows(QModelIndex(),rowCount(),rowCount());
+    if(!packetInfos_->contains(packetInfo))
+    {
+        packetInfos_->push_back(packetInfo);
+    }
+    endInsertRows();
 }
 
 }//namespace uni

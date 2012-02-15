@@ -24,7 +24,7 @@ class UPacketListModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit UPacketListModel(QList<PacketInfo> *packetInfos,QWidget *parent = 0);
+    explicit UPacketListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent = 0);
     virtual ~UPacketListModel();
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
@@ -34,7 +34,7 @@ public:
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-    void addPacketID(PacketType type,int packetID);
+    void addPacketInfo(UPacketView::PacketInfo packetInfo);
 public slots:
     //! 全选。
     /*!
@@ -49,7 +49,7 @@ public slots:
 signals:
     void visibilityChanged();
 private:
-    QList<PacketInfo> *packetInfos_;
+    QList<UPacketView::PacketInfo> *packetInfos_;
 };
 
 }//namespace uni

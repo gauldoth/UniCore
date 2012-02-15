@@ -26,7 +26,7 @@ bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
     {
         int id = index1.data().toString().toInt(0,16);
         //查看是否在显示ID列表中。
-        if(filters_[SendType].contains(id))
+        if(filters_[UPacketView::SendType].contains(id))
         {
             return true;
         }
@@ -38,7 +38,7 @@ bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
     else if(index0.data().toString() == "Recv")
     {
         int id = index1.data().toInt();
-        if(filters_[RecvType].contains(id))
+        if(filters_[UPacketView::RecvType].contains(id))
         {
             return true;
         }
@@ -53,7 +53,7 @@ bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
     }
 }
 
-void UPacketMonitorProxyModel::setFilters( QMap<PacketType,QSet<int> > filters )
+void UPacketMonitorProxyModel::setFilters( QMap<UPacketView::PacketType,QSet<int> > filters )
 {
     filters_ = filters;
     invalidateFilter();
