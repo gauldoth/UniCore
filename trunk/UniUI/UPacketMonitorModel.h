@@ -24,7 +24,12 @@ class UPacketMonitorModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit UPacketMonitorModel(QList<PacketInfo> *packetInfos,QList<Packet> *packets,QObject *parent = 0);
+    //! 构造函数。
+    /*!
+        \param packetDatas 所有封包数据的指针。
+        \param parent 父对象。
+    */
+    explicit UPacketMonitorModel(QList<UPacketView::PacketData> *packetDatas,QObject *parent = 0);
     virtual ~UPacketMonitorModel();
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -32,10 +37,9 @@ public:
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual QVariant headerData(int section, Qt::Orientation orientation,
         int role = Qt::DisplayRole) const;
-    void addPacket( PacketType type,const char * packet, int packetSize);
+    void addPacketData(UPacketView::PacketData data);
 private:
-    QList<PacketInfo> *packetInfos_;
-    QList<Packet> *packets_;
+    QList<UPacketView::PacketData> *packetDatas_;
 };
 
 }//namespace uni

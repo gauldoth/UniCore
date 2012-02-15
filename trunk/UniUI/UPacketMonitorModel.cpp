@@ -5,10 +5,9 @@
 namespace uni
 {
 
-UPacketMonitorModel::UPacketMonitorModel(QList<PacketInfo> *packetInfos,QList<Packet> *packets,QObject *parent /*= 0*/ )
+UPacketMonitorModel::UPacketMonitorModel(QList<UPacketView::PacketData> *packetDatas,QObject *parent /*= 0*/ )
 :QAbstractTableModel(parent)
-,packetInfos_(packetInfos)
-,packets_(packets)
+,packetDatas_(packetDatas)
 {
     
 }
@@ -20,7 +19,7 @@ UPacketMonitorModel::~UPacketMonitorModel()
 
 int UPacketMonitorModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
-    return packets_->size();
+    return packetDatas_->size();
 }
 
 int UPacketMonitorModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
@@ -34,16 +33,16 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
     if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
         int column = index.column();
-        const char *packet = packets_->at(index.row()).content.constData();
-        int packetSize = packets_->at(index.row()).content.size();
+        const char *packet = packetDatas_->at(index.row()).content.constData();
+        int packetSize = packetDatas_->at(index.row()).content.size();
         
         if(column == 0)
         {
-            if(packets_->at(index.row()).type == SendType)
+            if(packetDatas_->at(index.row()).type == UPacketView::SendType)
             {
                 return tr("Send");
             }
-            else if(packets_->at(index.row()).type == RecvType)
+            else if(packetDatas_->at(index.row()).type == UPacketView::RecvType)
             {
                 return tr("Recv");
             }
@@ -54,7 +53,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
         }
         else if(column == 1)
         {
-            return QString("%1").arg(packets_->at(index.row()).id,8,16,QChar('0'));
+            return QString("%1").arg(packetDatas_->at(index.row()).id,8,16,QChar('0'));
         }
         else if(column == 2)
         {
@@ -116,15 +115,10 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
     return QVariant();
 }
 
-void UPacketMonitorModel::addPacket(PacketType type,const char * packet, int packetSize)
+void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
-    Packet data;
-    QByteArray content(packet,packetSize);
-    data.content = content;
-    data.id = GetAt<unsigned short>(packet,0);
-    data.type = type;
-    packets_->push_back(data);
+    packetDatas_->push_back(data);
     endInsertRows();
 }
 
