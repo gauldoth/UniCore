@@ -83,6 +83,8 @@ public:
         \param packetSize 封包长度。
     */
     void addPacket(PacketType type,const char *packet,int packetSize);
+protected:
+    virtual void hideEvent(QHideEvent *);
 private slots:
     void onSelectAllCheckBoxChanged( int state );
     //! 更新封包的过滤条件。
@@ -92,7 +94,18 @@ private:
     void createPacketListGroupBox();
     //! 创建封包监视器处的组合框。
     void createPacketMonitorGroupBox();
+    //! 保存封包信息。
+    /*!
+        将封包信息保存到配置档，配置档放在当前进程所在目录。
+    */
+    void savePacketInfos();
+    //! 读取封包信息。
+    /*!
+        从当前进程所在的配置档中读取封包信息。
+    */
+    void loadPacketInfos();
    
+    //! 封包信息。保存了所有种类的封包信息。
     QList<PacketInfo> packetInfos_;
     QList<PacketData> packetDatas_;
 
@@ -106,6 +119,9 @@ private:
     UPacketMonitorProxyModel *packetMonitorProxyModel_;
     uni::UPacketMonitorModel *packetMonitorModel_;
 };
+
+QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);
+QDataStream &operator>>(QDataStream &, UPacketView::PacketInfo &);
 
 }//namespace uni
 

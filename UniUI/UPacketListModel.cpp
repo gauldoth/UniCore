@@ -52,7 +52,7 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
         case 2:
             {
                 //将封包ID格式化为8位16进制。
-                return tr("%1").arg(QString::number(packetInfos_->at(index.row()).id,16),8,QChar(' '));
+                return tr("0x%1").arg(QString::number(packetInfos_->at(index.row()).id,16),8,QChar('0'));
                 break;
             }
         case 3:
