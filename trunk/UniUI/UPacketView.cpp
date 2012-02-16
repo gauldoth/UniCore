@@ -1,6 +1,8 @@
 ﻿#include "UPacketView.h"
 
 #include <QCheckBox>
+#include <QCoreApplication>
+#include <QFile>
 #include <QHBoxLayout>
 #include <QGroupBox>
 #include <QSortFilterProxyModel>
@@ -21,6 +23,7 @@ namespace uni
 UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 :QWidget(parent)
 {
+    loadPacketInfos();
     createPacketListGroupBox();
     createPacketMonitorGroupBox();
 
@@ -29,11 +32,13 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
     layout->addWidget(packetListGroupBox_,1);
     layout->addWidget(packetMonitorGroupBox_,2);
     setLayout(layout);
+
+    updateFilters();
 }
 
 UPacketView::~UPacketView()
 {
-    
+    savePacketInfos();
 }
 
 void UPacketView::createPacketListGroupBox()
@@ -118,6 +123,54 @@ void UPacketView::onSelectAllCheckBoxChanged( int state )
     {
         packetListModel_->deselectAll();
     }
+}
+
+void UPacketView::savePacketInfos()
+{
+    UTRACE("UI")<<"enter";
+    QFile configFile(QCoreApplication::applicationDirPath() + "\\UPacketView.cfg");
+    configFile.open(QIODevice::WriteOnly);
+    QDataStream out(&configFile);
+    out.setVersion(QDataStream::Qt_4_5);
+    out<<packetInfos_;
+}
+
+void UPacketView::loadPacketInfos()
+{
+    UTRACE("UI")<<"enter";
+    QFile configFile(QCoreApplication::applicationDirPath() + "\\UPacketView.cfg");
+    if(!configFile.open(QIODevice::ReadOnly))
+    {
+        return;
+    }
+    QDataStream in(&configFile);
+    in.setVersion(QDataStream::Qt_4_5);
+    in>>packetInfos_;
+}
+
+void UPacketView::hideEvent( QHideEvent * )
+{
+    savePacketInfos();
+}
+
+QDataStream & operator<<( QDataStream &s, const UPacketView::PacketInfo &packetInfo )
+{
+    s<<packetInfo.id;
+    s<<packetInfo.name;
+    s<<static_cast<int>(packetInfo.type);
+    s<<packetInfo.visible;
+    return s;
+}
+
+QDataStream & operator>>( QDataStream &s, UPacketView::PacketInfo &packetInfo )
+{
+    s>>packetInfo.id;
+    s>>packetInfo.name;
+    int type = 0;
+    s>>type;
+    packetInfo.type = static_cast<UPacketView::PacketType>(type);
+    s>>packetInfo.visible;
+    return s;
 }
 
 }//namespace uni

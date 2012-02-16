@@ -37,7 +37,7 @@ bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
     }
     else if(index0.data().toString() == "Recv")
     {
-        int id = index1.data().toInt();
+        int id = index1.data().toString().toInt(0,16);
         if(filters_[UPacketView::RecvType].contains(id))
         {
             return true;

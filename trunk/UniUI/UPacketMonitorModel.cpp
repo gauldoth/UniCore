@@ -53,7 +53,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
         }
         else if(column == 1)
         {
-            return QString("%1").arg(packetDatas_->at(index.row()).id,8,16,QChar('0'));
+            return QString("0x%1").arg(packetDatas_->at(index.row()).id,8,16,QChar('0'));
         }
         else if(column == 2)
         {
@@ -63,7 +63,6 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
             {
                 if(i%16 == 0)
                 {
-                    datas += "|";
                 }
                 else if(i%4 == 0)
                 {
@@ -84,17 +83,21 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
 
             for(int i = 0; i < packetSize; i++)
             {
-                if(packet[i] == '\r')
+                if(packet[i] == '\0')
                 {
-                    text += "\r";
+                    text += "\\0";
                 }
-                else if(packet[i] == '\d')
+                else if(packet[i] == '\r')
                 {
-                    text += "\d";
+                    text += "\\r";
+                }
+                else if(packet[i] == '\n')
+                {
+                    text += "\\n";
                 }
                 else if(packet[i] == '\t')
                 {
-                    text += "\t";
+                    text += "\\t";
                 }
                 else if(packet[i] < 0)
                 {

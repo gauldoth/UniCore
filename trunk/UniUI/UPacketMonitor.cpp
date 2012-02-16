@@ -15,7 +15,7 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
 
 UPacketMonitor::~UPacketMonitor()
 {
-
+    
 }
 
 }//namespace uni
