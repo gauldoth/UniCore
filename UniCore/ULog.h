@@ -388,9 +388,24 @@ public:
 
     ULog &operator<<(std::basic_streambuf<char> *t) {message_->stm_<<t; return mayHasDelim();}
 
-    ULog &operator<<(char t) {message_->stm_<<t; return mayHasDelim();}
+    ULog &operator<<(char t) 
+    {
+        message_->stm_<<t; 
+        return mayHasDelim();
+    }
     
-    ULog &operator<<(const char *t) {message_->stm_<<t; return mayHasDelim();}
+    ULog &operator<<(const char *t) 
+    {
+        if(!t) 
+        {
+            message_->stm_<<"(null)";
+        }
+        else
+        {
+            message_->stm_<<t; 
+        }
+        return mayHasDelim();
+    }
 
     //! 写入一个宽字符。
     ULog &operator<<(wchar_t t);
