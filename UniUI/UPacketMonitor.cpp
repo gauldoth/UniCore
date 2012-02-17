@@ -11,6 +11,7 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     setAlternatingRowColors(true);
     horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    setVerticalScrollMode(ScrollPerPixel);
 }
 
 UPacketMonitor::~UPacketMonitor()
