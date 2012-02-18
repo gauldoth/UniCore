@@ -6,6 +6,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 
+#include "UDebug.h"
+
 using namespace std;
 
 namespace uni
@@ -50,8 +52,11 @@ string ws2s(const wstring &ws,_locale_t locale)
     size_t numOfCharConverted = 0; 
 
     errno_t err = _wcstombs_s_l(&numOfCharConverted,dest,len,ws.c_str(),_TRUNCATE,locale);
-
-    if(err == 0 || err == STRUNCATE)
+    if(err == 0)
+    {
+        result = dest;
+    }
+    else if(err == STRUNCATE)
     {
         OutputDebugStringA("UniCore ws2s 目标缓冲区不足，字符串被截断。");
         result = dest;
@@ -111,6 +116,7 @@ wstring s2ws(const string &s,const char *locale /*= ""*/)
     else if(err == STRUNCATE)
     {
         OutputDebugStringA("UniCore s2ws 目标缓冲区不足，字符串被截断。");
+        result = dest;
     }
     else
     {
@@ -130,8 +136,13 @@ wstring s2ws(const string &s,_locale_t locale)
 
     errno_t err = _mbstowcs_s_l(&numOfCharConverted,dest,len,s.c_str(),_TRUNCATE,locale);
 
-    if(err == 0 || err == STRUNCATE)
+    if(err == 0)
     {
+        result = dest;
+    }
+    else if(err == STRUNCATE)
+    {
+        OutputDebugStringA("UniCore s2ws 目标缓冲区不足，字符串被截断。");
         result = dest;
     }
     else
@@ -154,8 +165,12 @@ void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
     }
     errno_t err = _mbstowcs_s_l(&numOfCharConverted,dest,len,source,_TRUNCATE,loc);
     _free_locale(loc);
-    if(err == 0 || err == STRUNCATE)
+    if(err == 0)
     {
+    }
+    else if(err == STRUNCATE)
+    {
+        OutputDebugStringA("UniCore ws2w 目标缓冲区不足，字符串被截断。");
     }
     else
     {
