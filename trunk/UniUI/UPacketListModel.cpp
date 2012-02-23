@@ -197,4 +197,15 @@ void UPacketListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
     endInsertRows();
 }
 
+bool UPacketListModel::removeRows( int row, int count, const QModelIndex &parent /*= QModelIndex()*/ )
+{
+    beginRemoveRows(parent,row,row+count-1);
+    for(int i = 0; i < count; i++)
+    {
+        packetInfos_->removeAt(row);
+    }
+    endRemoveRows();
+    return true;
+}
+
 }//namespace uni

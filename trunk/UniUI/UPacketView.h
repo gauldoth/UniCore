@@ -16,6 +16,7 @@
 
 class QCheckBox;
 class QGroupBox;
+class QPushButton;
 
 namespace uni
 {
@@ -34,6 +35,9 @@ class UPacketMonitorProxyModel;
     - 封包信息列表（PacketInfoList）收集收到的所有封包ID和类型，并能设置哪些
     封包可以在封包监视器中显示。
     - 封包信息列表中的设置使用配置档保存。
+
+    \todo 记录封包时间。
+    \todo 增加自动滚动选项。
 */
 class UPacketView : public QWidget
 {
@@ -75,7 +79,7 @@ public:
     };
     explicit UPacketView(QWidget *parent = 0);
     virtual ~UPacketView();
-public:
+public slots:
     //! 向封包视图中添加封包。
     /*!
         \param type 封包的类型（Recv或者Send）。
@@ -83,6 +87,19 @@ public:
         \param packetSize 封包长度。
     */
     void addPacket(PacketType type,const char *packet,int packetSize);
+
+    //! 清除封包信息列表中内容。
+    /*!
+        
+    */
+    void clearPacketInfos();
+
+    //! 设置自动滚动。
+    /*!
+        \param isAutoScroll 是否自动滚动。
+        假如启用自动滚动，封包监视器每收到一条封包就会滚动到最底部。
+    */
+    void setAutoScroll(bool isAutoScroll);
 protected:
     virtual void hideEvent(QHideEvent *);
 private slots:
@@ -113,8 +130,10 @@ private:
     uni::UPacketList *packetList_;
     uni::UPacketListModel *packetListModel_;
     QCheckBox *selectAllCheckBox_;
+    QPushButton *clearPacketInfosButton_;
 
     QGroupBox *packetMonitorGroupBox_;
+    QCheckBox *autoScrollCheckBox_;
     uni::UPacketMonitor *packetMonitor_;
     UPacketMonitorProxyModel *packetMonitorProxyModel_;
     uni::UPacketMonitorModel *packetMonitorModel_;

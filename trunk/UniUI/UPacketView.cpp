@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QHBoxLayout>
 #include <QGroupBox>
+#include <QPushButton>
 #include <QSortFilterProxyModel>
 #include <QVBoxLayout>
 
@@ -48,11 +49,13 @@ void UPacketView::createPacketListGroupBox()
     packetListModel_ = new UPacketListModel(&packetInfos_,this);
     packetList_->setModel(packetListModel_);
     selectAllCheckBox_ = new QCheckBox(tr("Select All"),this);
+    clearPacketInfosButton_ = new QPushButton(tr("Clear"),this);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(packetList_);
     QHBoxLayout *bottomLayout = new QHBoxLayout;
     bottomLayout->addWidget(selectAllCheckBox_);
+    bottomLayout->addWidget(clearPacketInfosButton_);
 
     mainLayout->addWidget(selectAllCheckBox_);
     mainLayout->addLayout(bottomLayout);
@@ -60,6 +63,7 @@ void UPacketView::createPacketListGroupBox()
 
     connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
     connect(selectAllCheckBox_,SIGNAL(stateChanged(int)),this,SLOT(onSelectAllCheckBoxChanged(int)));
+    connect(clearPacketInfosButton_,SIGNAL(clicked()),this,SLOT(clearPacketInfos()));
 }
 
 void UPacketView::createPacketMonitorGroupBox()
@@ -71,10 +75,16 @@ void UPacketView::createPacketMonitorGroupBox()
     packetMonitorProxyModel_->setDynamicSortFilter(true);
     packetMonitorProxyModel_->setSourceModel(packetMonitorModel_);
     packetMonitor_->setModel(packetMonitorProxyModel_);
+    autoScrollCheckBox_ = new QCheckBox(tr("Auto Scroll"),this);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(packetMonitor_);
+    QHBoxLayout *layout2 = new QHBoxLayout;
+    layout2->addWidget(autoScrollCheckBox_);
+    layout->addLayout(layout2);
     packetMonitorGroupBox_->setLayout(layout);
+
+    connect(autoScrollCheckBox_,SIGNAL(toggled(bool)),this,SLOT(setAutoScroll(bool)));
 }
 
 void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
@@ -151,6 +161,25 @@ void UPacketView::loadPacketInfos()
 void UPacketView::hideEvent( QHideEvent * )
 {
     savePacketInfos();
+}
+
+void UPacketView::clearPacketInfos()
+{
+    UTRACE<<"enter";
+    packetListModel_->removeRows(0,packetListModel_->rowCount());
+}
+
+void UPacketView::setAutoScroll( bool isAutoScroll )
+{
+    UTRACE<<"enter";
+    if(isAutoScroll)
+    {
+        connect(packetMonitorProxyModel_,SIGNAL(rowsInserted()),packetMonitor_,SLOT(scrollToBottom()));
+    }
+    else
+    {
+        disconnect(packetMonitorProxyModel_,SIGNAL(rowsInserted()),packetMonitor_,SLOT(scrollToBottom()));
+    }
 }
 
 QDataStream & operator<<( QDataStream &s, const UPacketView::PacketInfo &packetInfo )
