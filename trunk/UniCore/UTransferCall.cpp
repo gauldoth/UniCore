@@ -45,6 +45,7 @@ void TransferCallManager::requestAndWait(TransferCallFunctor *functor)
     scoped_lock<interprocess_mutex> lock(conditionLock_);
     processingCondition_.wait(lock);
     }
+    UTRACE<<"请求完成。";
 }
 
 void TransferCallManager::processRequests()
@@ -53,6 +54,7 @@ void TransferCallManager::processRequests()
         scoped_lock<interprocess_mutex> lock(queueLock_);
         while(!requests_.empty())
         {
+            UTRACE("临时")<<"处理函数。";
             (*(requests_.front().functor))();
             requests_.pop();
         }

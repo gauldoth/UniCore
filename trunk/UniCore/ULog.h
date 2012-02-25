@@ -484,13 +484,13 @@ inline ULog &delim(ULog &log)
 
 inline ULog &hexdisp(ULog &log)
 {
-    log<<std::hex<<std::showbase<<std::setfill('0')<<std::setw(8);
+    log<<std::hex<<std::setfill('0')<<std::setw(8);
     return log;
 }
 
 inline ULog &decdisp(ULog &log)
 {
-    log<<std::dec<<std::noshowbase<<std::setfill(' ')<<std::setw(0);
+    log<<std::dec<<std::setfill(' ')<<std::setw(0);
     return log;
 }
 

@@ -33,7 +33,7 @@ public:
     static TransferCallManager &GetInstance();
     //! 将functor放入请求队列并等待处理完成。
     /*!
-        该函数由TransferCall调用。
+        该函数由TransferCall调用，用户不会用到。
     */
     void requestAndWait(TransferCallFunctor *functor);
     //! 处理队列中所有请求。
@@ -134,6 +134,7 @@ template<class R,class B1,class A1>
 R
 TransferCall(R (*f)(B1),A1 a1)
 {
+    UTRACE("临时")<<delim<<f<<a1;
     typedef R(*F)(B1);
     TransferCallFunctor_1<F,R,A1> actualFunctor(f,a1);
     TransferCallFunctor *functor = &actualFunctor;
