@@ -1,6 +1,7 @@
 ﻿#include "UPacketMonitorModel.h"
 
 #include "../UniCore/UMemory.h"
+#include "../UniCore/ULog.h"
 
 namespace uni
 {
@@ -29,20 +30,23 @@ int UPacketMonitorModel::columnCount( const QModelIndex &parent /*= QModelIndex(
 
 QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::DisplayRole*/ ) const
 {
+    UTRACE("性能")<<"row:"<<index.row()<<" column:"<<index.column();
     Q_ASSERT(index.isValid());
     if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
         int column = index.column();
+        int row = index.row();
         const char *packet = packetDatas_->at(index.row()).content.constData();
         int packetSize = packetDatas_->at(index.row()).content.size();
-        
+        UPacketView::PacketData packetData = packetDatas_->at(row);
+
         if(column == 0)
         {
-            if(packetDatas_->at(index.row()).type == UPacketView::SendType)
+            if(packetData.type == UPacketView::SendType)
             {
                 return tr("Send");
             }
-            else if(packetDatas_->at(index.row()).type == UPacketView::RecvType)
+            else if(packetData.type == UPacketView::RecvType)
             {
                 return tr("Recv");
             }
@@ -53,7 +57,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
         }
         else if(column == 1)
         {
-            return QString("0x%1").arg(packetDatas_->at(index.row()).id,8,16,QChar('0'));
+            return QString("0x%1").arg(packetData.id,8,16,QChar('0'));
         }
         else if(column == 2)
         {
@@ -74,7 +78,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
                     datas += "\r\n";
                 }
             }
-            
+
             return datas;
         }
         else if(column == 3)
@@ -120,9 +124,13 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
 
 void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
+    UTRACE("性能")<<"1";
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
+    UTRACE("性能")<<"2";
     packetDatas_->push_back(data);
+    UTRACE("性能")<<"3";
     endInsertRows();
+    UTRACE("性能")<<"4";
 }
 
 QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const

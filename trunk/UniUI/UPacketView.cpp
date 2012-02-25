@@ -75,6 +75,7 @@ void UPacketView::createPacketMonitorGroupBox()
     packetMonitorProxyModel_->setDynamicSortFilter(true);
     packetMonitorProxyModel_->setSourceModel(packetMonitorModel_);
     packetMonitor_->setModel(packetMonitorProxyModel_);
+    //packetMonitor_->setModel(packetMonitorModel_);
     autoScrollCheckBox_ = new QCheckBox(tr("Auto Scroll"),this);
 
     QVBoxLayout *layout = new QVBoxLayout;
@@ -97,17 +98,20 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
     packetInfo.id = packetID;
     packetInfo.type = type;
     packetInfo.visible = true;
+    UTRACE("临时")<<"1";
     if(!packetInfos_.contains(packetInfo))
     {
         packetListModel_->addPacketInfo(packetInfo);
         updateFilters();
     }
+    UTRACE("临时")<<"2";
     //添加封包。
     PacketData packetData;
     packetData.id = packetID;
     packetData.type = type;
     packetData.content = QByteArray(packet,packetSize);
     packetMonitorModel_->addPacketData(packetData);
+    UTRACE("临时")<<"3";
 }
 
 void UPacketView::updateFilters()
@@ -171,14 +175,15 @@ void UPacketView::clearPacketInfos()
 
 void UPacketView::setAutoScroll( bool isAutoScroll )
 {
-    UTRACE<<"enter";
+    UTRACE<<"enter"<<isAutoScroll;
+    //packetMonitor_->scrollToBottom();
     if(isAutoScroll)
     {
-        connect(packetMonitorProxyModel_,SIGNAL(rowsInserted()),packetMonitor_,SLOT(scrollToBottom()));
+        connect(packetMonitorModel_,SIGNAL(rowsInserted(const QModelIndex &,int,int)),packetMonitor_,SLOT(scrollToBottom()));
     }
     else
     {
-        disconnect(packetMonitorProxyModel_,SIGNAL(rowsInserted()),packetMonitor_,SLOT(scrollToBottom()));
+        disconnect(packetMonitorModel_,SIGNAL(rowsInserted(const QModelIndex &,int,int)),packetMonitor_,SLOT(scrollToBottom()));
     }
 }
 
@@ -201,5 +206,6 @@ QDataStream & operator>>( QDataStream &s, UPacketView::PacketInfo &packetInfo )
     s>>packetInfo.visible;
     return s;
 }
+
 
 }//namespace uni

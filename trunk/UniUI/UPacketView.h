@@ -17,6 +17,7 @@
 class QCheckBox;
 class QGroupBox;
 class QPushButton;
+class QModelIndex;
 
 namespace uni
 {
