@@ -38,7 +38,7 @@ class UPacketMonitorProxyModel;
     - 封包信息列表中的设置使用配置档保存。
 
     \todo 记录封包时间。
-    \todo 增加自动滚动选项。
+    \todo 调整封包监视器中数据大小。
 */
 class UPacketView : public QWidget
 {
@@ -48,8 +48,8 @@ public:
     //! 封包类型。
     enum PacketType
     {
-        RecvType,  //!< 收到的封包。
-        SendType,  //!< 发送的封包。
+        RecvType = 0,  //!< 收到的封包。
+        SendType = 1,  //!< 发送的封包。
     };
     //! 封包信息。
     /*!
@@ -61,11 +61,7 @@ public:
             :id(0),visible(true)
         {
         }
-        bool operator ==(const PacketInfo &packetInfo)
-        {
-            return id == packetInfo.id && type == packetInfo.type;
-        }
-        
+
         int id;  //!< 封包ID。
         PacketType type;  //!< 封包类型。
         QString name;  //!< 封包名字。
@@ -142,6 +138,29 @@ private:
 
 QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);
 QDataStream &operator>>(QDataStream &, UPacketView::PacketInfo &);
+
+inline bool operator ==(const UPacketView::PacketInfo &a,const UPacketView::PacketInfo &b)
+{
+    return a.id == b.id && a.type == b.type;
+}
+
+inline bool operator <(const UPacketView::PacketInfo &a,const UPacketView::PacketInfo &b)
+{
+    bool lessThan = false;
+    if(a.type < b.type)
+    {
+        return true;
+    }
+    else if(a.type > b.type)
+    {
+        return false;
+    }
+    else
+    {
+        return ((a.id - b.id) < 0) ? true : false;
+    }
+}
+
 
 }//namespace uni
 

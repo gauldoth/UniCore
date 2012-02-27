@@ -10,6 +10,7 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
 {
     setAlternatingRowColors(true);
     setVerticalScrollMode(ScrollPerPixel);
+    setSortingEnabled(true);
 }
 
 UPacketMonitor::~UPacketMonitor()
