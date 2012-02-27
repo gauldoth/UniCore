@@ -11,7 +11,7 @@ UPacketListModel::UPacketListModel(QList<UPacketView::PacketInfo> *packetInfos,Q
 :QAbstractTableModel(parent)
 ,packetInfos_(packetInfos)
 {
-    
+    qSort(*packetInfos_);
 }
 
 UPacketListModel::~UPacketListModel()
@@ -103,7 +103,7 @@ QVariant UPacketListModel::headerData( int section, Qt::Orientation orientation,
         {
         case 0:
             {
-                return tr("Visible");
+                return tr("");
                 break;
             }
         case 1:
@@ -193,6 +193,7 @@ void UPacketListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
     if(!packetInfos_->contains(packetInfo))
     {
         packetInfos_->push_back(packetInfo);
+        qSort(*packetInfos_);
     }
     endInsertRows();
 }
