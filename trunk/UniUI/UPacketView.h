@@ -16,8 +16,9 @@
 
 class QCheckBox;
 class QGroupBox;
-class QPushButton;
+class QLabel;
 class QModelIndex;
+class QPushButton;
 
 namespace uni
 {
@@ -131,6 +132,7 @@ private:
 
     QGroupBox *packetMonitorGroupBox_;
     QCheckBox *autoScrollCheckBox_;
+    QLabel *packetCountLabel_;
     uni::UPacketMonitor *packetMonitor_;
     UPacketMonitorProxyModel *packetMonitorProxyModel_;
     uni::UPacketMonitorModel *packetMonitorModel_;

@@ -12,6 +12,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UPacketView_Dev", "UPacketV
 	GlobalSection(Qt) = preSolution
 		Integration = True
 	EndGlobalSection
+	ProjectSection(ProjectDependencies) = postProject
+		{DB29D200-F23C-47D5-A1D1-B1B645F5F138} = {DB29D200-F23C-47D5-A1D1-B1B645F5F138}
+		{D319ABBE-B018-49D8-A0CE-0F95A7905D0C} = {D319ABBE-B018-49D8-A0CE-0F95A7905D0C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
