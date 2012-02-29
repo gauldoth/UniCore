@@ -1,4 +1,4 @@
-﻿/*! \file UPacketList.h
+﻿/*! \file UPacketInfoList.h
     \brief 封包过滤列表。
     用于显示和配置哪些封包要过滤。
 
@@ -23,13 +23,13 @@ namespace uni
     
     \todo 考虑自动生成封包ID枚举类型。
 */
-class UPacketList : public QTableView
+class UPacketInfoList : public QTableView
 {
     Q_OBJECT
 
 public:
-    explicit UPacketList(QWidget *parent = 0);
-    virtual ~UPacketList();
+    explicit UPacketInfoList(QWidget *parent = 0);
+    virtual ~UPacketInfoList();
 };
 
 }//namespace uni

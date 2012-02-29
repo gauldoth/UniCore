@@ -1,18 +1,18 @@
-﻿#include "UPacketList.h"
+﻿#include "UPacketInfoList.h"
 
 #include <QHeaderView>
 
 namespace uni
 {
 
-UPacketList::UPacketList( QWidget *parent /*= 0*/ )
+UPacketInfoList::UPacketInfoList( QWidget *parent /*= 0*/ )
 :QTableView(parent)
 {
     horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 }
 
-UPacketList::~UPacketList()
+UPacketInfoList::~UPacketInfoList()
 {
 
 }

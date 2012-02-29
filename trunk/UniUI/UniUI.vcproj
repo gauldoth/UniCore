@@ -287,34 +287,6 @@
 			SourceControlFiles="false"
 			>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_ULogConfigPanel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MD\moc_ULogConfigPanel.cpp"
 				>
 				<FileConfiguration
@@ -399,7 +371,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UMemoryModel.cpp"
+				RelativePath=".\GeneratedFiles\MTd\moc_ULogConfigPanel.cpp"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
@@ -410,7 +382,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MTd|Win32"
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -418,7 +390,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MD|Win32"
+					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -503,6 +475,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MT\moc_UMemoryModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -623,34 +623,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UMemoryView.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MDd\moc_UMemoryView.cpp"
 				>
 				<FileConfiguration
@@ -735,11 +707,315 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketList.cpp"
+				RelativePath=".\GeneratedFiles\MTd\moc_UMemoryView.cpp"
 				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketListModel.cpp"
+				RelativePath=".\GeneratedFiles\MD\moc_UPacketInfoList.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketInfoList.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MT\moc_UPacketInfoList.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketInfoList.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketInfoListModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketInfoListModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MD\moc_UPacketInfoListModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MT\moc_UPacketInfoListModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitor.cpp"
 				>
 				<FileConfiguration
 					Name="MTd|Win32"
@@ -767,63 +1043,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UPacketListModel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MD\moc_UPacketListModel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UPacketListModel.cpp"
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitor.cpp"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
@@ -879,62 +1099,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitor.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitor.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MT\moc_UPacketMonitor.cpp"
 				>
 				<FileConfiguration
@@ -955,6 +1119,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MD\moc_UPacketMonitorModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -991,34 +1183,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorModel.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitorModel.cpp"
 				>
 				<FileConfiguration
@@ -1047,10 +1211,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MD\moc_UPacketMonitorModel.cpp"
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorModel.cpp"
 				>
 				<FileConfiguration
-					Name="MDd|Win32"
+					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1058,7 +1222,35 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorProxyModel.cpp"
+				>
+				<FileConfiguration
 					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1135,34 +1327,6 @@
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorProxyModel.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1299,34 +1463,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UProcessModel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MT\moc_UProcessModel.cpp"
 				>
 				<FileConfiguration
@@ -1347,6 +1483,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UProcessModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1411,16 +1575,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UProcessView.cpp"
+				RelativePath=".\GeneratedFiles\MDd\moc_UProcessView.cpp"
 				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 				<FileConfiguration
 					Name="MTd|Win32"
 					ExcludedFromBuild="true"
@@ -1431,26 +1587,6 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MD\moc_UProcessView.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1495,8 +1631,44 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UProcessView.cpp"
+				RelativePath=".\GeneratedFiles\MD\moc_UProcessView.cpp"
 				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MT\moc_UProcessView.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="MTd|Win32"
 					ExcludedFromBuild="true"
@@ -1507,14 +1679,6 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1863,21 +2027,21 @@
 			Name="UPacketView"
 			>
 			<File
-				RelativePath=".\UPacketList.cpp"
+				RelativePath=".\UPacketInfoList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\UPacketList.h"
+				RelativePath=".\UPacketInfoList.h"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketList.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketList.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoList.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoList.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1885,10 +2049,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketList.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketList.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoList.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoList.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1896,10 +2060,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketList.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketList.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoList.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoList.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1907,29 +2071,29 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketList.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketList.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketList.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoList.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoList.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoList.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoList.cpp&quot;"
 					/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\UPacketListModel.cpp"
+				RelativePath=".\UPacketInfoListModel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\UPacketListModel.h"
+				RelativePath=".\UPacketInfoListModel.h"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketListModel.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketListModel.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoListModel.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoListModel.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1937,10 +2101,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketListModel.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketListModel.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoListModel.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoListModel.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1948,10 +2112,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketListModel.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketListModel.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoListModel.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoListModel.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -1959,10 +2123,10 @@
 					>
 					<Tool
 						Name="VCCustomBuildTool"
-						Description="Moc&apos;ing UPacketListModel.h..."
-						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;&#x0D;&#x0A;"
-						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketListModel.h"
-						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketListModel.cpp&quot;"
+						Description="Moc&apos;ing UPacketInfoListModel.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketInfoListModel.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketInfoListModel.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketInfoListModel.cpp&quot;"
 					/>
 				</FileConfiguration>
 			</File>
