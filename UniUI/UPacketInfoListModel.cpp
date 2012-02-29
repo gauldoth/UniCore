@@ -1,4 +1,4 @@
-﻿#include "UPacketListModel.h"
+﻿#include "UPacketInfoListModel.h"
 
 #include <time.h>
 
@@ -7,18 +7,18 @@
 namespace uni
 {
 
-UPacketListModel::UPacketListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent /*= 0*/ )
+UPacketInfoListModel::UPacketInfoListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent /*= 0*/ )
 :QAbstractTableModel(parent)
 ,packetInfos_(packetInfos)
 {
     qSort(*packetInfos_);
 }
 
-UPacketListModel::~UPacketListModel()
+UPacketInfoListModel::~UPacketInfoListModel()
 {
 }
 
-QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::DisplayRole*/ ) const
+QVariant UPacketInfoListModel::data( const QModelIndex &index, int role /*= Qt::DisplayRole*/ ) const
 {
     Q_ASSERT(index.isValid());
     if(role == Qt::DisplayRole || role == Qt::EditRole)
@@ -84,17 +84,17 @@ QVariant UPacketListModel::data( const QModelIndex &index, int role /*= Qt::Disp
     return QVariant();
 }
 
-int UPacketListModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
+int UPacketInfoListModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
     return packetInfos_->size();
 }
 
-int UPacketListModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
+int UPacketInfoListModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
     return 4;
 }
 
-QVariant UPacketListModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
+QVariant UPacketInfoListModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
 {
     if(orientation == Qt::Horizontal
         && role == Qt::DisplayRole)
@@ -129,7 +129,7 @@ QVariant UPacketListModel::headerData( int section, Qt::Orientation orientation,
     return QVariant();
 }
 
-Qt::ItemFlags UPacketListModel::flags( const QModelIndex &index ) const
+Qt::ItemFlags UPacketInfoListModel::flags( const QModelIndex &index ) const
 {
     if(!index.isValid())
     {
@@ -144,7 +144,7 @@ Qt::ItemFlags UPacketListModel::flags( const QModelIndex &index ) const
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-bool UPacketListModel::setData( const QModelIndex &index, const QVariant &value, int role /*= Qt::EditRole*/ )
+bool UPacketInfoListModel::setData( const QModelIndex &index, const QVariant &value, int role /*= Qt::EditRole*/ )
 {
     if(index.column() == 0 && role == Qt::CheckStateRole)
     {
@@ -166,7 +166,7 @@ bool UPacketListModel::setData( const QModelIndex &index, const QVariant &value,
     }
 }
 
-void UPacketListModel::selectAll()
+void UPacketInfoListModel::selectAll()
 {
     for(int i = 0; i < packetInfos_->size(); i++)
     {
@@ -177,7 +177,7 @@ void UPacketListModel::selectAll()
     emit visibilityChanged();
 }
 
-void UPacketListModel::deselectAll()
+void UPacketInfoListModel::deselectAll()
 {
     for(int i = 0; i < packetInfos_->size(); i++)
     {
@@ -187,7 +187,7 @@ void UPacketListModel::deselectAll()
     emit visibilityChanged();
 }
 
-void UPacketListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
+void UPacketInfoListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
 {
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
     if(!packetInfos_->contains(packetInfo))
@@ -198,7 +198,7 @@ void UPacketListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
     endInsertRows();
 }
 
-bool UPacketListModel::removeRows( int row, int count, const QModelIndex &parent /*= QModelIndex()*/ )
+bool UPacketInfoListModel::removeRows( int row, int count, const QModelIndex &parent /*= QModelIndex()*/ )
 {
     beginRemoveRows(parent,row,row+count-1);
     for(int i = 0; i < count; i++)

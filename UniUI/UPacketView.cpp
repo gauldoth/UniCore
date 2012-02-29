@@ -13,8 +13,8 @@
 #include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
 
-#include "UPacketList.h"
-#include "UPacketListModel.h"
+#include "UPacketInfoList.h"
+#include "UPacketInfoListModel.h"
 #include "UPacketMonitor.h"
 #include "UPacketMonitorModel.h"
 #include "UPacketMonitorProxyModel.h"
@@ -46,8 +46,8 @@ UPacketView::~UPacketView()
 void UPacketView::createPacketListGroupBox()
 {
     packetListGroupBox_ = new QGroupBox(tr("Packet List"),this);
-    packetList_ = new UPacketList(this);
-    packetListModel_ = new UPacketListModel(&packetInfos_,this);
+    packetList_ = new UPacketInfoList(this);
+    packetListModel_ = new UPacketInfoListModel(&packetInfos_,this);
     packetList_->setModel(packetListModel_);
     selectAllCheckBox_ = new QCheckBox(tr("Select All"),this);
     clearPacketInfosButton_ = new QPushButton(tr("Clear"),this);

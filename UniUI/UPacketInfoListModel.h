@@ -1,4 +1,4 @@
-﻿/*! \file UPacketListModel.h
+﻿/*! \file UPacketInfoListModel.h
     \brief 提供封包ID及其对应信息的数据模型。
 
     \author uni
@@ -19,13 +19,13 @@ namespace uni
 {
 
 //! UPacketList使用的Model。
-class UPacketListModel : public QAbstractTableModel
+class UPacketInfoListModel : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit UPacketListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent = 0);
-    virtual ~UPacketListModel();
+    explicit UPacketInfoListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent = 0);
+    virtual ~UPacketInfoListModel();
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());

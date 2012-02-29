@@ -17,6 +17,16 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UPacketView_Dev", "UPacketV
 		{D319ABBE-B018-49D8-A0CE-0F95A7905D0C} = {D319ABBE-B018-49D8-A0CE-0F95A7905D0C}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UMemoryView_Dev", "UMemoryView_Dev\UMemoryView_Dev.vcproj", "{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}"
+	GlobalSection(Qt) = preSolution
+		Integration = True
+	EndGlobalSection
+	ProjectSection(ProjectDependencies) = postProject
+		{D319ABBE-B018-49D8-A0CE-0F95A7905D0C} = {D319ABBE-B018-49D8-A0CE-0F95A7905D0C}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "测试项目", "测试项目", "{3E9CDAE9-B9AE-4268-9825-2941CC6155DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -63,8 +73,24 @@ Global
 		{2BCD9DC3-51F0-4ED9-AFC2-31CC6C1B29EB}.MTd|Win32.Build.0 = Debug|Win32
 		{2BCD9DC3-51F0-4ED9-AFC2-31CC6C1B29EB}.Release|Win32.ActiveCfg = Release|Win32
 		{2BCD9DC3-51F0-4ED9-AFC2-31CC6C1B29EB}.Release|Win32.Build.0 = Release|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.Debug|Win32.Build.0 = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MD|Win32.ActiveCfg = Release|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MD|Win32.Build.0 = Release|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MDd|Win32.ActiveCfg = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MDd|Win32.Build.0 = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MT|Win32.ActiveCfg = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MT|Win32.Build.0 = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MTd|Win32.ActiveCfg = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.MTd|Win32.Build.0 = Debug|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.Release|Win32.ActiveCfg = Release|Win32
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6FE9DDD-9C0E-483D-9435-EB8CF370490E} = {3E9CDAE9-B9AE-4268-9825-2941CC6155DC}
+		{2BCD9DC3-51F0-4ED9-AFC2-31CC6C1B29EB} = {3E9CDAE9-B9AE-4268-9825-2941CC6155DC}
 	EndGlobalSection
 EndGlobal

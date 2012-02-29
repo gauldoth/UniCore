@@ -23,8 +23,8 @@ class QPushButton;
 namespace uni
 {
 
-class UPacketList;
-class UPacketListModel;
+class UPacketInfoList;
+class UPacketInfoListModel;
 class UPacketMonitor;
 class UPacketMonitorModel;
 class UPacketMonitorProxyModel;
@@ -126,8 +126,8 @@ private:
     QList<PacketData> packetDatas_;
 
     QGroupBox *packetListGroupBox_;
-    uni::UPacketList *packetList_;
-    uni::UPacketListModel *packetListModel_;
+    uni::UPacketInfoList *packetList_;
+    uni::UPacketInfoListModel *packetListModel_;
     QCheckBox *selectAllCheckBox_;
     QPushButton *clearPacketInfosButton_;
 
