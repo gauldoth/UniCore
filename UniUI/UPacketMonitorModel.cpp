@@ -25,7 +25,7 @@ int UPacketMonitorModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/
 
 int UPacketMonitorModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
-    return 4;
+    return 5;
 }
 
 QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::DisplayRole*/ ) const
@@ -121,6 +121,10 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
             }
             return text;
         }
+        else if(column == 4)
+        {
+            return packetSize;
+        }
     }
     else if(role == Qt::SizeHintRole)
     {
@@ -203,6 +207,11 @@ QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientati
         case 3:
             {
                 return tr("Text");
+                break;
+            }
+        case 4:
+            {
+                return tr("Len");
                 break;
             }
         default:
