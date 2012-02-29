@@ -10,7 +10,7 @@ UPacketMonitorModel::UPacketMonitorModel(QList<UPacketView::PacketData> *packetD
 :QAbstractTableModel(parent)
 ,packetDatas_(packetDatas)
 {
-    
+    font_ = new QFont();
 }
 
 UPacketMonitorModel::~UPacketMonitorModel()
@@ -28,9 +28,12 @@ int UPacketMonitorModel::columnCount( const QModelIndex &parent /*= QModelIndex(
     return 4;
 }
 
-QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::DisplayRole*/ ) const
+QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::DisplayRole*/ ) const
 {
-    //UTRACE("性能")<<"row:"<<index.row()<<" column:"<<index.column();
+//     if(role == Qt::BackgroundRole)
+//     {
+//     UTRACE("性能")<<"row:"<<index.row()<<" column:"<<index.column()<<" role:"<<role;
+//     }
     Q_ASSERT(index.isValid());
     if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
@@ -121,40 +124,56 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index, int role /*= Qt::D
     }
     else if(role == Qt::SizeHintRole)
     {
-        QSize size;
-        int column = index.column();
-        int row = index.row();
-        int packetSize = packetDatas_->at(row).content.size();
-        int contentRowCount = (packetSize-1)/16+1;
-        switch(column)
-        {
-        case 0:
-            {
-                break;
-            }
-        case 1:
-            {
-                break;
-            }
-        case 2:
-            {
-                size.setHeight(contentRowCount*24);
-                size.setWidth(900);
-                break;
-            }
-        default:
-            {
-                break;
-            }
-        }
-        return size;
-
+         QSize size;
+         int column = index.column();
+         int row = index.row();
+         int packetSize = packetDatas_->at(row).content.size();
+         int contentRowCount = (packetSize-1)/16+1;
+         switch(column)
+         {
+         case 0:
+             {
+                 size.setWidth(40);
+                 size.setHeight(30);
+                 break;
+             }
+         case 1:
+             {
+                 size.setWidth(10);
+                 size.setHeight(30);
+                 break;
+             }
+         case 2:
+             {
+                 size.setWidth(320);
+                 size.setHeight(contentRowCount*12);
+                 break;
+             }
+         case 3:
+             {
+                 size.setWidth(220);
+                 size.setHeight(50);
+                 break;
+             }
+         default:
+             {
+                 size.setWidth(150);
+                 size.setHeight(50);
+                 break;
+             }
+         }
+         return size;
+    }
+    else if(role == Qt::FontRole)
+    {
+        return (*font_);
     }
     return QVariant();
 }
 
 void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
+    UTRACE("性能")<<"enter";
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
     packetDatas_->push_back(data);
     endInsertRows();

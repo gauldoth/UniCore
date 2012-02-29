@@ -40,6 +40,7 @@ public:
     void addPacketData(UPacketView::PacketData data);
 private:
     QList<UPacketView::PacketData> *packetDatas_;
+    QFont *font_;  //! 所有数据使用的字体。
 };
 
 }//namespace uni

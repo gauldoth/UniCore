@@ -4,6 +4,7 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QSortFilterProxyModel>
@@ -71,14 +72,16 @@ void UPacketView::createPacketMonitorGroupBox()
     packetMonitorGroupBox_ = new QGroupBox(tr("Packet Monitor"),this);
     packetMonitor_ = new UPacketMonitor(this);
     packetMonitorModel_ = new UPacketMonitorModel(&packetDatas_,this);
-    packetMonitorProxyModel_ = new UPacketMonitorProxyModel(this);
-    packetMonitorProxyModel_->setDynamicSortFilter(true);
-    packetMonitorProxyModel_->setSourceModel(packetMonitorModel_);
-    packetMonitor_->setModel(packetMonitorProxyModel_);
-    //packetMonitor_->setModel(packetMonitorModel_);
+//     packetMonitorProxyModel_ = new UPacketMonitorProxyModel(this);
+//     packetMonitorProxyModel_->setDynamicSortFilter(true);
+//     packetMonitorProxyModel_->setSourceModel(packetMonitorModel_);
+//     packetMonitor_->setModel(packetMonitorProxyModel_);
+    packetMonitor_->setModel(packetMonitorModel_);
     autoScrollCheckBox_ = new QCheckBox(tr("Auto Scroll"),this);
+    packetCountLabel_ = new QLabel(tr("Packet Count:0"),this);
 
     QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(packetCountLabel_);
     layout->addWidget(packetMonitor_);
     QHBoxLayout *layout2 = new QHBoxLayout;
     layout2->addWidget(autoScrollCheckBox_);
@@ -111,20 +114,21 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
     packetData.type = type;
     packetData.content = QByteArray(packet,packetSize);
     packetMonitorModel_->addPacketData(packetData);
+    packetCountLabel_->setText(tr("Packet Count:%1").arg(packetMonitorModel_->rowCount()));
     //UTRACE("临时")<<"3";
 }
 
 void UPacketView::updateFilters()
 {
-    QMap<PacketType,QSet<int> > filters;
-    for(int i = 0; i < packetInfos_.size(); i++)
-    {
-        if(packetInfos_[i].visible)
-        {
-            filters[packetInfos_[i].type].insert(packetInfos_[i].id);
-        }
-    }
-    packetMonitorProxyModel_->setFilters(filters);
+//     QMap<PacketType,QSet<int> > filters;
+//     for(int i = 0; i < packetInfos_.size(); i++)
+//     {
+//         if(packetInfos_[i].visible)
+//         {
+//             filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+//         }
+//     }
+//     packetMonitorProxyModel_->setFilters(filters);
 }
 
 void UPacketView::onSelectAllCheckBoxChanged( int state )
@@ -175,7 +179,6 @@ void UPacketView::clearPacketInfos()
 
 void UPacketView::setAutoScroll( bool isAutoScroll )
 {
-    UTRACE<<"enter"<<isAutoScroll;
     //packetMonitor_->scrollToBottom();
     if(isAutoScroll)
     {
