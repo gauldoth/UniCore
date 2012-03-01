@@ -109,7 +109,10 @@ std::wstring GetCurrentProcessDirectory()
     assert(GetLastError() != ERROR_INSUFFICIENT_BUFFER);
     wchar_t *exeFileName = wcsrchr(path,L'\\');
     assert(exeFileName);
-    exeFileName[0] = L'\0';
+    if(exeFileName)
+    {
+        exeFileName[0] = L'\0';
+    }
     result = path;
     return result;
 }
