@@ -39,7 +39,6 @@ class UPacketMonitorProxyModel;
     - 封包信息列表中的设置使用配置档保存。
 
     \todo 记录封包时间。
-    \todo 封包信息列表改名。
     \todo 增加选择列。
 */
 class UPacketView : public QWidget
