@@ -13,6 +13,8 @@
 #define AUTO_LINK_LIB_NAME "UniUI"
 #include "../UniCore/AutoLink.h"
 
+class QAction;
+
 namespace uni
 {
 
@@ -30,6 +32,14 @@ class UPacketInfoList : public QTableView
 public:
     explicit UPacketInfoList(QWidget *parent = 0);
     virtual ~UPacketInfoList();
+private slots:
+    //! 显示选择的封包信息。
+    void showSelectedPacketInfos();
+    //! 隐藏选择的封包信息。
+    void hideSelectedPacketInfos();
+private:
+    QAction *showSelectedPacketInfos_;  //!< 显示选择的封包信息。
+    QAction *hideSelectedPacketInfos_;  //!< 隐藏选择的封包信息。
 };
 
 }//namespace uni
