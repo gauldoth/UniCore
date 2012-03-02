@@ -40,6 +40,7 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 
 UPacketView::~UPacketView()
 {
+    UTRACE<<"enter";
     savePacketInfos();
 }
 
@@ -164,11 +165,6 @@ void UPacketView::loadPacketInfos()
     QDataStream in(&configFile);
     in.setVersion(QDataStream::Qt_4_5);
     in>>packetInfos_;
-}
-
-void UPacketView::hideEvent( QHideEvent * )
-{
-    savePacketInfos();
 }
 
 void UPacketView::clearPacketInfos()

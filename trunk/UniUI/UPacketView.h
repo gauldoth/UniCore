@@ -98,8 +98,6 @@ public slots:
         假如启用自动滚动，封包监视器每收到一条封包就会滚动到最底部。
     */
     void setAutoScroll(bool isAutoScroll);
-protected:
-    virtual void hideEvent(QHideEvent *);
 private slots:
     void onSelectAllCheckBoxChanged( int state );
     //! 更新封包的过滤条件。
