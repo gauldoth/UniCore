@@ -105,15 +105,28 @@ std::wstring GetCurrentProcessDirectory()
 {
     std::wstring result;
     wchar_t path[MAX_PATH] = L"";
-    assert(GetModuleFileName(NULL,path,MAX_PATH));
-    assert(GetLastError() != ERROR_INSUFFICIENT_BUFFER);
+    int ret = GetModuleFileName(NULL,path,MAX_PATH);
+    if(!ret)
+    {
+        UERROR<<"GetModuleFileName失败。"<<lasterr;
+        return result;
+    }
+    else if(GetLastError() == ERROR_INSUFFICIENT_BUFFER)
+    {
+        UERROR<<"缓冲区不足。";
+        return result;
+    }
+
     wchar_t *exeFileName = wcsrchr(path,L'\\');
-    assert(exeFileName);
     if(exeFileName)
     {
         exeFileName[0] = L'\0';
+        result = path;
     }
-    result = path;
+    else
+    {
+        UERROR<<"当前进程镜象路径中找不到\\";
+    }
     return result;
 }
 
