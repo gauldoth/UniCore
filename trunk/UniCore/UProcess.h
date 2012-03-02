@@ -23,7 +23,7 @@ bool EnableDebugPrivilege();
 
 //! 获得当前进程所在路径。
 /*!
-    \return 当前进程的可执行文件所在路径。
+    \return 当前进程的可执行文件所在路径，失败则返回空的字符串。
 */
 std::wstring GetCurrentProcessDirectory();
 
