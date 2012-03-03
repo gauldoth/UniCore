@@ -12,6 +12,8 @@
 #define AUTO_LINK_LIB_NAME "UniUI"
 #include "../UniCore/AutoLink.h"
 
+class QAction;
+
 namespace uni
 {
 
@@ -22,6 +24,11 @@ class UPacketMonitor : public QTableView
 public:
     explicit UPacketMonitor(QWidget *parent = 0);
     virtual ~UPacketMonitor();
+public slots:
+    //!< 清除所有封包。
+    void clearPackets();
+private:
+    QAction *clearPacketsAction_;  //!< 清除所有封包。
 };
 
 }//namespace uni
