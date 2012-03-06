@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QSortFilterProxyModel>
 #include <QVBoxLayout>
+#include <QTime>
 
 #include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
@@ -29,10 +30,9 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
     createPacketListGroupBox();
     createPacketMonitorGroupBox();
 
-    //布局。
     QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(packetListGroupBox_,1);
-    layout->addWidget(packetMonitorGroupBox_,2);
+    layout->addWidget(packetListGroupBox_);
+    layout->addWidget(packetMonitorGroupBox_);
     setLayout(layout);
 
     updateFilters();
@@ -50,21 +50,18 @@ void UPacketView::createPacketListGroupBox()
     packetList_ = new UPacketInfoList(this);
     packetListModel_ = new UPacketInfoListModel(&packetInfos_,this);
     packetList_->setModel(packetListModel_);
-    selectAllCheckBox_ = new QCheckBox(tr("Select All"),this);
+
     clearPacketInfosButton_ = new QPushButton(tr("Clear"),this);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(packetList_);
     QHBoxLayout *bottomLayout = new QHBoxLayout;
-    bottomLayout->addWidget(selectAllCheckBox_);
     bottomLayout->addWidget(clearPacketInfosButton_);
 
-    mainLayout->addWidget(selectAllCheckBox_);
     mainLayout->addLayout(bottomLayout);
     packetListGroupBox_->setLayout(mainLayout);
 
     connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
-    connect(selectAllCheckBox_,SIGNAL(stateChanged(int)),this,SLOT(onSelectAllCheckBoxChanged(int)));
     connect(clearPacketInfosButton_,SIGNAL(clicked()),this,SLOT(clearPacketInfos()));
 }
 
@@ -113,6 +110,7 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
     PacketData packetData;
     packetData.id = packetID;
     packetData.type = type;
+    packetData.time = QTime::currentTime();
     packetData.content = QByteArray(packet,packetSize);
     packetMonitorModel_->addPacketData(packetData);
     packetCountLabel_->setText(tr("Packet Count:%1").arg(packetMonitorModel_->rowCount()));
@@ -132,17 +130,6 @@ void UPacketView::updateFilters()
     packetMonitorProxyModel_->setFilters(filters);
 }
 
-void UPacketView::onSelectAllCheckBoxChanged( int state )
-{
-    if(state == Qt::Checked)
-    {
-        packetListModel_->selectAll();
-    }
-    else
-    {
-        packetListModel_->deselectAll();
-    }
-}
 
 void UPacketView::savePacketInfos()
 {
@@ -184,6 +171,11 @@ void UPacketView::setAutoScroll( bool isAutoScroll )
     {
         disconnect(packetMonitorModel_,SIGNAL(rowsInserted(const QModelIndex &,int,int)),packetMonitor_,SLOT(scrollToBottom()));
     }
+}
+
+void UPacketView::setSilentMode( bool silentMode )
+{
+    
 }
 
 QDataStream & operator<<( QDataStream &s, const UPacketView::PacketInfo &packetInfo )

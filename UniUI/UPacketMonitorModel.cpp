@@ -1,5 +1,7 @@
 ﻿#include "UPacketMonitorModel.h"
 
+#include <QTime>
+
 #include "../UniCore/UMemory.h"
 #include "../UniCore/ULog.h"
 
@@ -11,6 +13,8 @@ UPacketMonitorModel::UPacketMonitorModel(QList<UPacketView::PacketData> *packetD
 ,packetDatas_(packetDatas)
 {
     font_ = new QFont();
+    columnNames_<<tr("Time")<<tr("Type")<<tr("PacketID")<<tr("PacketContent")
+        <<tr("Text")<<tr("Len");
 }
 
 UPacketMonitorModel::~UPacketMonitorModel()
@@ -25,7 +29,7 @@ int UPacketMonitorModel::rowCount( const QModelIndex &parent /*= QModelIndex()*/
 
 int UPacketMonitorModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) const
 {
-    return 5;
+    return columnNames_.size();
 }
 
 QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::DisplayRole*/ ) const
@@ -43,7 +47,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         int packetSize = packetDatas_->at(index.row()).content.size();
         UPacketView::PacketData packetData = packetDatas_->at(row);
 
-        if(column == 0)
+        if(columnNames_[column] == tr("Type"))
         {
             if(packetData.type == UPacketView::SendType)
             {
@@ -58,11 +62,11 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
                 return tr("Unknown");
             }
         }
-        else if(column == 1)
+        else if(columnNames_[column] == tr("PacketID"))
         {
-            return QString("0x%1").arg(packetData.id,8,16,QChar('0'));
+            return QString("0x%1").arg(packetData.id,4,16,QChar('0'));
         }
-        else if(column == 2)
+        else if(columnNames_[column] == tr("PacketContent"))
         {
             QString datas;
 
@@ -81,10 +85,9 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
                     datas += "\r\n";
                 }
             }
-
             return datas;
         }
-        else if(column == 3)
+        else if(columnNames_[column] == tr("Text"))
         {
             QString text;
 
@@ -121,10 +124,15 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
             }
             return text;
         }
-        else if(column == 4)
+        else if(columnNames_[column] == tr("Len"))
         {
             return packetSize;
         }
+        else if(columnNames_[column] == tr("Time"))
+        {
+            return packetData.time;
+        }
+
     }
     else if(role == Qt::SizeHintRole)
     {
@@ -133,38 +141,35 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
          int row = index.row();
          int packetSize = packetDatas_->at(row).content.size();
          int contentRowCount = (packetSize-1)/16+1;
-         switch(column)
+         if(columnNames_[column] == tr("Type"))
          {
-         case 0:
-             {
-                 size.setWidth(40);
-                 size.setHeight(30);
-                 break;
-             }
-         case 1:
-             {
-                 size.setWidth(10);
-                 size.setHeight(30);
-                 break;
-             }
-         case 2:
-             {
-                 size.setWidth(320);
-                 size.setHeight(contentRowCount*12);
-                 break;
-             }
-         case 3:
-             {
-                 size.setWidth(220);
-                 size.setHeight(50);
-                 break;
-             }
-         default:
-             {
-                 size.setWidth(150);
-                 size.setHeight(50);
-                 break;
-             }
+             size.setWidth(40);
+             size.setHeight(12);
+         }
+         else if(columnNames_[column] == tr("PacketID"))
+         {
+             size.setWidth(40);
+             size.setHeight(12);
+         }
+         else if(columnNames_[column] == tr("PacketContent"))
+         {
+             size.setWidth(320);
+             size.setHeight(contentRowCount*12);
+         }
+         else if(columnNames_[column] == tr("Text"))
+         {
+             size.setWidth(220);
+             size.setHeight(contentRowCount*12);
+         }
+         else if(columnNames_[column] == tr("Len"))
+         {
+             size.setWidth(50);
+             size.setHeight(12);
+         }
+         else if(columnNames_[column] == tr("Time"))
+         {
+             size.setWidth(65);
+             size.setHeight(12);
          }
          return size;
     }
@@ -177,7 +182,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
 
 void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
-    UTRACE("性能")<<"enter";
+    //UTRACE("性能")<<"enter";
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
     packetDatas_->push_back(data);
     endInsertRows();
@@ -187,40 +192,20 @@ QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientati
 {
     if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
     {
-        switch(section)
-        {
-        case 0:
-            {
-                return tr("Type");
-                break;
-            }
-        case 1:
-            {
-                return tr("Packet ID");
-                break;
-            }
-        case 2:
-            {
-                return tr("Packet Content");
-                break;
-            }
-        case 3:
-            {
-                return tr("Text");
-                break;
-            }
-        case 4:
-            {
-                return tr("Len");
-                break;
-            }
-        default:
-            {
-                
-            }
-        }
+        return columnNames_.at(section);
     }
     return QVariant();
+}
+
+bool UPacketMonitorModel::removeRows( int row, int count, const QModelIndex &parent /*= QModelIndex()*/ )
+{
+    beginRemoveRows(QModelIndex(),row,row+count-1);
+    for(int i = row; i < row+count; i++)
+    {
+        packetDatas_->removeAt(row);
+    }
+    endRemoveRows();
+    return true;
 }
 
 }//namespace uni

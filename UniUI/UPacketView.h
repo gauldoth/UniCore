@@ -9,6 +9,7 @@
 
 #include <QMap>
 #include <QWidget>
+#include <QTime>
 
 #define AUTO_LINK_LIB_NAME "UniUI"
 #include "../UniCore/AutoLink.h"
@@ -36,10 +37,16 @@ class UPacketMonitorProxyModel;
     并且能以各种方式显示。
     - 封包信息列表（PacketInfoList）收集收到的所有封包ID和类型，并能设置哪些
     封包可以在封包监视器中显示。
+    - 封包过滤方案列表。
     - 封包信息列表中的设置使用配置档保存。
 
-    \todo 记录封包时间。
-    \todo 增加选择列。
+    \todo 记录封包时间。（完成）
+    \todo 能够仅监视Send封包，或是仅监视Recv封包。
+    \todo 根据字体计算单元格大小。
+    \todo 增加过滤方案，可以创建，保存，读取过滤方案。
+    \todo 增加Send和Recv过滤，去除全选。
+    \todo 增加静默模式，开启后暂停接受新的封包。
+    \todo 可以在封包监视器中设置标记（类似书签）。
 */
 class UPacketView : public QWidget
 {
@@ -74,6 +81,7 @@ public:
         int id;  //!< 封包ID。
         PacketType type;  //!< 封包类型。
         QByteArray content;  //!< 封包内容。
+        QTime time;  //!< 封包时间。
     };
     explicit UPacketView(QWidget *parent = 0);
     virtual ~UPacketView();
@@ -98,8 +106,14 @@ public slots:
         假如启用自动滚动，封包监视器每收到一条封包就会滚动到最底部。
     */
     void setAutoScroll(bool isAutoScroll);
+    
+    //! 设置静默模式。
+    /*!
+        \param silentMode 是否为静默模式。
+        静默模式下将直接丢弃新添加的封包。
+    */
+    void setSilentMode(bool silentMode);
 private slots:
-    void onSelectAllCheckBoxChanged( int state );
     //! 更新封包的过滤条件。
     void updateFilters();
 private:
@@ -125,7 +139,6 @@ private:
     QGroupBox *packetListGroupBox_;
     uni::UPacketInfoList *packetList_;
     uni::UPacketInfoListModel *packetListModel_;
-    QCheckBox *selectAllCheckBox_;
     QPushButton *clearPacketInfosButton_;
 
     QGroupBox *packetMonitorGroupBox_;
@@ -134,6 +147,8 @@ private:
     uni::UPacketMonitor *packetMonitor_;
     UPacketMonitorProxyModel *packetMonitorProxyModel_;
     uni::UPacketMonitorModel *packetMonitorModel_;
+
+    bool silentMode_;  //!< 是否处在静默模式。
 };
 
 QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);
