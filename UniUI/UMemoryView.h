@@ -60,6 +60,11 @@ public:
         
         UMemoryView可以在某个指定的Lua状态下工作，这时UMemoryView中自定义的内存
         脚本可以使用该Lua状态下的全局的内容。
+
+        主要功能如下，
+        - 查看内存。
+        - 修改内存。
+        - 查找内存内容功能。
     */
     explicit UMemoryView(QWidget *parent = 0,lua_State *state = 0);
     virtual ~UMemoryView();
