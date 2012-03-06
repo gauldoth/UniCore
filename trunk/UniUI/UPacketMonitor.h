@@ -24,9 +24,12 @@ class UPacketMonitor : public QTableView
 public:
     explicit UPacketMonitor(QWidget *parent = 0);
     virtual ~UPacketMonitor();
+    virtual void setModel(QAbstractItemModel *model);
 public slots:
-    //!< 清除所有封包。
+    //! 清除所有封包。
     void clearPackets();
+    //! 显示隐藏列的响应函数。
+    void onShowHideColumnToggled(bool checked);
 private:
     QAction *clearPacketsAction_;  //!< 清除所有封包。
 };

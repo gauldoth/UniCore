@@ -2,6 +2,7 @@
 
 #include <QAction>
 #include <QHeaderView>
+#include <QSizePolicy>
 
 #include "../UniCore/ULog.h"
 
@@ -13,7 +14,9 @@ UPacketInfoList::UPacketInfoList( QWidget *parent /*= 0*/ )
 {
     horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-
+    horizontalHeader()->setStretchLastSection(true);
+    QSizePolicy sizePolicy(QSizePolicy::Maximum,QSizePolicy::Preferred);
+    setSizePolicy(sizePolicy);
     showSelectedPacketInfos_ = new QAction(tr("Show Selected"),this);
     hideSelectedPacketInfos_ = new QAction(tr("Hide Selected"),this);
 
@@ -21,6 +24,7 @@ UPacketInfoList::UPacketInfoList( QWidget *parent /*= 0*/ )
     addAction(hideSelectedPacketInfos_);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
+    
 
     connect(showSelectedPacketInfos_,SIGNAL(triggered()),this,SLOT(showSelectedPacketInfos()));
     connect(hideSelectedPacketInfos_,SIGNAL(triggered()),this,SLOT(hideSelectedPacketInfos()));

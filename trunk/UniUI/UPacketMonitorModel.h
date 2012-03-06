@@ -37,10 +37,13 @@ public:
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual QVariant headerData(int section, Qt::Orientation orientation,
         int role = Qt::DisplayRole) const;
+    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
     void addPacketData(UPacketView::PacketData data);
+
 private:
     QList<UPacketView::PacketData> *packetDatas_;
-    QFont *font_;  //! 所有数据使用的字体。
+    QFont *font_;  //!< 所有数据使用的字体。
+    QStringList columnNames_;  //!< 列信息。
 };
 
 }//namespace uni
