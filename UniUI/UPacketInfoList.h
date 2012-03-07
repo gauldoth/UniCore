@@ -37,9 +37,12 @@ private slots:
     void showSelectedPacketInfos();
     //! 隐藏选择的封包信息。
     void hideSelectedPacketInfos();
+    //! 删除选择的封包信息。
+    void deleteSelectedPacketInfos();
 private:
     QAction *showSelectedPacketInfos_;  //!< 显示选择的封包信息。
     QAction *hideSelectedPacketInfos_;  //!< 隐藏选择的封包信息。
+    QAction *deleteSelectedPacketInfos_;  //!< 删除选择的封包信息。
 };
 
 }//namespace uni

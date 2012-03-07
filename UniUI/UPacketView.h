@@ -41,12 +41,12 @@ class UPacketMonitorProxyModel;
     - 封包信息列表中的设置使用配置档保存。
 
     \todo 记录封包时间。（完成）
-    \todo 能够仅监视Send封包，或是仅监视Recv封包。
     \todo 根据字体计算单元格大小。
     \todo 增加过滤方案，可以创建，保存，读取过滤方案。
     \todo 增加Send和Recv过滤，去除全选。
-    \todo 增加静默模式，开启后暂停接受新的封包。
+    \todo 增加静默模式，开启后暂停接受新的封包。（完成）
     \todo 可以在封包监视器中设置标记（类似书签）。
+    \todo 封包信息列表可编辑，并增加删除封包信息功能。（完成）
 */
 class UPacketView : public QWidget
 {
@@ -112,7 +112,7 @@ public slots:
         \param silentMode 是否为静默模式。
         静默模式下将直接丢弃新添加的封包。
     */
-    void setSilentMode(bool silentMode);
+    void setSilentMode(bool enable);
 private slots:
     //! 更新封包的过滤条件。
     void updateFilters();
@@ -140,9 +140,10 @@ private:
     uni::UPacketInfoList *packetList_;
     uni::UPacketInfoListModel *packetListModel_;
     QPushButton *clearPacketInfosButton_;
+    QPushButton *silentModePushButton_;
 
     QGroupBox *packetMonitorGroupBox_;
-    QCheckBox *autoScrollCheckBox_;
+    QPushButton *autoScrollPushButton_;
     QLabel *packetCountLabel_;
     uni::UPacketMonitor *packetMonitor_;
     UPacketMonitorProxyModel *packetMonitorProxyModel_;

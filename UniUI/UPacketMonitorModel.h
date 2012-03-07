@@ -29,7 +29,8 @@ public:
         \param packetDatas 所有封包数据的指针。
         \param parent 父对象。
     */
-    explicit UPacketMonitorModel(QList<UPacketView::PacketData> *packetDatas,QObject *parent = 0);
+    explicit UPacketMonitorModel(QList<UPacketView::PacketInfo> *packetInfos,
+        QList<UPacketView::PacketData> *packetDatas,QObject *parent = 0);
     virtual ~UPacketMonitorModel();
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -39,8 +40,8 @@ public:
         int role = Qt::DisplayRole) const;
     virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
     void addPacketData(UPacketView::PacketData data);
-
 private:
+    QList<UPacketView::PacketInfo> *packetInfos_;
     QList<UPacketView::PacketData> *packetDatas_;
     QFont *font_;  //!< 所有数据使用的字体。
     QStringList columnNames_;  //!< 列信息。

@@ -8,12 +8,14 @@
 namespace uni
 {
 
-UPacketMonitorModel::UPacketMonitorModel(QList<UPacketView::PacketData> *packetDatas,QObject *parent /*= 0*/ )
+UPacketMonitorModel::UPacketMonitorModel(QList<UPacketView::PacketInfo> *packetInfos,
+    QList<UPacketView::PacketData> *packetDatas,QObject *parent /*= 0*/ )
 :QAbstractTableModel(parent)
+,packetInfos_(packetInfos)
 ,packetDatas_(packetDatas)
 {
     font_ = new QFont();
-    columnNames_<<tr("Time")<<tr("Type")<<tr("PacketID")<<tr("PacketContent")
+    columnNames_<<tr("Time")<<tr("Type")<<tr("ID")<<tr("Name")<<tr("PacketContent")
         <<tr("Text")<<tr("Len");
 }
 
@@ -62,7 +64,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
                 return tr("Unknown");
             }
         }
-        else if(columnNames_[column] == tr("PacketID"))
+        else if(columnNames_[column] == tr("ID"))
         {
             return QString("0x%1").arg(packetData.id,4,16,QChar('0'));
         }
@@ -132,6 +134,18 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         {
             return packetData.time;
         }
+        else if(columnNames_[column] == tr("Name"))
+        {
+            for(int i = 0; i < packetInfos_->size(); i++)
+            {
+                if(packetInfos_->at(i).id == packetData.id 
+                    && packetInfos_->at(i).type == packetData.type)
+                {
+                    return packetInfos_->at(i).name;
+                }
+            }
+            return QVariant();
+        }
 
     }
     else if(role == Qt::SizeHintRole)
@@ -146,9 +160,9 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
              size.setWidth(40);
              size.setHeight(12);
          }
-         else if(columnNames_[column] == tr("PacketID"))
+         else if(columnNames_[column] == tr("ID"))
          {
-             size.setWidth(40);
+             size.setWidth(55);
              size.setHeight(12);
          }
          else if(columnNames_[column] == tr("PacketContent"))
@@ -167,6 +181,11 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
              size.setHeight(12);
          }
          else if(columnNames_[column] == tr("Time"))
+         {
+             size.setWidth(65);
+             size.setHeight(12);
+         }
+         else if(columnNames_[column] == tr("Name"))
          {
              size.setWidth(65);
              size.setHeight(12);

@@ -27,10 +27,17 @@ public:
     explicit UPacketMonitorProxyModel(QObject *parent = 0);
     virtual ~UPacketMonitorProxyModel();
     void setFilters(QMap<UPacketView::PacketType,QSet<int> > filters);
+public slots:
+    //! 设置是否显示Send封包。
+    void setShowSendPackets(bool enable);
+    //! 设置是否显示Recv封包。
+    void setShowRecvPackets(bool enable);
 protected:
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 private:
     QMap<UPacketView::PacketType,QSet<int> > filters_; 
+    bool showSendPackets_;
+    bool showRecvPackets_;
 };
 
 }//namespace uni

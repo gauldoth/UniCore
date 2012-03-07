@@ -4,6 +4,8 @@
 
 #include <QMapIterator>
 
+#include "../UniCore/ULog.h"
+
 namespace uni
 {
 
@@ -135,8 +137,11 @@ Qt::ItemFlags UPacketInfoListModel::flags( const QModelIndex &index ) const
     {
         return 0;
     }
-
-    if(index.column() == 0)
+    if(index.column() == 3)
+    {
+        return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
+    }
+    else if(index.column() == 0)
     {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
     }
@@ -146,7 +151,20 @@ Qt::ItemFlags UPacketInfoListModel::flags( const QModelIndex &index ) const
 
 bool UPacketInfoListModel::setData( const QModelIndex &index, const QVariant &value, int role /*= Qt::EditRole*/ )
 {
-    if(index.column() == 0 && role == Qt::CheckStateRole)
+    if(role == Qt::EditRole)
+    {
+        if(index.column() == 3)
+        {
+            UTRACE<<value.toString().toStdWString();
+            (*packetInfos_)[index.row()].name = value.toString();
+            //这里暂时不通知封包监视器数据改变，因为代价较大。
+            //且封包监视器刷新频繁，不通知应该影响不大。
+            emit dataChanged(index,index);  
+            return true;
+        }
+        return false;
+    }
+    else if(index.column() == 0 && role == Qt::CheckStateRole)
     {
         if(value == Qt::Checked)
         {

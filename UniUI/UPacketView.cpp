@@ -1,5 +1,6 @@
 ﻿#include "UPacketView.h"
 
+#include <QBitmap>
 #include <QCheckBox>
 #include <QCoreApplication>
 #include <QFile>
@@ -25,6 +26,7 @@ namespace uni
 
 UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 :QWidget(parent)
+,silentMode_(false)
 {
     loadPacketInfos();
     createPacketListGroupBox();
@@ -52,45 +54,56 @@ void UPacketView::createPacketListGroupBox()
     packetList_->setModel(packetListModel_);
 
     clearPacketInfosButton_ = new QPushButton(tr("Clear"),this);
+    silentModePushButton_ = new QPushButton(tr("Silent Mode"),this);
+    silentModePushButton_->setCheckable(true);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(packetList_);
     QHBoxLayout *bottomLayout = new QHBoxLayout;
     bottomLayout->addWidget(clearPacketInfosButton_);
+    bottomLayout->addWidget(silentModePushButton_);
 
     mainLayout->addLayout(bottomLayout);
     packetListGroupBox_->setLayout(mainLayout);
 
     connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
     connect(clearPacketInfosButton_,SIGNAL(clicked()),this,SLOT(clearPacketInfos()));
+    connect(silentModePushButton_,SIGNAL(toggled(bool)),this,SLOT(setSilentMode(bool)));
 }
 
 void UPacketView::createPacketMonitorGroupBox()
 {
     packetMonitorGroupBox_ = new QGroupBox(tr("Packet Monitor"),this);
     packetMonitor_ = new UPacketMonitor(this);
-    packetMonitorModel_ = new UPacketMonitorModel(&packetDatas_,this);
+    packetMonitorModel_ = new UPacketMonitorModel(&packetInfos_,&packetDatas_,this);
     packetMonitorProxyModel_ = new UPacketMonitorProxyModel(this);
     packetMonitorProxyModel_->setDynamicSortFilter(true);
     packetMonitorProxyModel_->setSourceModel(packetMonitorModel_);
     packetMonitor_->setModel(packetMonitorProxyModel_);
     //packetMonitor_->setModel(packetMonitorModel_);
-    autoScrollCheckBox_ = new QCheckBox(tr("Auto Scroll"),this);
+    autoScrollPushButton_ = new QPushButton(tr("Auto Scroll"),this);
+    autoScrollPushButton_->setCheckable(true);
+    autoScrollPushButton_->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred));
     packetCountLabel_ = new QLabel(tr("Packet Count:0"),this);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(packetCountLabel_);
     layout->addWidget(packetMonitor_);
     QHBoxLayout *layout2 = new QHBoxLayout;
-    layout2->addWidget(autoScrollCheckBox_);
+    layout2->addWidget(autoScrollPushButton_);
     layout->addLayout(layout2);
     packetMonitorGroupBox_->setLayout(layout);
 
-    connect(autoScrollCheckBox_,SIGNAL(toggled(bool)),this,SLOT(setAutoScroll(bool)));
+    connect(autoScrollPushButton_,SIGNAL(toggled(bool)),this,SLOT(setAutoScroll(bool)));
 }
 
 void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
 {
+    //假如静默模式，则不忽略要添加的封包。
+    if(silentMode_)
+    {
+        return;
+    }
     //假如是新类型的封包，则在封包列表添加封包。
     //在封包监视器中添加封包。
     int packetID = GetAt<unsigned short>(packet,0);
@@ -173,9 +186,9 @@ void UPacketView::setAutoScroll( bool isAutoScroll )
     }
 }
 
-void UPacketView::setSilentMode( bool silentMode )
+void UPacketView::setSilentMode( bool enable )
 {
-    
+    silentMode_ = enable;
 }
 
 QDataStream & operator<<( QDataStream &s, const UPacketView::PacketInfo &packetInfo )
