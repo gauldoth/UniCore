@@ -19,15 +19,18 @@ UPacketInfoList::UPacketInfoList( QWidget *parent /*= 0*/ )
     setSizePolicy(sizePolicy);
     showSelectedPacketInfos_ = new QAction(tr("Show Selected"),this);
     hideSelectedPacketInfos_ = new QAction(tr("Hide Selected"),this);
+    deleteSelectedPacketInfos_ = new QAction(tr("Delete Selected"),this);
 
     addAction(showSelectedPacketInfos_);
     addAction(hideSelectedPacketInfos_);
+    addAction(deleteSelectedPacketInfos_);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
     
 
     connect(showSelectedPacketInfos_,SIGNAL(triggered()),this,SLOT(showSelectedPacketInfos()));
     connect(hideSelectedPacketInfos_,SIGNAL(triggered()),this,SLOT(hideSelectedPacketInfos()));
+    connect(deleteSelectedPacketInfos_,SIGNAL(triggered()),this,SLOT(deleteSelectedPacketInfos()));
 }
 
 UPacketInfoList::~UPacketInfoList()
@@ -56,6 +59,15 @@ void UPacketInfoList::hideSelectedPacketInfos()
         {
             model()->setData(model()->index(i,0),Qt::Unchecked,Qt::CheckStateRole);
         }
+    }
+}
+
+void UPacketInfoList::deleteSelectedPacketInfos()
+{
+    QItemSelection selection = selectionModel()->selection();
+    foreach(QItemSelectionRange range,selection)
+    {
+        model()->removeRows(range.top(),range.height());
     }
 }
 
