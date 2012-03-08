@@ -4,6 +4,7 @@
 #include <QCheckBox>
 #include <QCoreApplication>
 #include <QFile>
+#include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QGroupBox>
@@ -32,6 +33,9 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
     createPacketListGroupBox();
     createPacketMonitorGroupBox();
 
+    connect(showSendPacketsButton_,SIGNAL(toggled(bool)),packetMonitorProxyModel_,SLOT(setShowSendPackets(bool)));
+    connect(showRecvPacketsButton_,SIGNAL(toggled(bool)),packetMonitorProxyModel_,SLOT(setShowRecvPackets(bool)));
+
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(packetListGroupBox_);
     layout->addWidget(packetMonitorGroupBox_);
@@ -56,12 +60,20 @@ void UPacketView::createPacketListGroupBox()
     clearPacketInfosButton_ = new QPushButton(tr("Clear"),this);
     silentModePushButton_ = new QPushButton(tr("Silent Mode"),this);
     silentModePushButton_->setCheckable(true);
+    showSendPacketsButton_ = new QPushButton(tr("Show Send"),this);
+    showSendPacketsButton_->setCheckable(true);
+    showSendPacketsButton_->setChecked(true);
+    showRecvPacketsButton_ = new QPushButton(tr("Show Recv"),this);
+    showRecvPacketsButton_->setCheckable(true);
+    showRecvPacketsButton_->setChecked(true);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(packetList_);
-    QHBoxLayout *bottomLayout = new QHBoxLayout;
-    bottomLayout->addWidget(clearPacketInfosButton_);
-    bottomLayout->addWidget(silentModePushButton_);
+    QGridLayout *bottomLayout = new QGridLayout;
+    bottomLayout->addWidget(clearPacketInfosButton_,0,0);
+    bottomLayout->addWidget(silentModePushButton_,0,1);
+    bottomLayout->addWidget(showSendPacketsButton_,0,2);
+    bottomLayout->addWidget(showRecvPacketsButton_,1,0);
 
     mainLayout->addLayout(bottomLayout);
     packetListGroupBox_->setLayout(mainLayout);
@@ -95,6 +107,7 @@ void UPacketView::createPacketMonitorGroupBox()
     packetMonitorGroupBox_->setLayout(layout);
 
     connect(autoScrollPushButton_,SIGNAL(toggled(bool)),this,SLOT(setAutoScroll(bool)));
+
 }
 
 void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )

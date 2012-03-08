@@ -42,11 +42,12 @@ class UPacketMonitorProxyModel;
 
     \todo 记录封包时间。（完成）
     \todo 根据字体计算单元格大小。
-    \todo 增加过滤方案，可以创建，保存，读取过滤方案。
+    \todo 增加显示方案，可以创建，保存，读取显示方案。
     \todo 增加Send和Recv过滤，去除全选。
     \todo 增加静默模式，开启后暂停接受新的封包。（完成）
     \todo 可以在封包监视器中设置标记（类似书签）。
     \todo 封包信息列表可编辑，并增加删除封包信息功能。（完成）
+    \todo 设置指定类型的封包颜色。
 */
 class UPacketView : public QWidget
 {
@@ -113,6 +114,7 @@ public slots:
         静默模式下将直接丢弃新添加的封包。
     */
     void setSilentMode(bool enable);
+
 private slots:
     //! 更新封包的过滤条件。
     void updateFilters();
@@ -141,6 +143,8 @@ private:
     uni::UPacketInfoListModel *packetListModel_;
     QPushButton *clearPacketInfosButton_;
     QPushButton *silentModePushButton_;
+    QPushButton *showSendPacketsButton_;
+    QPushButton *showRecvPacketsButton_;
 
     QGroupBox *packetMonitorGroupBox_;
     QPushButton *autoScrollPushButton_;
@@ -162,7 +166,6 @@ inline bool operator ==(const UPacketView::PacketInfo &a,const UPacketView::Pack
 
 inline bool operator <(const UPacketView::PacketInfo &a,const UPacketView::PacketInfo &b)
 {
-    bool lessThan = false;
     if(a.type < b.type)
     {
         return true;
