@@ -41,7 +41,8 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
 //     UTRACE("性能")<<"row:"<<index.row()<<" column:"<<index.column()<<" role:"<<role;
 //     }
     Q_ASSERT(index.isValid());
-    if(role == Qt::DisplayRole || role == Qt::EditRole)
+    if(role == Qt::DisplayRole || role == Qt::EditRole 
+        || role == Qt::ToolTipRole)
     {
         int column = index.column();
         int row = index.row();
@@ -97,19 +98,19 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
             {
                 if(packet[i] == '\0')
                 {
-                    text += "\\0";
+                    text += ". ";
                 }
                 else if(packet[i] == '\r')
                 {
-                    text += "\\r";
+                    text += ". ";
                 }
                 else if(packet[i] == '\n')
                 {
-                    text += "\\n";
+                    text += ". ";
                 }
                 else if(packet[i] == '\t')
                 {
-                    text += "\\t";
+                    text += ". ";
                 }
                 else if(packet[i] < 0)
                 {
@@ -187,7 +188,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
          }
          else if(columnNames_[column] == tr("Name"))
          {
-             size.setWidth(65);
+             size.setWidth(120);
              size.setHeight(12);
          }
          return size;
