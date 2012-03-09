@@ -28,6 +28,7 @@ namespace uni
 UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 :QWidget(parent)
 ,silentMode_(false)
+,showOnlySelectedPackets_(false)
 {
     loadPacketInfos();
     createPacketListGroupBox();
@@ -66,6 +67,9 @@ void UPacketView::createPacketListGroupBox()
     showRecvPacketsButton_ = new QPushButton(tr("Show Recv"),this);
     showRecvPacketsButton_->setCheckable(true);
     showRecvPacketsButton_->setChecked(true);
+    showOnlySelectedButton_ = new QPushButton(tr("Show Only Selected"),this);
+    showOnlySelectedButton_->setCheckable(true);
+    showOnlySelectedButton_->setChecked(false);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(packetList_);
@@ -74,6 +78,7 @@ void UPacketView::createPacketListGroupBox()
     bottomLayout->addWidget(silentModePushButton_,0,1);
     bottomLayout->addWidget(showSendPacketsButton_,0,2);
     bottomLayout->addWidget(showRecvPacketsButton_,1,0);
+    bottomLayout->addWidget(showOnlySelectedButton_,1,1);
 
     mainLayout->addLayout(bottomLayout);
     packetListGroupBox_->setLayout(mainLayout);
@@ -81,6 +86,7 @@ void UPacketView::createPacketListGroupBox()
     connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
     connect(clearPacketInfosButton_,SIGNAL(clicked()),this,SLOT(clearPacketInfos()));
     connect(silentModePushButton_,SIGNAL(toggled(bool)),this,SLOT(setSilentMode(bool)));
+    connect(showOnlySelectedButton_,SIGNAL(toggled(bool)),this,SLOT(setShowOnlySelectedPackets(bool)));
 }
 
 void UPacketView::createPacketMonitorGroupBox()
@@ -107,7 +113,7 @@ void UPacketView::createPacketMonitorGroupBox()
     packetMonitorGroupBox_->setLayout(layout);
 
     connect(autoScrollPushButton_,SIGNAL(toggled(bool)),this,SLOT(setAutoScroll(bool)));
-
+    
 }
 
 void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
@@ -145,12 +151,31 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
 
 void UPacketView::updateFilters()
 {
+
     QMap<PacketType,QSet<int> > filters;
-    for(int i = 0; i < packetInfos_.size(); i++)
+    if(showOnlySelectedPackets_)
     {
-        if(packetInfos_[i].visible)
+        QItemSelection selection = packetList_->selectionModel()->selection();
+        foreach(QItemSelectionRange range,selection)
         {
-            filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+            for(int i = range.top(); i <= range.bottom(); i++)
+            {
+                if(packetInfos_[i].visible)
+                {
+                    filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+                }
+            }
+        }
+        packetList_->selectionModel();
+    }
+    else
+    {
+        for(int i = 0; i < packetInfos_.size(); i++)
+        {
+            if(packetInfos_[i].visible)
+            {
+                filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+            }
         }
     }
     packetMonitorProxyModel_->setFilters(filters);
@@ -202,6 +227,22 @@ void UPacketView::setAutoScroll( bool isAutoScroll )
 void UPacketView::setSilentMode( bool enable )
 {
     silentMode_ = enable;
+}
+
+void UPacketView::setShowOnlySelectedPackets( bool enable )
+{
+    showOnlySelectedPackets_ = enable;
+    if(enable)
+    {
+        connect(packetList_->selectionModel(),SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+            this,SLOT(updateFilters()));
+    }
+    else
+    {
+        disconnect(packetList_->selectionModel(),SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
+            this,SLOT(updateFilters()));
+    }
+    updateFilters();
 }
 
 QDataStream & operator<<( QDataStream &s, const UPacketView::PacketInfo &packetInfo )

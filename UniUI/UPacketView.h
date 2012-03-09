@@ -42,12 +42,14 @@ class UPacketMonitorProxyModel;
 
     \todo 记录封包时间。（完成）
     \todo 根据字体计算单元格大小。
-    \todo 增加显示方案，可以创建，保存，读取显示方案。
-    \todo 增加Send和Recv过滤，去除全选。
+    \todo 增加显示方案，可以创建，保存，读取显示方案。（重要）
+    \todo 增加Send和Recv过滤，去除全选。（完成）
     \todo 增加静默模式，开启后暂停接受新的封包。（完成）
     \todo 可以在封包监视器中设置标记（类似书签）。
     \todo 封包信息列表可编辑，并增加删除封包信息功能。（完成）
-    \todo 设置指定类型的封包颜色。
+    \todo 设置指定类型的封包颜色。（设想）
+    \todo 增加选项，仅显示选中封包。
+    \todo 考虑封包信息变化时（更新时），相关的处理。
 */
 class UPacketView : public QWidget
 {
@@ -115,6 +117,12 @@ public slots:
     */
     void setSilentMode(bool enable);
 
+    //! 设置仅显示选中的封包。
+    /*!
+        \param enable 是否仅显示选中封包。
+    */
+    void setShowOnlySelectedPackets(bool enable);
+
 private slots:
     //! 更新封包的过滤条件。
     void updateFilters();
@@ -145,6 +153,7 @@ private:
     QPushButton *silentModePushButton_;
     QPushButton *showSendPacketsButton_;
     QPushButton *showRecvPacketsButton_;
+    QPushButton *showOnlySelectedButton_;  //!< 仅显示选中按钮。
 
     QGroupBox *packetMonitorGroupBox_;
     QPushButton *autoScrollPushButton_;
@@ -154,6 +163,7 @@ private:
     uni::UPacketMonitorModel *packetMonitorModel_;
 
     bool silentMode_;  //!< 是否处在静默模式。
+    bool showOnlySelectedPackets_;  //!< 只显示选中的封包。
 };
 
 QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);
