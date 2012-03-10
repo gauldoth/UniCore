@@ -50,6 +50,7 @@ class UPacketMonitorProxyModel;
     \todo 设置指定类型的封包颜色。（设想）
     \todo 增加选项，仅显示选中封包。
     \todo 考虑封包信息变化时（更新时），相关的处理。
+    \todo 抓到的封包数据可以保存，复制，用于后续查看。
 */
 class UPacketView : public QWidget
 {
