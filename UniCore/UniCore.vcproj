@@ -291,6 +291,14 @@
 			Name="Memory"
 			>
 			<File
+				RelativePath=".\UBuffer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UBuffer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\UMemory.cpp"
 				>
 			</File>
