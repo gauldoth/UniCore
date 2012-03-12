@@ -30,8 +30,11 @@ public slots:
     void clearPackets();
     //! 显示隐藏列的响应函数。
     void onShowHideColumnToggled(bool checked);
+    //! 拷贝选中的项的内容。
+    void copySelected();
 private:
     QAction *clearPacketsAction_;  //!< 清除所有封包。
+    QAction *copyAction_;  //!< 复制当前项的内容到剪贴板。
 };
 
 }//namespace uni

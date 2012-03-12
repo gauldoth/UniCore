@@ -2,6 +2,8 @@
 
 #include <QHeaderView>
 #include <QAction>
+#include <QApplication>
+#include <QClipboard>
 #include <QSignalMapper>
 
 namespace uni
@@ -20,10 +22,14 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     clearPacketsAction_ = new QAction(tr("Clear Packets"),this);
     addAction(clearPacketsAction_);
 
+    copyAction_ = new QAction(tr("Copy"),this);
+    addAction(copyAction_);
+
     horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
     horizontalHeader()->setMovable(true);
 
     connect(clearPacketsAction_,SIGNAL(triggered()),this,SLOT(clearPackets()));
+    connect(copyAction_,SIGNAL(triggered()),this,SLOT(copySelected()));
 }
 
 UPacketMonitor::~UPacketMonitor()
@@ -65,6 +71,11 @@ void UPacketMonitor::onShowHideColumnToggled(bool checked)
         }
     }
     resizeRowsToContents();
+}
+
+void UPacketMonitor::copySelected()
+{
+    QApplication::clipboard()->setText(currentIndex().data(Qt::DisplayRole).toString());
 }
 
 }//namespace uni
