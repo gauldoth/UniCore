@@ -325,10 +325,10 @@ void ULog::DebuggerAppender::append( Message *message )
 
 
 
-void ULogDumpMemory( ULog &log,char *address,int len )
+void ULogDumpMemory( ULog &log,const char *address,int len )
 {
     log<<"dumpmem("<<(void *)address<<","<<len<<")\r\n";
-    char *beginAddress = address;//reinterpret_cast<char *>(address);
+    char *beginAddress = const_cast<char *>(address);//reinterpret_cast<char *>(address);
     stringstream dumpInfo;
     stringstream dumpMessage;
     for(int i = 0; i < len; i++)

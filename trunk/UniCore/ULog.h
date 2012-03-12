@@ -446,7 +446,7 @@ public:
 
     friend void ULogSetDelim(ULog &log,const char *delim);
 
-    friend void ULogDumpMemory(ULog &log,char *address,int len);
+    friend void ULogDumpMemory(ULog &log,const char *address,int len);
 
 private:
     unsigned long lastError_;
@@ -471,9 +471,9 @@ ULog::SManipulator<const char *> ULogSetName(const char *name);
 ULog::SManipulator<const char *> delim(const char *delim);
 
 //! 将address开始len长度的数据输出。
-inline ULog::BinaryManipulator<char *,int> dumpmem(char *address,int len)
+inline ULog::BinaryManipulator<const char *,int> dumpmem(const char *address,int len)
 {
-    return ULog::BinaryManipulator<char *,int>(&ULogDumpMemory,address,len);
+    return ULog::BinaryManipulator<const char *,int>(&ULogDumpMemory,address,len);
 }
 
 inline ULog &delim(ULog &log)
