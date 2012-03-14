@@ -69,6 +69,7 @@ void UPacketMonitor::onShowHideColumnToggled(bool checked)
         {
             hideColumn(action->data().toInt());
         }
+        resizeRowsToContents();
     }
     resizeRowsToContents();
 }

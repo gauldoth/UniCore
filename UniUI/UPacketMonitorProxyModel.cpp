@@ -17,6 +17,7 @@ UPacketMonitorProxyModel::~UPacketMonitorProxyModel()
 
 bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelIndex &sourceParent ) const
 {
+    //UTRACE("性能")<<"enter";
     //sourceModel是UPacketMonitorModel。
     static bool init = false;
     static int columnForType = 0;
