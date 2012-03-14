@@ -87,6 +87,14 @@ public:
         QByteArray content;  //!< 封包内容。
         QTime time;  //!< 封包时间。
     };
+    //! 显示方案。
+    struct DisplayScheme
+    {
+        
+        bool showOnlySelectedPackets;
+        bool showRecvPackets;
+        bool showSendPackets;
+    };
     explicit UPacketView(QWidget *parent = 0);
     virtual ~UPacketView();
 public slots:
@@ -124,6 +132,17 @@ public slots:
     */
     void setShowOnlySelectedPackets(bool enable);
 
+    //! 设置仅显示Send封包。
+    /*!
+        \param enable 是否仅显示Send封包。
+    */
+    void setShowSendPackets(bool enable);
+
+    //! 设置仅显示Recv封包。
+    /*!
+        \param enable 是否仅显示Recv封包。
+    */
+    void setShowRecvPackets(bool enable);
 private slots:
     //! 更新封包的过滤条件。
     void updateFilters();
@@ -136,12 +155,12 @@ private:
     /*!
         将封包信息保存到配置档，配置档放在当前进程所在目录。
     */
-    void savePacketInfos();
+    void saveSettings();
     //! 读取封包信息。
     /*!
         从当前进程所在的配置档中读取封包信息。
     */
-    void loadPacketInfos();
+    void loadSettings();
    
     //! 封包信息。保存了所有种类的封包信息。
     QList<PacketInfo> packetInfos_;
@@ -165,6 +184,8 @@ private:
 
     bool silentMode_;  //!< 是否处在静默模式。
     bool showOnlySelectedPackets_;  //!< 只显示选中的封包。
+    bool showSendPackets_;  //!< 显示发送的封包。
+    bool showRecvPackets_;  //!< 显示接收的封包。
 };
 
 QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);
