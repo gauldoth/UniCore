@@ -29,13 +29,12 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 :QWidget(parent)
 ,silentMode_(false)
 ,showOnlySelectedPackets_(false)
+,showSendPackets_(true)
+,showRecvPackets_(true)
 {
-    loadPacketInfos();
+    loadSettings();
     createPacketListGroupBox();
     createPacketMonitorGroupBox();
-
-    connect(showSendPacketsButton_,SIGNAL(toggled(bool)),packetMonitorProxyModel_,SLOT(setShowSendPackets(bool)));
-    connect(showRecvPacketsButton_,SIGNAL(toggled(bool)),packetMonitorProxyModel_,SLOT(setShowRecvPackets(bool)));
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(packetListGroupBox_);
@@ -48,7 +47,7 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 UPacketView::~UPacketView()
 {
     UTRACE<<"enter";
-    savePacketInfos();
+    saveSettings();
 }
 
 void UPacketView::createPacketListGroupBox()
@@ -87,6 +86,9 @@ void UPacketView::createPacketListGroupBox()
     connect(clearPacketInfosButton_,SIGNAL(clicked()),this,SLOT(clearPacketInfos()));
     connect(silentModePushButton_,SIGNAL(toggled(bool)),this,SLOT(setSilentMode(bool)));
     connect(showOnlySelectedButton_,SIGNAL(toggled(bool)),this,SLOT(setShowOnlySelectedPackets(bool)));
+    connect(showSendPacketsButton_,SIGNAL(toggled(bool)),this,SLOT(setShowSendPackets(bool)));
+    connect(showRecvPacketsButton_,SIGNAL(toggled(bool)),this,SLOT(setShowRecvPackets(bool)));
+
 }
 
 void UPacketView::createPacketMonitorGroupBox()
@@ -162,11 +164,14 @@ void UPacketView::updateFilters()
             {
                 if(packetInfos_[i].visible)
                 {
-                    filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+                    if((packetInfos_[i].type == SendType && showSendPackets_)
+                        || (packetInfos_[i].type == RecvType && showRecvPackets_))
+                    {
+                        filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+                    }
                 }
             }
         }
-        packetList_->selectionModel();
     }
     else
     {
@@ -174,7 +179,11 @@ void UPacketView::updateFilters()
         {
             if(packetInfos_[i].visible)
             {
-                filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+                if((packetInfos_[i].type == SendType && showSendPackets_)
+                    || (packetInfos_[i].type == RecvType && showRecvPackets_))
+                {
+                    filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+                }
             }
         }
     }
@@ -182,7 +191,7 @@ void UPacketView::updateFilters()
 }
 
 
-void UPacketView::savePacketInfos()
+void UPacketView::saveSettings()
 {
     UTRACE("UI")<<"enter";
     QFile configFile(QCoreApplication::applicationDirPath() + "\\UPacketView.cfg");
@@ -192,7 +201,7 @@ void UPacketView::savePacketInfos()
     out<<packetInfos_;
 }
 
-void UPacketView::loadPacketInfos()
+void UPacketView::loadSettings()
 {
     UTRACE("UI")<<"enter";
     QFile configFile(QCoreApplication::applicationDirPath() + "\\UPacketView.cfg");
@@ -242,6 +251,18 @@ void UPacketView::setShowOnlySelectedPackets( bool enable )
         disconnect(packetList_->selectionModel(),SIGNAL(selectionChanged(const QItemSelection &,const QItemSelection &)),
             this,SLOT(updateFilters()));
     }
+    updateFilters();
+}
+
+void UPacketView::setShowSendPackets( bool enable )
+{
+    showSendPackets_ = enable;
+    updateFilters();
+}
+
+void UPacketView::setShowRecvPackets( bool enable )
+{
+    showRecvPackets_ = enable;
     updateFilters();
 }
 

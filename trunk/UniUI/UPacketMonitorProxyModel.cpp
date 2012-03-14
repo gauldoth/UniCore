@@ -6,8 +6,6 @@ namespace uni
 {
 
 UPacketMonitorProxyModel::UPacketMonitorProxyModel( QObject *parent /*= 0*/ )
-:showSendPackets_(true)
-,showRecvPackets_(true)
 {
     
 }
@@ -43,7 +41,7 @@ bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
     QModelIndex indexForType = sourceModel()->index(sourceRow, 1, sourceParent);
     QModelIndex indexForData = sourceModel()->index(sourceRow, 2, sourceParent);
 
-    if(indexForType.data().toString() == "Send" && showSendPackets_)
+    if(indexForType.data().toString() == "Send")
     {
         int id = indexForData.data().toString().toInt(0,16);
         //查看是否在显示ID列表中。
@@ -56,7 +54,7 @@ bool UPacketMonitorProxyModel::filterAcceptsRow( int sourceRow, const QModelInde
             return false;
         }
     }
-    else if(indexForType.data().toString() == "Recv" && showRecvPackets_)
+    else if(indexForType.data().toString() == "Recv")
     {
         int id = indexForData.data().toString().toInt(0,16);
         if(filters_[UPacketView::RecvType].contains(id))
@@ -79,18 +77,5 @@ void UPacketMonitorProxyModel::setFilters( QMap<UPacketView::PacketType,QSet<int
     filters_ = filters;
     invalidateFilter();
 }
-
-void UPacketMonitorProxyModel::setShowSendPackets( bool enable )
-{
-    showSendPackets_ = enable;
-    invalidateFilter();
-}
-
-void UPacketMonitorProxyModel::setShowRecvPackets( bool enable )
-{
-    showRecvPackets_ = enable;
-    invalidateFilter();
-}
-
 
 }//namespace uni
