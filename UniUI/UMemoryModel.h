@@ -24,13 +24,19 @@ class UMemoryModel : public QAbstractTableModel
     Q_OBJECT
         
 public:
-    struct HeaderData
+    typedef QString (*GetFunction)(int);
+    typedef void (*SetFunction)(int,const QString &);
+    struct ColumnInfo
     {
-        QString headerTitle;
-        QString calculus;  //该列的计算方法，Lua脚本。
+        ColumnInfo(const QString &t,GetFunction g,SetFunction s)
+            :title(t),getFunction(g),setFunction(s){}
+        QString title;  //!< 列名。
+        QString (*getFunction)(int);  //!< 取该列值的函数。
+        void (*setFunction)(int,const QString &);  //!< 设置该列值的函数。
     };
+
     enum {PageSize = 100};  //每次增加的项数。
-    enum {RowStep = 4};  //下一行地址为上一行地址加4。
+    enum {RowStep = 1};  //下一行地址为上一行地址加4。
     explicit UMemoryModel(QObject *parent = 0,lua_State *state = 0);
     virtual ~UMemoryModel();
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
@@ -42,19 +48,16 @@ public:
     virtual bool canFetchMore(const QModelIndex &parent) const;
 
 public slots:
-    //! 设置要监视进程的ID。
-    void setTargetProcessID(int processID) {targetProcessID_ = processID;}
     //! 设置要监视的地址。
     void setAddress(int address);
     //! 添加一列。
-    void addColumn(const QString &title,const QString &calculus);
+    void addColumnInfo(const QString &title,GetFunction getFunction,
+        SetFunction setFunction);
 private:
-    int targetProcessID_;  //!< 要获得内存信息的目标进程ID，假如为0则为当前进程。
     int baseAddress_;  //!< 基地址。
-    //数组，按顺序记录每一列的标题和计算方法。
-    QList<HeaderData> columns_;
     int currentRowCount_;  //!< 当前要查看的行数，这个数据模型会根据视图的需要自动扩展数据的行数。
     lua_State *luaState_;
+    QList<ColumnInfo> columnInfos_;
 };
 
 }//namespace uni
