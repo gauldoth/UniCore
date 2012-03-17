@@ -19,7 +19,6 @@ UMemoryView::UMemoryView( QWidget *parent /*= 0*/,lua_State *state /*=0*/)
 :QWidget(parent)
 {
     memoryModel_ = new UMemoryModel(this,state);
-    memoryModel_->addColumn("Address","return string.format(\"0x%08x\",address)");
     setupUI();
     QAction *addColumnAction = new QAction("Add Column",this);
     memoryTable_->horizontalHeader()->addAction(addColumnAction);
@@ -65,11 +64,6 @@ void UMemoryView::addressEditChanged( const QString &text )
     setAddress(text.toInt(0,0));
 }
 
-void UMemoryView::addColumn( const QString &title,const QString &calculus )
-{
-    memoryModel_->addColumn(title,calculus);
-}
-
 void UMemoryView::showAddColumnDialog()
 {
     addColumnDialog_->clearExistContents();
@@ -79,7 +73,7 @@ void UMemoryView::showAddColumnDialog()
 
 void UMemoryView::addColumnDialogAccepted()
 {
-    memoryModel_->addColumn(addColumnDialog_->title(),addColumnDialog_->calculus());
+    
 }
 
 void UMemoryView::loadColumnInfos()

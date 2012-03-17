@@ -48,6 +48,15 @@ private:
 };
 
 //! 内存视图。
+/*!
+    UMemoryView可以在某个指定的Lua状态下工作，这时UMemoryView中自定义的内存
+    脚本可以使用该Lua状态下的全局的内容。
+
+    主要功能如下，
+    - 查看内存。
+    - 修改内存。
+    - 查找内存内容功能。
+*/
 class UMemoryView : public QWidget
 {
     Q_OBJECT
@@ -57,14 +66,7 @@ public:
     /*!
         \param parent 父窗口句柄。
         \param state Lua状态。假如为0，则会在内部自己创建一个lua_State。
-        
-        UMemoryView可以在某个指定的Lua状态下工作，这时UMemoryView中自定义的内存
-        脚本可以使用该Lua状态下的全局的内容。
 
-        主要功能如下，
-        - 查看内存。
-        - 修改内存。
-        - 查找内存内容功能。
     */
     explicit UMemoryView(QWidget *parent = 0,lua_State *state = 0);
     virtual ~UMemoryView();
@@ -72,12 +74,6 @@ public:
 public slots:
     //! 设置当前地址。
     void setAddress(int address);
-    //! 添加新列。
-    /*!
-        \param title 列的标题。
-        \param calculus 该列数据的计算脚本。
-    */
-    void addColumn(const QString &title,const QString &calculus);
     //! addressEdit内容改变。
     void addressEditChanged(const QString &text);
     //! 显示添加列对话框。
