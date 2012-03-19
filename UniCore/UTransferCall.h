@@ -9,6 +9,7 @@
 
 #include <queue>
 
+#define BOOST_DATE_TIME_NO_LIB
 #include <boost/interprocess/sync/interprocess_condition.hpp>
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 
