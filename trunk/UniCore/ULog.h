@@ -23,6 +23,7 @@
 #include <stdarg.h>
 #include <sstream>
 
+#define BOOST_DATE_TIME_NO_LIB
 #include <boost/interprocess/sync/interprocess_mutex.hpp>
 
 #include "UDebug.h"
