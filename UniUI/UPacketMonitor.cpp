@@ -37,6 +37,7 @@ UPacketMonitor::~UPacketMonitor()
     
 }
 
+//这里只清代理模型数据，有问题。
 void UPacketMonitor::clearPackets()
 {
     model()->removeRows(0,model()->rowCount());

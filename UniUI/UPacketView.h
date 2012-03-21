@@ -33,12 +33,14 @@ class UPacketMonitorProxyModel;
 //! 封包视图。
 /*!
     封包视图用于显示游戏中收发的封包。主要功能如下：
-    - 封包监视器（PacketMonitor）显示收到的所有封包，类似DebugView，
+    - 封包监视器（PacketMonitor）显示收到的所有封包数据，类似DebugView，
     并且能以各种方式显示。
-    - 封包信息列表（PacketInfoList）收集收到的所有封包ID和类型，并能设置哪些
-    封包可以在封包监视器中显示。
-    - 封包过滤方案列表。
-    - 封包信息列表中的设置使用配置档保存。
+    - 封包信息列表（PacketInfoList）收集收到的所有封包ID和类型，以及其他信息，
+    并能选择哪些封包可以在封包监视器中显示。
+    - 封包显示方案列表（PacketDisplayList）用于保存多个显示方案，用于快速在多
+    个显示方案中切换。
+    - 保存收集的封包信息。
+    - 保存显示方案，包括当前的。
 
     \todo 记录封包时间。（完成）
     \todo 根据字体计算单元格大小。
@@ -70,7 +72,7 @@ public:
     struct PacketInfo
     {
         PacketInfo()
-            :id(0),visible(true)
+            :id(0),visible(true),outOfDate(false)
         {
         }
 
@@ -78,6 +80,7 @@ public:
         PacketType type;  //!< 封包类型。
         QString name;  //!< 封包名字。
         bool visible;  //!< 该封包是否可见。
+        bool outOfDate;  //!< 该封包已经过期。
     };
     //! 具体的一条封包数据。
     struct PacketData
@@ -90,7 +93,6 @@ public:
     //! 显示方案。
     struct DisplayScheme
     {
-        
         bool showOnlySelectedPackets;
         bool showRecvPackets;
         bool showSendPackets;
@@ -164,7 +166,9 @@ private:
    
     //! 封包信息。保存了所有种类的封包信息。
     QList<PacketInfo> packetInfos_;
-    QList<PacketData> packetDatas_;
+    QList<PacketData> packetDatas_;  //!< 保存了接收到的封包数据。
+    DisplayScheme currentDisplayScheme_;  //!< 当前的显示方案。
+    QList<DisplayScheme> savedDisplaySchemes_;  //!< 保存的显示方案。
 
     QGroupBox *packetListGroupBox_;
     uni::UPacketInfoList *packetList_;
