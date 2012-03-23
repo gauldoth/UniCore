@@ -69,7 +69,6 @@ template<typename RetType,typename BaseType>
 inline RetType &GetAt(BaseType base,int offsets[],int count)
 {
     assert(offsets);
-    int result = 0;
     char *basePtr = (char *)base;
     for(int i = 0; i < count; i++)
     {

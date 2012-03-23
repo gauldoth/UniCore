@@ -8,13 +8,18 @@
 #define UNIUI_ULUA_INTERPRETER_H
 
 #include <QWidget>
+#include <QVariant>
 
 extern "C"
 {
-#include "../lua/lauxlib.h"
+
 #include "../lua/lua.h"
 #include "../lua/lualib.h"
+#include "../lua/lauxlib.h"
 }
+
+class QTextEdit;
+class QPushButton;
 
 namespace uni
 {
@@ -24,7 +29,7 @@ namespace uni
     按下执行，会开启一个线程执行其中脚本。
     提供函数，用于向界面的lua环境中注册函数。
 */
-class ULuaInterpreter : QWidget
+class ULuaInterpreter : public QWidget
 {
     Q_OBJECT
 
@@ -38,11 +43,17 @@ public:
     virtual ~ULuaInterpreter();
     //! 注册新的Lua函数。
     /*!
-        \param registerFunc 用于注册lua函数的函数。
+        \param registerFunction 用于注册lua函数的函数。
+        该函数用于注册函数到窗口所使用的Lua环境。
     */
-    //void register(void (*registerFunc)(lua_State *));
+    void registerLuaFunctions(lua_CFunction registerFunction);
+
+public slots:
+    void execScript();
 private:
     lua_State *L_;
+    QTextEdit *edit_;
+    QPushButton *execButton_;
 };
 
 };
