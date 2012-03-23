@@ -11,7 +11,9 @@
 
 extern "C"
 {
+#include "../lua/lauxlib.h"
 #include "../lua/lua.h"
+#include "../lua/lualib.h"
 }
 
 namespace uni
@@ -27,8 +29,18 @@ class ULuaInterpreter : QWidget
     Q_OBJECT
 
 public:
+    //! 构造一个Lua解释器窗口。
+    /*!
+        \param L lua状态，假如为0，会创建一个默认的lua状态。
+        \param parent 父窗体。
+    */
     explicit ULuaInterpreter(lua_State *L = 0,QWidget *parent = 0);
     virtual ~ULuaInterpreter();
+    //! 注册新的Lua函数。
+    /*!
+        \param registerFunc 用于注册lua函数的函数。
+    */
+    //void register(void (*registerFunc)(lua_State *));
 private:
     lua_State *L_;
 };
