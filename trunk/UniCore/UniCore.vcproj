@@ -322,6 +322,14 @@
 				RelativePath=".\UCommon.h"
 				>
 			</File>
+			<File
+				RelativePath=".\ULua.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ULua.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Debug"
