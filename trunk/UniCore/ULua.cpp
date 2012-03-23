@@ -37,13 +37,14 @@ static const struct luaL_reg g_luaFunctions[] = {
     {NULL, NULL}  /* sentinel */
 };
 
-void RegisterCommonLuaFunctions( lua_State *L )
+int RegisterCommonLuaFunctions( lua_State *L )
 {
     for(int i = 0; g_luaFunctions[i].func; i++)
     {
         lua_pushcfunction(L,g_luaFunctions[i].func);
         lua_setglobal(L,"get_at");
     }
+    return 0;
 }
 
 }//namespace uni

@@ -18,7 +18,7 @@ namespace uni
 {
 
 //! 注册常用的Lua函数。
-void RegisterCommonLuaFunctions(lua_State *L);
+int RegisterCommonLuaFunctions(lua_State *L);
 
 }//namespace uni
 
