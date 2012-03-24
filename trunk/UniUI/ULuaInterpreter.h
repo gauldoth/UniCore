@@ -48,11 +48,22 @@ public:
     */
     void registerLuaFunctions(lua_CFunction registerFunction);
 
+    //! 这个函数用于替代lua默认的print函数。
+    static int lua_print(lua_State *L);
+    //! 保存lua环境到窗口指针的映射，print时根据这个找到正确的窗口。
+    static QMap<lua_State *,ULuaInterpreter *> interpreters_;  
+    
+    //! 添加输出。
+    void output(const QString &msg);
 public slots:
     void execScript();
+
 private:
+    //修改默认的print函数。
+    void registerPrint();
     lua_State *L_;
-    QTextEdit *edit_;
+    QTextEdit *scriptEdit_;
+    QTextEdit *outputEdit_;
     QPushButton *execButton_;
 };
 
