@@ -38,6 +38,7 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     scriptEdit_ = new QTextEdit(this);
     outputEdit_ = new QTextEdit(this);
     execButton_ = new QPushButton(tr("&exec"),this);
+    stopButton_ = new QPushButton(tr("&stop"),this);
 
     QHBoxLayout *layout = new QHBoxLayout;
     QSplitter *splitter = new QSplitter(Qt::Vertical,this);
@@ -50,6 +51,7 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     setLayout(layout);
 
     connect(execButton_,SIGNAL(clicked()),this,SLOT(execScript()));
+    connect(stopButton_,SIGNAL(clicked()),this,SLOT(stopScript()));
 }
 
 ULuaInterpreter::~ULuaInterpreter()
@@ -82,6 +84,12 @@ static int traceback (lua_State *L) {
     return 1;
 }
 
+static void lstop(lua_State *L,lua_Debug *ar)
+{
+    lua_sethook(L,NULL,0,0);
+    luaL_error(L,"interrupted!");
+}
+
 void ULuaInterpreter::execScript()
 {
     int result = luaL_loadstring(L_,scriptEdit_->toPlainText().toAscii());
@@ -99,6 +107,7 @@ void ULuaInterpreter::execScript()
     assert(result == 0);
 
     //可以设置钩子，每句脚本执行后都允许中断。
+    
     lua_pushcfunction(L_,traceback);
     lua_insert(L_,1);
     result = lua_pcall(L_,0,0,1);
@@ -210,6 +219,11 @@ int ULuaInterpreter::lua_print( lua_State *L )
 void ULuaInterpreter::output( const QString &msg )
 {
     outputEdit_->append(msg);
+}
+
+void ULuaInterpreter::stopScript()
+{
+    lua_sethook(L_,lstop,LUA_MASKCALL | LUA_MASKRET | LUA_MASKCOUNT, 1);
 }
 
 }//namespace uni
