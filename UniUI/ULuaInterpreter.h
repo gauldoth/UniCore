@@ -57,14 +57,17 @@ public:
     void output(const QString &msg);
 public slots:
     void execScript();
-
+    //! 停止脚本执行。
+    void stopScript();
 private:
     //修改默认的print函数。
     void registerPrint();
+
     lua_State *L_;
     QTextEdit *scriptEdit_;
     QTextEdit *outputEdit_;
     QPushButton *execButton_;
+    QPushButton *stopButton_;
 };
 
 };
