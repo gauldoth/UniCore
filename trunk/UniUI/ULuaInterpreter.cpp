@@ -40,6 +40,7 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     outputEdit_ = new QTextEdit(this);
     execButton_ = new QPushButton(tr("&exec"),this);
     stopButton_ = new QPushButton(tr("&stop"),this);
+    stopButton_->setEnabled(false);
 
     QHBoxLayout *layout = new QHBoxLayout;
     QSplitter *splitter = new QSplitter(Qt::Vertical,this);
@@ -54,8 +55,13 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     layout->addLayout(layout2);
     setLayout(layout);
 
+    execRoutine_ = new ULuaInterpreter_ExecRoutine(this);
+
     connect(execButton_,SIGNAL(clicked()),this,SLOT(execScript()));
     connect(stopButton_,SIGNAL(clicked()),this,SLOT(stopScript()));
+    connect(execRoutine_,SIGNAL(output(const QString &)),this,SLOT(output(const QString &)));
+    connect(execRoutine_,SIGNAL(started()),this,SLOT(scriptStarted()));
+    connect(execRoutine_,SIGNAL(finished()),this,SLOT(scriptStopped()));
 }
 
 ULuaInterpreter::~ULuaInterpreter()
@@ -96,45 +102,7 @@ static void lstop(lua_State *L,lua_Debug *ar)
 
 void ULuaInterpreter::execScript()
 {
-    int result = luaL_loadstring(L_,scriptEdit_->toPlainText().toAscii());
-    if(result == LUA_ERRSYNTAX)
-    {
-        outputEdit_->append(tr("Syntax Error:%1").arg(luaL_checkstring(L_,-1)));
-        return;
-    }
-    else if(result == LUA_ERRMEM)
-    {
-        outputEdit_->append(tr("Memory Error:%1").arg(luaL_checkstring(L_,-1)));
-        return;
-    }
-
-    assert(result == 0);
-
-    //可以设置钩子，每句脚本执行后都允许中断。
-    lua_pushcfunction(L_,traceback);
-    lua_insert(L_,1);
-    result = lua_pcall(L_,0,0,1);
-    lua_remove(L_,1);
-    if(result == LUA_ERRRUN)
-    {
-        outputEdit_->append(tr("Runtime Error:%1").arg(luaL_checkstring(L_,-1)));
-        
-        return;
-    }
-    else if(result == LUA_ERRMEM)
-    {
-        outputEdit_->append(tr("Memory Error:%1").arg(luaL_checkstring(L_,-1)));
-        return;
-    }
-    else if(result == LUA_ERRERR)
-    {
-        outputEdit_->append(tr("Error Error:%1").arg(luaL_checkstring(L_,-1)));
-        return;
-    }
-    
-    assert(result == 0);
-
-
+    execRoutine_->execScript(L_,scriptEdit_->toPlainText());
 }
 
 void ULuaInterpreter::registerPrint()
@@ -214,8 +182,8 @@ int ULuaInterpreter::lua_print( lua_State *L )
         }
 
     }
-
-    interpreters_[L]->output(result);
+    bool ok = QMetaObject::invokeMethod(interpreters_[L],"output",Qt::BlockingQueuedConnection,Q_ARG(QString,result));
+    assert(ok);
     return 0;
 }
 
@@ -227,6 +195,81 @@ void ULuaInterpreter::output( const QString &msg )
 void ULuaInterpreter::stopScript()
 {
     lua_sethook(L_,lstop,LUA_MASKCALL | LUA_MASKRET | LUA_MASKCOUNT, 1);
+}
+
+void ULuaInterpreter::scriptStarted()
+{
+    execButton_->setEnabled(false);
+    stopButton_->setEnabled(true);
+}
+
+void ULuaInterpreter::scriptStopped()
+{
+    stopButton_->setEnabled(false);
+    execButton_->setEnabled(true);
+}
+
+void ULuaInterpreter_ExecRoutine::run()
+{
+    int result = luaL_loadstring(L_,script_.toAscii());
+    if(result == LUA_ERRSYNTAX)
+    {
+        emit output(tr("Syntax Error:%1").arg(luaL_checkstring(L_,-1)));
+        return;
+    }
+    else if(result == LUA_ERRMEM)
+    {
+        emit output(tr("Memory Error:%1").arg(luaL_checkstring(L_,-1)));
+        return;
+    }
+
+    assert(result == 0);
+
+    //可以设置钩子，每句脚本执行后都允许中断。
+    lua_pushcfunction(L_,traceback);
+    lua_insert(L_,1);
+    result = lua_pcall(L_,0,0,1);
+    lua_remove(L_,1);
+    if(result == LUA_ERRRUN)
+    {
+        emit output(tr("Runtime Error:%1").arg(luaL_checkstring(L_,-1)));
+
+        return;
+    }
+    else if(result == LUA_ERRMEM)
+    {
+        emit output(tr("Memory Error:%1").arg(luaL_checkstring(L_,-1)));
+        return;
+    }
+    else if(result == LUA_ERRERR)
+    {
+        emit output(tr("Error Error:%1").arg(luaL_checkstring(L_,-1)));
+        return;
+    }
+
+    assert(result == 0);
+}
+
+ULuaInterpreter_ExecRoutine::ULuaInterpreter_ExecRoutine( QObject *parent /*= 0*/ )
+:QThread(parent)
+{
+
+}
+
+ULuaInterpreter_ExecRoutine::~ULuaInterpreter_ExecRoutine()
+{
+    wait();
+}
+
+void ULuaInterpreter_ExecRoutine::execScript( lua_State *L,const QString &script )
+{
+    L_ = L;
+    script_ = script;
+
+    if(!isRunning())
+    {
+        start(LowPriority);
+    }
 }
 
 }//namespace uni
