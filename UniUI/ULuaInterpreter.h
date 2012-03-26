@@ -7,6 +7,7 @@
 #ifndef UNIUI_ULUA_INTERPRETER_H
 #define UNIUI_ULUA_INTERPRETER_H
 
+#include <QThread>
 #include <QWidget>
 #include <QVariant>
 
@@ -23,6 +24,25 @@ class QPushButton;
 
 namespace uni
 {
+
+//! 执行Lua脚本的线程。
+class ULuaInterpreter_ExecRoutine : public QThread
+{
+    Q_OBJECT
+
+public:
+    explicit ULuaInterpreter_ExecRoutine(QObject *parent = 0);
+    ~ULuaInterpreter_ExecRoutine();
+    //! 开始执行脚本。
+    void execScript(lua_State *L,const QString &script);
+signals:
+    void output(const QString &msg);
+protected:
+    void run();
+private:
+    lua_State *L_;
+    QString script_;
+};
 
 //! Lua解释器控件。
 /*!
@@ -53,12 +73,17 @@ public:
     //! 保存lua环境到窗口指针的映射，print时根据这个找到正确的窗口。
     static QMap<lua_State *,ULuaInterpreter *> interpreters_;  
     
+public slots:
     //! 添加输出。
     void output(const QString &msg);
-public slots:
+    //! 开启线程执行脚本。
     void execScript();
     //! 停止脚本执行。
     void stopScript();
+    //! 脚本线程开始执行。
+    void scriptStarted();
+    //! 脚本线程执行结束。
+    void scriptStopped();
 private:
     //修改默认的print函数。
     void registerPrint();
@@ -68,6 +93,7 @@ private:
     QTextEdit *outputEdit_;
     QPushButton *execButton_;
     QPushButton *stopButton_;
+    ULuaInterpreter_ExecRoutine *execRoutine_;
 };
 
 };
