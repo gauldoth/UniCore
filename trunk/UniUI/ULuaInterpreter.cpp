@@ -4,6 +4,7 @@
 #include <QTextEdit>
 #include <QPushButton>
 #include <QSplitter>
+#include <QVBoxLayout>
 
 #include "../UniCore/ULua.h"
 #include "../UniCore/ULog.h"
@@ -47,7 +48,10 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     splitter->setStretchFactor(0,3);
     splitter->setStretchFactor(1,1);
     layout->addWidget(splitter);
-    layout->addWidget(execButton_);
+    QVBoxLayout *layout2 = new QVBoxLayout;
+    layout2->addWidget(execButton_);
+    layout2->addWidget(stopButton_);
+    layout->addLayout(layout2);
     setLayout(layout);
 
     connect(execButton_,SIGNAL(clicked()),this,SLOT(execScript()));
@@ -107,7 +111,6 @@ void ULuaInterpreter::execScript()
     assert(result == 0);
 
     //可以设置钩子，每句脚本执行后都允许中断。
-    
     lua_pushcfunction(L_,traceback);
     lua_insert(L_,1);
     result = lua_pcall(L_,0,0,1);
