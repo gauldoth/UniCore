@@ -72,6 +72,10 @@ public:
     static int lua_print(lua_State *L);
     //! 保存lua环境到窗口指针的映射，print时根据这个找到正确的窗口。
     static QMap<lua_State *,ULuaInterpreter *> interpreters_;  
+
+protected:
+    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event);
     
 public slots:
     //! 添加输出。
