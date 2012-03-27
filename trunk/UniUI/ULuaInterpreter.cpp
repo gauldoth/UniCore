@@ -1,5 +1,9 @@
 ﻿#include "ULuaInterpreter.h"
 
+#include <string>
+
+#include <QDropEvent>
+#include <QFile>
 #include <QHBoxLayout>
 #include <QTextEdit>
 #include <QPushButton>
@@ -8,6 +12,8 @@
 
 #include "../UniCore/ULua.h"
 #include "../UniCore/ULog.h"
+
+using namespace std;
 
 namespace uni
 {
@@ -50,12 +56,15 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     splitter->setStretchFactor(1,1);
     layout->addWidget(splitter);
     QVBoxLayout *layout2 = new QVBoxLayout;
+    layout2->setSizeConstraint(QLayout::SetFixedSize);
     layout2->addWidget(execButton_);
     layout2->addWidget(stopButton_);
     layout->addLayout(layout2);
     setLayout(layout);
 
     execRoutine_ = new ULuaInterpreter_ExecRoutine(this);
+
+    setAcceptDrops(true);
 
     connect(execButton_,SIGNAL(clicked()),this,SLOT(execScript()));
     connect(stopButton_,SIGNAL(clicked()),this,SLOT(stopScript()));
@@ -207,6 +216,31 @@ void ULuaInterpreter::scriptStopped()
 {
     stopButton_->setEnabled(false);
     execButton_->setEnabled(true);
+}
+
+void ULuaInterpreter::dropEvent( QDropEvent *event )
+{
+    foreach(QString format,event->mimeData()->formats())
+    {
+        UTRACE<<format.toStdString();
+    }
+    wstring path = (wchar_t *)event->mimeData()->data("FileNameW").data();
+    QFile file(QString::fromStdWString(path));
+    if(file.isOpen())
+    {
+        UERROR("Lua解释器")<<"无法打开文件。";
+        return;
+    }
+    scriptEdit_->setPlainText(file.read(file.size()));
+    event->acceptProposedAction();
+}
+
+void ULuaInterpreter::dragEnterEvent( QDragEnterEvent *event )
+{
+    if(event->mimeData()->hasFormat("FileNameW"))
+    {
+        event->acceptProposedAction();
+    }
 }
 
 void ULuaInterpreter_ExecRoutine::run()
