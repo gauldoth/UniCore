@@ -55,8 +55,9 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     splitter->setStretchFactor(0,3);
     splitter->setStretchFactor(1,1);
     layout->addWidget(splitter);
+    splitter->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
     QVBoxLayout *layout2 = new QVBoxLayout;
-    layout2->setSizeConstraint(QLayout::SetFixedSize);
+    
     layout2->addWidget(execButton_);
     layout2->addWidget(stopButton_);
     layout->addLayout(layout2);
@@ -226,12 +227,32 @@ void ULuaInterpreter::dropEvent( QDropEvent *event )
     }
     wstring path = (wchar_t *)event->mimeData()->data("FileNameW").data();
     QFile file(QString::fromStdWString(path));
-    if(file.isOpen())
+    if(!file.open(QIODevice::ReadOnly|QIODevice::Text))
     {
         UERROR("Lua解释器")<<"无法打开文件。";
         return;
     }
-    scriptEdit_->setPlainText(file.read(file.size()));
+    int size = file.size();
+    QByteArray content = file.read(size);
+    if(size >= 3 && content[0] == '\xEF'
+        && content[1] == '\xBB' && content[2] == '\xBF')
+    {
+        //utf-8编码。
+        //content.remove(0,3);
+        scriptEdit_->setPlainText(QString::fromUtf8(content,content.size()));
+    }
+    else if(size >= 2 && content[0] == '\xFF' && content[1] == '\xFE')
+    {
+        scriptEdit_->setPlainText(QString::fromUtf16((unsigned short *)content.data()));
+    }
+    else if(size >= 2 && content[0] == '\xFE' && content[1] == '\xFF')
+    {
+        scriptEdit_->setPlainText(QString::fromUtf16((unsigned short *)content.data()));
+    }
+    else
+    {
+        scriptEdit_->setPlainText(QString::fromLocal8Bit(content));
+    }
     event->acceptProposedAction();
 }
 
