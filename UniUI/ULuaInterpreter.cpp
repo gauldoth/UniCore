@@ -112,6 +112,7 @@ static void lstop(lua_State *L,lua_Debug *ar)
 
 void ULuaInterpreter::execScript()
 {
+    outputEdit_->clear();
     execRoutine_->execScript(L_,scriptEdit_->toPlainText());
 }
 
@@ -266,15 +267,15 @@ void ULuaInterpreter::dragEnterEvent( QDragEnterEvent *event )
 
 void ULuaInterpreter_ExecRoutine::run()
 {
-    int result = luaL_loadstring(L_,script_.toAscii());
+    int result = luaL_loadstring(L_,script_.toLocal8Bit());
     if(result == LUA_ERRSYNTAX)
     {
-        emit output(tr("Syntax Error:%1").arg(luaL_checkstring(L_,-1)));
+        emit output(tr("Syntax Error:%1").arg(QString::fromLocal8Bit(luaL_checkstring(L_,-1))));
         return;
     }
     else if(result == LUA_ERRMEM)
     {
-        emit output(tr("Memory Error:%1").arg(luaL_checkstring(L_,-1)));
+        emit output(tr("Memory Error:%1").arg(QString::fromLocal8Bit(luaL_checkstring(L_,-1))));
         return;
     }
 
@@ -287,18 +288,18 @@ void ULuaInterpreter_ExecRoutine::run()
     lua_remove(L_,1);
     if(result == LUA_ERRRUN)
     {
-        emit output(tr("Runtime Error:%1").arg(luaL_checkstring(L_,-1)));
+        emit output(tr("Runtime Error:%1").arg(QString::fromLocal8Bit(luaL_checkstring(L_,-1))));
 
         return;
     }
     else if(result == LUA_ERRMEM)
     {
-        emit output(tr("Memory Error:%1").arg(luaL_checkstring(L_,-1)));
+        emit output(tr("Memory Error:%1").arg(QString::fromLocal8Bit(luaL_checkstring(L_,-1))));
         return;
     }
     else if(result == LUA_ERRERR)
     {
-        emit output(tr("Error Error:%1").arg(luaL_checkstring(L_,-1)));
+        emit output(tr("Error Error:%1").arg(QString::fromLocal8Bit(luaL_checkstring(L_,-1))));
         return;
     }
 
