@@ -33,6 +33,7 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 ,showRecvPackets_(true)
 {
     loadSettings();
+
     createPacketListGroupBox();
     createPacketMonitorGroupBox();
 
@@ -212,6 +213,9 @@ void UPacketView::loadSettings()
     QDataStream in(&configFile);
     in.setVersion(QDataStream::Qt_4_5);
     in>>packetInfos_;
+    
+    //in>>currentDisplayScheme_;
+    //in>>savedDisplaySchemes_;
 }
 
 void UPacketView::clearPacketInfos()
