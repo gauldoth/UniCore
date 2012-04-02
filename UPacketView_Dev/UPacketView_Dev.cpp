@@ -18,7 +18,7 @@ UPacketView_Dev::UPacketView_Dev(QWidget *parent, Qt::WFlags flags)
     setCentralWidget(packetView_);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(addPacketTest()));
-    timer->start(1);
+    //timer->start(1);
 }
 
 UPacketView_Dev::~UPacketView_Dev()

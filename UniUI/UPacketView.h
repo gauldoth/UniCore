@@ -41,6 +41,7 @@ class UPacketMonitorProxyModel;
     个显示方案中切换。
     - 保存收集的封包信息。
     - 保存显示方案，包括当前的。
+    - 由于封包信息会变化，提供一种方式用于修改封包信息。
 
     \todo 记录封包时间。（完成）
     \todo 根据字体计算单元格大小。
@@ -51,7 +52,7 @@ class UPacketMonitorProxyModel;
     \todo 封包信息列表可编辑，并增加删除封包信息功能。（完成）
     \todo 设置指定类型的封包颜色。（设想）
     \todo 增加选项，仅显示选中封包。
-    \todo 考虑封包信息变化时（更新时），相关的处理。
+    \todo 考虑封包信息变化时（更新时），相关的处理。（重要）
     \todo 抓到的封包数据可以保存，复制，用于后续查看。
 */
 class UPacketView : public QWidget
@@ -59,6 +60,11 @@ class UPacketView : public QWidget
     Q_OBJECT
 
 public:
+    //! UPacketView保存配置的版本号。
+    enum
+    {
+        Version = 1,  //!< 当前版本。
+    };
     //! 封包类型。
     enum PacketType
     {
@@ -91,9 +97,22 @@ public:
         QTime time;  //!< 封包时间。
     };
     //! 显示方案。
+    /*!
+        存储了应该在封包监视器中显示哪些封包。
+    */
     struct DisplayScheme
     {
-        bool showOnlySelectedPackets;
+        DisplayScheme()
+            :showRecvPackets(true)
+            ,showSendPackets(true)
+        {
+            QMapIterator<PacketInfo,bool> i(visibilities);
+            while (i.hasNext()) {
+                i.next();
+                visibilities[i.key()] = true;  //默认所有封包信息都显示。
+            }
+        }
+        QMap<PacketInfo,bool> visibilities;  //是否显示该类型的封包。
         bool showRecvPackets;
         bool showSendPackets;
     };
