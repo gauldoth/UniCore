@@ -83,31 +83,31 @@ static int lua_print(lua_State *L)
         case LUA_TNUMBER:
         case LUA_TSTRING:
             {
-                log<<lua_tostring(L,i);
+                log<<lua_tostring(L,i)<<" ";
                 break;
             }
         case LUA_TTABLE:
             {
                 const void *tablePtr = lua_topointer(L,i);
-                log<<"table:"<<tablePtr;
+                log<<"table:"<<tablePtr<<" ";
                 break;
             }
         case LUA_TFUNCTION:
             {
                 const void *function = lua_topointer(L,i);
-                log<<"function:"<<function;
+                log<<"function:"<<function<<" ";
                 break;
             }
         case LUA_TUSERDATA:
             {
                 void *userData = lua_touserdata(L,i);
-                log<<"userdata:"<<userData;
+                log<<"userdata:"<<userData<<" ";
                 break;
             }
         case LUA_TTHREAD:
             {
                 const void *threadPtr = lua_topointer(L,i);
-                log<<"thread:"<<threadPtr;
+                log<<"thread:"<<threadPtr<<" ";
                 break;
             }
         default:
