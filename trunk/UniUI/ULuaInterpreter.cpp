@@ -281,7 +281,6 @@ void ULuaInterpreter_ExecRoutine::run()
 
     assert(result == 0);
 
-    //可以设置钩子，每句脚本执行后都允许中断。
     lua_pushcfunction(L_,traceback);
     lua_insert(L_,1);
     result = lua_pcall(L_,0,0,1);
