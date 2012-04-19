@@ -1,7 +1,9 @@
 ﻿#include "UMemoryModel.h"
 
 #include "../UniCore/ULog.h"
+#include "../UniCore/ULua.h"
 #include "../UniCore/UMemory.h"
+
 
 namespace uni
 {
@@ -13,32 +15,58 @@ QString UMemoryModel_GetAddress(int address)
 
 QString UMemoryModel_GetHex(int address)
 {
-    int hex = GetAt<int>(address,0);
+    int hex = 0;
+    try
+    {
+        hex = GetAt<int>(address,0);
+    }
+    catch (...)
+    {
+    	
+    }
     return QString("%1").arg((unsigned long)hex,8,16,QChar('0'));
-}
+}  
 
 void UMemoryModel_SetHex(int address,const QString &data)
 {
 
 }
 
-UMemoryModel::UMemoryModel( QObject *parent /*= 0*/ ,lua_State *state)
+QColor UMemoryModel_GetHexColor(int address)
+{
+    try
+    {
+        int hex = GetAt<int>(address,0);
+        return Qt::white;
+    }
+    catch (...)
+    {
+        return Qt::black;
+    }
+}
+
+QString UMemoryModel_GetInt(int address)
+{
+    int data = GetAt<int>(address,0);
+    return QString::number(data);
+}
+
+void UMemoryModel_SetInt(int address,const QString &data)
+{
+
+}
+
+UMemoryModel::UMemoryModel(QObject *parent /*= 0*/)
 :QAbstractTableModel(parent)
 ,baseAddress_(0)
 ,currentRowCount_(0)
-,luaState_(state)
 {
-    if(!luaState_)
-    {
-        //假如没有传入Lua状态，则自己建个私有的Lua状态。
-        luaState_ = lua_open();
+    L_ = lua_open();
 
-        lua_gc(luaState_,LUA_GCSTOP,0);
-        luaL_openlibs(luaState_);
-        lua_gc(luaState_,LUA_GCRESTART,0);
-    }
-    addColumnInfo("Address",UMemoryModel_GetAddress,0);
-    addColumnInfo("Hex",UMemoryModel_GetHex,UMemoryModel_SetHex);
+    lua_gc(L_,LUA_GCSTOP,0);
+    luaL_openlibs(L_);
+    RegisterCommonLuaFunctions(L_);
+    lua_gc(L_,LUA_GCRESTART,0);
 }
 
 UMemoryModel::~UMemoryModel()
@@ -60,72 +88,24 @@ QVariant UMemoryModel::data( const QModelIndex &index, int role /*= Qt::DisplayR
 {
     //当前进程，直接从内存中读取数据。
     int row = index.row();
+    int column = index.column();
+    int address = baseAddress_+row*RowStep;
     if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
-        int address = baseAddress_+row*RowStep;
 
-        QString (*getFunction)(int) = columnInfos_[index.column()].getFunction;
+        GetDataFunction getFunction = columnInfos_.at(column).getDataFunction;
         if(getFunction)
         {
             return getFunction(address);
         }
-        //QString calculus = columns_[index.column()].calculus;
-        //lua_pushinteger(luaState_,address);
-        //lua_setglobal(luaState_,"address");
-        //int result = luaL_loadstring(luaState_,calculus.toStdString().c_str());
-        //QString displayedString;
-        //switch(result)
-        //{
-        //case 0:
-        //    {
-        //        result = lua_pcall(luaState_, 0, LUA_MULTRET, 0);
-        //        switch(result)
-        //        {
-        //        case 0:
-        //            {
-        //                //脚本执行成功，获得返回值。
-        //                displayedString = QString(luaL_checkstring(luaState_,1));
-        //                lua_settop(luaState_,0);
-        //                break;
-        //            }
-        //        case LUA_ERRRUN:
-        //            {
-        //                UERROR<<"脚本运行时错误："<<luaL_checkstring(luaState_,1);
-        //                lua_pop(luaState_,1);
-        //                break;
-        //            }
-        //        case LUA_ERRMEM:
-        //            {
-        //                UERROR<<"执行时分配内存失败："<<luaL_checkstring(luaState_,1);
-        //                lua_pop(luaState_,1);
-        //                break;
-        //            }
-        //        case LUA_ERRERR:
-        //            {
-        //                UERROR<<"执行错误处理函数时失败："<<luaL_checkstring(luaState_,1);
-        //                lua_pop(luaState_,1);
-        //                break;
-        //            }
-        //        }
-        //        break;
-        //    }
-        //case LUA_ERRSYNTAX:
-        //    {
-        //        UERROR<<"语法错误。"<<luaL_checkstring(luaState_,1);
-        //        lua_pop(luaState_,1);
-        //        break;
-        //    }
-        //case LUA_ERRMEM:
-        //    {
-        //        UERROR<<"内存分配错误。"<<luaL_checkstring(luaState_,1);
-        //        lua_pop(luaState_,1);
-        //        break;
-        //    }
-        //default:
-        //    {
-        //        UERROR<<"未知错误："<<result;
-        //    }
-        //}
+    }
+    else if(role == Qt::BackgroundRole)
+    {
+        DataColorFunction dataColorFunction = columnInfos_.at(column).dataColorFunction;
+        if(dataColorFunction)
+        {
+            return dataColorFunction(address);
+        }
     }
     return QVariant();
 }
@@ -155,11 +135,9 @@ void UMemoryModel::setAddress( int address )
     reset();
 }
 
-void UMemoryModel::addColumnInfo( const QString &title,GetFunction getFunction,
-                                 SetFunction setFunction)
+void UMemoryModel::addColumnInfo(ColumnInfo columnInfo)
 {
     beginInsertColumns(QModelIndex(),columnCount(),columnCount());
-    ColumnInfo columnInfo(title,getFunction,setFunction);
     columnInfos_.push_back(columnInfo);  
     endInsertColumns();
 }
@@ -174,10 +152,54 @@ QVariant UMemoryModel::headerData( int section, Qt::Orientation orientation, int
         }
         else
         {
-            return QString("+%1").arg(section*4,0,16);
+            return QString("+%1").arg(section*RowStep,0,16);
         }
     }
     return QVariant();
+}
+
+void UMemoryModel::initCommonColumn()
+{
+    //地址。
+    while(columnInfos_.size() < 2)
+    {
+        columnInfos_.append(ColumnInfo());
+    }
+    columnInfos_[0].title = "Addr";
+    columnInfos_[0].getDataFunction = UMemoryModel_GetAddress;
+
+    //取4位16进制。
+    columnInfos_[1].title = "Hex";
+    columnInfos_[1].getDataFunction = UMemoryModel_GetHex;
+    columnInfos_[1].dataColorFunction = UMemoryModel_GetHexColor;
+}
+
+QDataStream & operator<<( QDataStream& stream, const UMemoryModel::ColumnInfo& columnInfo )
+{
+    stream<<columnInfo.title;
+    stream<<columnInfo.getDataScript;
+    stream<<columnInfo.setDataScript;
+    return stream;
+}
+
+QDataStream & operator>>( QDataStream& stream, UMemoryModel::ColumnInfo& columnInfo )
+{
+    stream>>columnInfo.title;
+    stream>>columnInfo.getDataScript;
+    stream>>columnInfo.setDataScript;
+    return stream;
+}
+
+QDataStream & operator>>( QDataStream& stream, UMemoryModel& model )
+{
+    stream>>model.columnInfos_;
+    return stream;
+}
+
+QDataStream & operator<<( QDataStream& stream, const UMemoryModel& model )
+{
+    stream<<model.columnInfos_;
+    return stream;
 }
 
 

@@ -10,6 +10,8 @@
 #include <QAbstractItemModel>
 #include <QList>
 
+#include "UMemoryView.h"
+
 extern "C"
 {
 #include "../lua/lua.h"
@@ -24,20 +26,38 @@ class UMemoryModel : public QAbstractTableModel
     Q_OBJECT
         
 public:
-    typedef QString (*GetFunction)(int);
-    typedef void (*SetFunction)(int,const QString &);
+    //! 取数据的函数。
+    /*!
+        参数1为地址。
+    */
+    typedef QString (*GetDataFunction)(int);
+    //! 保存数据的函数。
+    /*!
+        参数1为地址，参数2为要保存的数据。
+    */
+    typedef void (*SetDataFunction)(int,const QString &);
+    //! 获得数据颜色的函数。
+    /*!
+        参数1为地址。
+    */
+    typedef QColor (*DataColorFunction)(int);
     struct ColumnInfo
     {
-        ColumnInfo(const QString &t,GetFunction g,SetFunction s)
-            :title(t),getFunction(g),setFunction(s){}
+        ColumnInfo()
+            :getDataFunction(0),setDataFunction(0),dataColorFunction(0)
+        {
+        }
         QString title;  //!< 列名。
-        QString (*getFunction)(int);  //!< 取该列值的函数。
-        void (*setFunction)(int,const QString &);  //!< 设置该列值的函数。
+        GetDataFunction getDataFunction;  //!< 取该列数据的函数。
+        SetDataFunction setDataFunction;  //!< 保存该列数据的函数。
+        DataColorFunction dataColorFunction;  //!< 获得该列单元格的颜色的函数。
+        QString getDataScript;
+        QString setDataScript;
+        QString dataColorScript;
     };
-
     enum {PageSize = 100};  //每次增加的项数。
     enum {RowStep = 1};  //下一行地址为上一行地址加4。
-    explicit UMemoryModel(QObject *parent = 0,lua_State *state = 0);
+    explicit UMemoryModel(QObject *parent = 0);
     virtual ~UMemoryModel();
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -46,19 +66,30 @@ public:
         int role = Qt::DisplayRole) const;
     virtual void fetchMore(const QModelIndex &parent);
     virtual bool canFetchMore(const QModelIndex &parent) const;
+    void initCommonColumn();  //!< 初始化非自定义的列。
+
+    friend QDataStream & operator<< (QDataStream& stream, const UMemoryModel::ColumnInfo& columnInfo);
+    friend QDataStream & operator>> (QDataStream& stream, UMemoryModel::ColumnInfo& columnInfo);
+
+    friend QDataStream & operator<< (QDataStream& stream, const UMemoryModel& model);
+    friend QDataStream & operator>> (QDataStream& stream, UMemoryModel& model);
 
 public slots:
     //! 设置要监视的地址。
     void setAddress(int address);
     //! 添加一列。
-    void addColumnInfo(const QString &title,GetFunction getFunction,
-        SetFunction setFunction);
+    void addColumnInfo(ColumnInfo columnInfo);
+    
 private:
+    void loadColumnInfos();
+    void saveColumnInfos();
     int baseAddress_;  //!< 基地址。
     int currentRowCount_;  //!< 当前要查看的行数，这个数据模型会根据视图的需要自动扩展数据的行数。
-    lua_State *luaState_;
     QList<ColumnInfo> columnInfos_;
+    lua_State *L_;
 };
+
+
 
 }//namespace uni
 
