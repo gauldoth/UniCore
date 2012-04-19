@@ -8,7 +8,6 @@
 #ifndef UNIUI_UMEMORY_VIEW_H
 #define UNIUI_UMEMORY_VIEW_H
 
-#include <QDialog>
 #include <QWidget>
 
 extern "C"
@@ -29,24 +28,6 @@ namespace uni
 class UMemoryModel;
 class UMemoryTable;
 
-class AddColumnDialog : public QDialog
-{
-    Q_OBJECT
-
-public:
-    explicit AddColumnDialog(QWidget *parent);
-    virtual ~AddColumnDialog();
-    QString title() const;
-    QString calculus() const;
-    void clearExistContents();
-private:
-    QPushButton *setButton_;
-    QPushButton *cancelButton_;
-    QDialogButtonBox *buttonBox_;
-    QLineEdit *titleEdit_;
-    QTextEdit *calculusEdit_;
-};
-
 //! 内存视图。
 /*!
     UMemoryView可以在某个指定的Lua状态下工作，这时UMemoryView中自定义的内存
@@ -62,24 +43,24 @@ class UMemoryView : public QWidget
     Q_OBJECT
 
 public:
+
     //! 构造函数。
     /*!
         \param parent 父窗口句柄。
-        \param state Lua状态。假如为0，则会在内部自己创建一个lua_State。
-
     */
-    explicit UMemoryView(QWidget *parent = 0,lua_State *state = 0);
+    explicit UMemoryView(QWidget *parent = 0);
     virtual ~UMemoryView();
-
+    //! 执行LuaC函数。
+    /*!
+        \param func 要执行的函数。
+        该函数用于注册函数或是变量到UMemoryView使用的Lua环境。
+    */
+    //void RunLuaCFunction(lua_CFunction func) { func(L_);}
 public slots:
     //! 设置当前地址。
     void setAddress(int address);
     //! addressEdit内容改变。
     void addressEditChanged(const QString &text);
-    //! 显示添加列对话框。
-    void showAddColumnDialog();
-    //! 添加列。
-    void addColumnDialogAccepted();
 protected:
     //! 关闭事件。
     /*!
@@ -89,17 +70,16 @@ protected:
 private:
     //! 读取列信息。
     /*!
-        从当前进程所在目录查找UMemoryView_ColumnInfos.lua。
+        从当前进程所在目录的UMemoryView.cfg读取配置。
     */
-    void loadColumnInfos();
-    //! 保存列信息。
-    void saveColumnInfos();
-    void setupUI();
+    void readSettings();
+    //! 保存配置。
+    void writeSettings();
     QLabel *addressLabel_;
     QLineEdit *addressEdit_;
     UMemoryTable *memoryTable_;  //!< 显示内存内容的表格。
     UMemoryModel *memoryModel_;  //!< 显示内存内容的表格用到的数据模型。
-    AddColumnDialog *addColumnDialog_;  //!< 添加列的对话框。
+    lua_State *L_;  //!< UMemoryView使用的Lua环境。
 };
 
 }//namespace uni
