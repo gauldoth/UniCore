@@ -55,7 +55,7 @@ public:
         \param func 要执行的函数。
         该函数用于注册函数或是变量到UMemoryView使用的Lua环境。
     */
-    //void RunLuaCFunction(lua_CFunction func) { func(L_);}
+    void runLuaCFunction(lua_CFunction function);
 public slots:
     //! 设置当前地址。
     void setAddress(int address);

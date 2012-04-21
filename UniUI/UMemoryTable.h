@@ -72,14 +72,19 @@ public slots:
     void showAddColumnDialog();
     //! 删除指定列。
     void deleteColumn();
+    //! 响应gotoAddressAction_的函数。
+    void gotoAddress();
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *event);
+signals:
+    void changeAddress(int address);
 private:
     EditColumnDialog *editColumnDialog_;
     QMenu *headerMenu_;
     QAction *addColumnAction_;
     QAction *editColumnAction_;
     QAction *deleteColumnAction_;
+    QAction *gotoAddressAction_;
     int lastClickedSection_;
 };
 

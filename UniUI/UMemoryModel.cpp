@@ -365,9 +365,15 @@ void UMemoryModel::update()
 void UMemoryModel::setColumnInfo( int column,ColumnInfo columnInfo )
 {
     columnInfos_[column] = columnInfo;
+    compileScripts();
     emit headerDataChanged(Qt::Horizontal,column,column);
     emit dataChanged(index(0,column),index(rowCount()-1,column));
     emit columnInfoChanged();
+}
+
+void UMemoryModel::runLuaCFunction( lua_CFunction function )
+{
+    function(L_);
 }
 
 

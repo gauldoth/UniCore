@@ -116,13 +116,19 @@ UMemoryTable::UMemoryTable( QWidget *parent /*= 0*/ )
     addColumnAction_ = new QAction(tr("&Add Column"),this);
     editColumnAction_ = new QAction(tr("&Edit Column"),this);
     deleteColumnAction_ = new QAction(tr("&Delete Column"),this);
+    gotoAddressAction_ = new QAction(tr("&Goto Address"),this);
+    gotoAddressAction_->setShortcut(QKeySequence(tr("Ctrl+G")));
     headerMenu_ = new QMenu(this);
+
+    headerMenu_->addAction(gotoAddressAction_);
+    headerMenu_->addSeparator();
     headerMenu_->addAction(addColumnAction_);
     headerMenu_->addAction(editColumnAction_);
     headerMenu_->addAction(deleteColumnAction_);
-
+    
     editColumnDialog_ = new EditColumnDialog(this);
     
+    connect(gotoAddressAction_,SIGNAL(triggered(bool)),this,SLOT(gotoAddress()));
     connect(addColumnAction_,SIGNAL(triggered(bool)),this,SLOT(showAddColumnDialog()));
     connect(editColumnAction_,SIGNAL(triggered(bool)),this,SLOT(showEditColumnDialog()));
     connect(deleteColumnAction_,SIGNAL(triggered(bool)),this,SLOT(deleteColumn()));
@@ -188,6 +194,8 @@ void UMemoryTable::contextMenuEvent( QContextMenuEvent *event )
     int section = horizontalHeader()->logicalIndexAt(event->pos());
     editColumnAction_->setEnabled(false);
     deleteColumnAction_->setEnabled(false);
+    QModelIndex index = currentIndex();
+    gotoAddressAction_->setEnabled(index.column() == 1);
     if(section != -1)
     {
         lastClickedSection_ = section;
@@ -201,6 +209,15 @@ void UMemoryTable::contextMenuEvent( QContextMenuEvent *event )
 void UMemoryTable::deleteColumn()
 {
     model()->removeColumn(lastClickedSection_);
+}
+
+void UMemoryTable::gotoAddress()
+{
+    QModelIndex index = currentIndex();
+    if(index.row() == 1)
+    {
+        emit changeAddress(index.data().toInt());
+    }
 }
 
 }//namespace uni

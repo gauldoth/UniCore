@@ -47,6 +47,7 @@ UMemoryView::UMemoryView( QWidget *parent /*= 0*/)
 
     connect(addressEdit_,SIGNAL(textChanged(const QString &)),this,SLOT(addressEditChanged(const QString &)));
     connect(memoryModel_,SIGNAL(columnInfoChanged()),this,SLOT(writeSettings()));
+    connect(memoryTable_,SIGNAL(changeAddress(int)),this,SLOT(setAddress(int)));
 }
 
 UMemoryView::~UMemoryView()
@@ -97,6 +98,11 @@ void UMemoryView::writeSettings()
     {
         out<<*memoryModel_;
     }
+}
+
+void UMemoryView::runLuaCFunction( lua_CFunction function )
+{
+    memoryModel_->runLuaCFunction(function);
 }
 
 
