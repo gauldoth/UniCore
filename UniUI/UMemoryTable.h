@@ -20,18 +20,24 @@ class QTextEdit;
 namespace uni
 {
 
-//! 添加列用的对话框。
-class AddColumnDialog : public QDialog
+//! 修改列信息用的对话框。
+class EditColumnDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AddColumnDialog(QWidget *parent);
-    virtual ~AddColumnDialog();
-    QString title() const;
+    explicit EditColumnDialog(QWidget *parent = 0);
+    virtual ~EditColumnDialog();
+    QString columnTitle() const;
     QString getDataScript() const;
     QString setDataScript() const;
     QString dataColorScript() const;
+    void setColumnTitle(const QString &title);
+    void getDataScript(const QString &script);
+    void setDataScript(const QString &script);
+    void dataColorScript(const QString &script);
+    void setColumn(int column) {column_ = column;}
+    int column() const {return column_;}
     void clearExistContents();
 private:
     QPushButton *setButton_;
@@ -41,6 +47,7 @@ private:
     QTextEdit *getDataScriptEdit_;
     QTextEdit *setDataScriptEdit_;
     QTextEdit *dataColorScriptEdit_;
+    int column_;
 };
 
 
@@ -57,12 +64,23 @@ public:
     virtual ~UMemoryTable();
 
 public slots:
-    //! 显示添加列对话框。
-    void showAddColumnDialog();
+    //! 添加列对话框被接受。
+    void editColumnDialogAccepted();
     //! 显示编辑列对话框。
     void showEditColumnDialog();
-    //! 显示
+    //! 显示添加列对话框。
+    void showAddColumnDialog();
+    //! 删除指定列。
+    void deleteColumn();
+protected:
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 private:
+    EditColumnDialog *editColumnDialog_;
+    QMenu *headerMenu_;
+    QAction *addColumnAction_;
+    QAction *editColumnAction_;
+    QAction *deleteColumnAction_;
+    int lastClickedSection_;
 };
 
 }//namespace uni

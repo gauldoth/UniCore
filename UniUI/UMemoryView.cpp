@@ -46,6 +46,7 @@ UMemoryView::UMemoryView( QWidget *parent /*= 0*/)
     setLayout(layout1);
 
     connect(addressEdit_,SIGNAL(textChanged(const QString &)),this,SLOT(addressEditChanged(const QString &)));
+    connect(memoryModel_,SIGNAL(columnInfoChanged()),this,SLOT(writeSettings()));
 }
 
 UMemoryView::~UMemoryView()
@@ -97,6 +98,7 @@ void UMemoryView::writeSettings()
         out<<*memoryModel_;
     }
 }
+
 
 
 

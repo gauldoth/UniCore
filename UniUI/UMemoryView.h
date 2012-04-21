@@ -61,6 +61,14 @@ public slots:
     void setAddress(int address);
     //! addressEdit内容改变。
     void addressEditChanged(const QString &text);
+    //! 读取配置。
+    /*!
+        从当前进程所在目录的UMemoryView.cfg读取配置。
+    */
+    void readSettings();
+    //! 保存配置。
+    void writeSettings();
+
 protected:
     //! 关闭事件。
     /*!
@@ -68,13 +76,7 @@ protected:
     */
     void closeEvent(QCloseEvent *event);
 private:
-    //! 读取列信息。
-    /*!
-        从当前进程所在目录的UMemoryView.cfg读取配置。
-    */
-    void readSettings();
-    //! 保存配置。
-    void writeSettings();
+
     QLabel *addressLabel_;
     QLineEdit *addressEdit_;
     UMemoryTable *memoryTable_;  //!< 显示内存内容的表格。
