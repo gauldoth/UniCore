@@ -70,6 +70,9 @@ public:
 
     void initCommonColumn();  //!< 初始化非自定义的列。
 
+    //! 运行luaC函数。
+    void runLuaCFunction(lua_CFunction function);
+
     //! 获得指定列的列信息。
     ColumnInfo columnInfo(int column) {return columnInfos_[column];}
 
