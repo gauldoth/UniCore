@@ -66,7 +66,12 @@ public:
         int role = Qt::DisplayRole) const;
     virtual void fetchMore(const QModelIndex &parent);
     virtual bool canFetchMore(const QModelIndex &parent) const;
+    virtual bool removeColumns(int column, int count, const QModelIndex &parent = QModelIndex());
+
     void initCommonColumn();  //!< 初始化非自定义的列。
+
+    //! 获得指定列的列信息。
+    ColumnInfo columnInfo(int column) {return columnInfos_[column];}
 
     friend QDataStream & operator<< (QDataStream& stream, const UMemoryModel::ColumnInfo& columnInfo);
     friend QDataStream & operator>> (QDataStream& stream, UMemoryModel::ColumnInfo& columnInfo);
@@ -79,10 +84,16 @@ public slots:
     void setAddress(int address);
     //! 添加一列。
     void addColumnInfo(ColumnInfo columnInfo);
-    
+    //! 改变指定列的列信息。
+    void setColumnInfo(int column,ColumnInfo columnInfo);
+    //! 更新数据。
+    void update();
+signals:
+    //! 列信息改变。
+    void columnInfoChanged();
 private:
-    void loadColumnInfos();
-    void saveColumnInfos();
+    //! 编译列信息中脚本。
+    void compileScripts();
     int baseAddress_;  //!< 基地址。
     int currentRowCount_;  //!< 当前要查看的行数，这个数据模型会根据视图的需要自动扩展数据的行数。
     QList<ColumnInfo> columnInfos_;
