@@ -1,5 +1,7 @@
 ﻿#include "UMemoryView.h"
 
+#include <assert.h>
+
 #include <QAction>
 #include <QCoreApplication>
 #include <QDialogButtonBox>
@@ -57,12 +59,13 @@ UMemoryView::~UMemoryView()
 
 void UMemoryView::setAddress( int address )
 {
+    addressEdit_->setText(QString::number((unsigned int)address,16));
     memoryModel_->setAddress(address);
 }
 
 void UMemoryView::addressEditChanged( const QString &text )
 {
-    setAddress(text.toInt(0,0));
+    memoryModel_->setAddress(text.toInt(0,16));
 }
 
 void UMemoryView::readSettings()

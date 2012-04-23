@@ -214,9 +214,9 @@ void UMemoryTable::deleteColumn()
 void UMemoryTable::gotoAddress()
 {
     QModelIndex index = currentIndex();
-    if(index.row() == 1)
+    if(index.column() == 1)
     {
-        emit changeAddress(index.data().toInt());
+        emit changeAddress(index.data().toString().toInt(0,16));
     }
 }
 

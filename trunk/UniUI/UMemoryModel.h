@@ -55,7 +55,7 @@ public:
         QString setDataScript;
         QString dataColorScript;
     };
-    enum {PageSize = 100};  //每次增加的项数。
+    enum {PageSize = 1000};  //每次增加的项数。
     enum {RowStep = 1};  //下一行地址为上一行地址加4。
     explicit UMemoryModel(QObject *parent = 0);
     virtual ~UMemoryModel();
