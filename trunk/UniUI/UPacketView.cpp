@@ -7,6 +7,7 @@
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QMessageBox>
 #include <QGroupBox>
 #include <QPushButton>
 #include <QSortFilterProxyModel>
@@ -29,20 +30,20 @@ UPacketView::UPacketView( QWidget *parent /*= 0*/ )
 :QWidget(parent)
 ,silentMode_(false)
 ,showOnlySelectedPackets_(false)
-,showSendPackets_(true)
-,showRecvPackets_(true)
 {
+    //读取配置。
     loadSettings();
-
+    //创建控件。
     createPacketListGroupBox();
     createPacketMonitorGroupBox();
+
+    updateFilters();
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addWidget(packetListGroupBox_);
     layout->addWidget(packetMonitorGroupBox_);
     setLayout(layout);
 
-    updateFilters();
 }
 
 UPacketView::~UPacketView()
@@ -58,23 +59,22 @@ void UPacketView::createPacketListGroupBox()
     packetListModel_ = new UPacketInfoListModel(&packetInfos_,this);
     packetList_->setModel(packetListModel_);
 
-    clearPacketInfosButton_ = new QPushButton(tr("Clear"),this);
     silentModePushButton_ = new QPushButton(tr("Silent Mode"),this);
     silentModePushButton_->setCheckable(true);
+    silentModePushButton_->setChecked(silentMode_);
     showSendPacketsButton_ = new QPushButton(tr("Show Send"),this);
     showSendPacketsButton_->setCheckable(true);
-    showSendPacketsButton_->setChecked(true);
+    showSendPacketsButton_->setChecked(currentDisplayScheme_.showSendPackets);
     showRecvPacketsButton_ = new QPushButton(tr("Show Recv"),this);
     showRecvPacketsButton_->setCheckable(true);
-    showRecvPacketsButton_->setChecked(true);
+    showRecvPacketsButton_->setChecked(currentDisplayScheme_.showRecvPackets);
     showOnlySelectedButton_ = new QPushButton(tr("Show Only Selected"),this);
     showOnlySelectedButton_->setCheckable(true);
-    showOnlySelectedButton_->setChecked(false);
+    showOnlySelectedButton_->setChecked(showOnlySelectedPackets_);
     
     QVBoxLayout *mainLayout = new QVBoxLayout;
     mainLayout->addWidget(packetList_);
     QGridLayout *bottomLayout = new QGridLayout;
-    bottomLayout->addWidget(clearPacketInfosButton_,0,0);
     bottomLayout->addWidget(silentModePushButton_,0,1);
     bottomLayout->addWidget(showSendPacketsButton_,0,2);
     bottomLayout->addWidget(showRecvPacketsButton_,1,0);
@@ -84,7 +84,6 @@ void UPacketView::createPacketListGroupBox()
     packetListGroupBox_->setLayout(mainLayout);
 
     connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
-    connect(clearPacketInfosButton_,SIGNAL(clicked()),this,SLOT(clearPacketInfos()));
     connect(silentModePushButton_,SIGNAL(toggled(bool)),this,SLOT(setSilentMode(bool)));
     connect(showOnlySelectedButton_,SIGNAL(toggled(bool)),this,SLOT(setShowOnlySelectedPackets(bool)));
     connect(showSendPacketsButton_,SIGNAL(toggled(bool)),this,SLOT(setShowSendPackets(bool)));
@@ -165,8 +164,8 @@ void UPacketView::updateFilters()
             {
                 if(packetInfos_[i].visible)
                 {
-                    if((packetInfos_[i].type == SendType && showSendPackets_)
-                        || (packetInfos_[i].type == RecvType && showRecvPackets_))
+                    if((packetInfos_[i].type == SendType && currentDisplayScheme_.showSendPackets)
+                        || (packetInfos_[i].type == RecvType && currentDisplayScheme_.showRecvPackets))
                     {
                         filters[packetInfos_[i].type].insert(packetInfos_[i].id);
                     }
@@ -180,8 +179,8 @@ void UPacketView::updateFilters()
         {
             if(packetInfos_[i].visible)
             {
-                if((packetInfos_[i].type == SendType && showSendPackets_)
-                    || (packetInfos_[i].type == RecvType && showRecvPackets_))
+                if((packetInfos_[i].type == SendType && currentDisplayScheme_.showSendPackets)
+                    || (packetInfos_[i].type == RecvType && currentDisplayScheme_.showRecvPackets))
                 {
                     filters[packetInfos_[i].type].insert(packetInfos_[i].id);
                 }
@@ -196,10 +195,25 @@ void UPacketView::saveSettings()
 {
     UTRACE("UI")<<"enter";
     QFile configFile(QCoreApplication::applicationDirPath() + "\\UPacketView.cfg");
-    configFile.open(QIODevice::WriteOnly);
+    if(!configFile.open(QIODevice::WriteOnly))
+    {
+        QMessageBox::information(this, tr("UPacketView"),
+            tr("Can not open config file(UPacketView.cfg)."),
+            QMessageBox::Ok);
+        return;
+    }
     QDataStream out(&configFile);
     out.setVersion(QDataStream::Qt_4_5);
-    out<<packetInfos_;
+    out<<Magic;
+    out<<Version;
+    if(Version == 1000)
+    {
+        out<<packetInfos_;
+        out<<currentDisplayScheme_;
+        out<<savedDisplaySchemes_;
+        out<<silentMode_;
+        out<<showOnlySelectedPackets_;
+    }
 }
 
 void UPacketView::loadSettings()
@@ -208,20 +222,30 @@ void UPacketView::loadSettings()
     QFile configFile(QCoreApplication::applicationDirPath() + "\\UPacketView.cfg");
     if(!configFile.open(QIODevice::ReadOnly))
     {
+        QMessageBox::information(this, tr("UPacketView"),
+            tr("Can not open config file(UPacketView.cfg)."),
+            QMessageBox::Ok);
         return;
     }
     QDataStream in(&configFile);
     in.setVersion(QDataStream::Qt_4_5);
-    in>>packetInfos_;
-    
-    //in>>currentDisplayScheme_;
-    //in>>savedDisplaySchemes_;
-}
+    int version = 0;
+    int magic = 0;
+    in>>magic;
+    if(magic != Magic)
+    {
+        return;
+    }
+    in>>version;
+    if(version == 1000)
+    {
+        in>>packetInfos_;
+        in>>currentDisplayScheme_;
+        in>>savedDisplaySchemes_;
+        in>>silentMode_;
+        in>>showOnlySelectedPackets_;
+    }
 
-void UPacketView::clearPacketInfos()
-{
-    UTRACE<<"enter";
-    packetListModel_->removeRows(0,packetListModel_->rowCount());
 }
 
 void UPacketView::setAutoScroll( bool isAutoScroll )
@@ -260,13 +284,13 @@ void UPacketView::setShowOnlySelectedPackets( bool enable )
 
 void UPacketView::setShowSendPackets( bool enable )
 {
-    showSendPackets_ = enable;
+    currentDisplayScheme_.showSendPackets = enable;
     updateFilters();
 }
 
 void UPacketView::setShowRecvPackets( bool enable )
 {
-    showRecvPackets_ = enable;
+    currentDisplayScheme_.showRecvPackets = enable;
     updateFilters();
 }
 

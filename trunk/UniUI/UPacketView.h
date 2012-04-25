@@ -63,7 +63,8 @@ public:
     //! UPacketView保存配置的版本号。
     enum
     {
-        Version = 1,  //!< 当前版本。
+        Magic = 0xABCDEF00,  //!< 用于检查配置文件是否正确。
+        Version = 1000,  //!< 当前版本。
     };
     //! 封包类型。
     enum PacketType
@@ -127,18 +128,12 @@ public slots:
     */
     void addPacket(PacketType type,const char *packet,int packetSize);
 
-    //! 清除封包信息列表中内容。
-    /*!
-        
-    */
-    void clearPacketInfos();
-
     //! 设置自动滚动。
     /*!
-        \param isAutoScroll 是否自动滚动。
+        \param enable 是否自动滚动。
         假如启用自动滚动，封包监视器每收到一条封包就会滚动到最底部。
     */
-    void setAutoScroll(bool isAutoScroll);
+    void setAutoScroll(bool enable);
     
     //! 设置静默模式。
     /*!
@@ -192,7 +187,6 @@ private:
     QGroupBox *packetListGroupBox_;
     uni::UPacketInfoList *packetList_;
     uni::UPacketInfoListModel *packetListModel_;
-    QPushButton *clearPacketInfosButton_;
     QPushButton *silentModePushButton_;
     QPushButton *showSendPacketsButton_;
     QPushButton *showRecvPacketsButton_;
@@ -207,8 +201,6 @@ private:
 
     bool silentMode_;  //!< 是否处在静默模式。
     bool showOnlySelectedPackets_;  //!< 只显示选中的封包。
-    bool showSendPackets_;  //!< 显示发送的封包。
-    bool showRecvPackets_;  //!< 显示接收的封包。
 };
 
 QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);
@@ -235,6 +227,21 @@ inline bool operator <(const UPacketView::PacketInfo &a,const UPacketView::Packe
     }
 }
 
+inline QDataStream & operator <<(QDataStream &s,const UPacketView::DisplayScheme &displayScheme)
+{
+    s<<displayScheme.visibilities;
+    s<<displayScheme.showRecvPackets;
+    s<<displayScheme.showSendPackets;
+    return s;
+}
+
+inline QDataStream & operator >>(QDataStream &s,UPacketView::DisplayScheme &displayScheme)
+{
+    s>>displayScheme.visibilities;
+    s>>displayScheme.showRecvPackets;
+    s>>displayScheme.showSendPackets;
+    return s;
+}
 
 }//namespace uni
 
