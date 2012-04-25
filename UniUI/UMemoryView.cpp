@@ -17,7 +17,7 @@
 #include "UMemoryTable.h"
 #include "../UniCore/ULua.h"
 
-
+#pragma comment(lib,"lua51.lib")
 
 namespace uni
 {
