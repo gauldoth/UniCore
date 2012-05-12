@@ -6,6 +6,8 @@
 #ifndef UNICORE_UCOMMON_H
 #define UNICORE_UCOMMON_H
 
+#include <string>
+
 #define AUTO_LINK_LIB_NAME "UniCore"
 #include "AutoLink.h"
 
@@ -44,7 +46,13 @@
 
 namespace uni
 {
-
+//! 获得一个随机的角色名字。
+/*! 
+    \param sizeLimit 名字允许的最大长度，假如生成的名字大于该长度，则重新生成。
+    假如为0（默认值），则代表名字长度无限制。
+    \return 随机的角色名。
+*/
+std::string GetRandomRoleName(int sizeLimit = 0);
 
 }//namespace uni
 

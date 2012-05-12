@@ -32,6 +32,11 @@ public:
     {
         buf_.append((char *)&data,sizeof(data));
     }
+    //! 追加字符串。
+    void appendString(const std::string &data)
+    {
+        buf_.append(data);
+    }
 private:
     std::string buf_;
 };
