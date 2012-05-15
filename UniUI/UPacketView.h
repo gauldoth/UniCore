@@ -24,6 +24,7 @@ class QPushButton;
 namespace uni
 {
 
+class UPacketDisplayList;
 class UPacketInfoList;
 class UPacketInfoListModel;
 class UPacketMonitor;
@@ -96,6 +97,9 @@ public:
         PacketType type;  //!< 封包类型。
         QByteArray content;  //!< 封包内容。
         QTime time;  //!< 封包时间。
+        QString idString;
+        QString contentString;
+        QString text;
     };
     //! 显示方案。
     /*!
@@ -162,29 +166,34 @@ public slots:
 private slots:
     //! 更新封包的过滤条件。
     void updateFilters();
-private:
-    //! 创建封包信息列表处的组合框。
-    void createPacketListGroupBox();
-    //! 创建封包监视器处的组合框。
-    void createPacketMonitorGroupBox();
+    //! 保存当前显示方案到指定名字的显示方案。
+    void saveScheme( const QString &schemeName );
+    //! 加载指定名字的显示方案。
+    void loadScheme( const QString &schemeName );
     //! 保存封包信息。
     /*!
         将封包信息保存到配置档，配置档放在当前进程所在目录。
     */
     void saveSettings();
+private:
+    //! 创建封包信息列表处的组合框。
+    void createPacketListGroupBox();
+    //! 创建封包监视器处的组合框。
+    void createPacketMonitorGroupBox();
+
     //! 读取封包信息。
     /*!
         从当前进程所在的配置档中读取封包信息。
     */
     void loadSettings();
-   
     //! 封包信息。保存了所有种类的封包信息。
     QList<PacketInfo> packetInfos_;
     QList<PacketData> packetDatas_;  //!< 保存了接收到的封包数据。
     DisplayScheme currentDisplayScheme_;  //!< 当前的显示方案。
-    QList<DisplayScheme> savedDisplaySchemes_;  //!< 保存的显示方案。
+    QMap<QString,DisplayScheme> savedDisplaySchemes_;  //!< 保存的显示方案。
 
     QGroupBox *packetListGroupBox_;
+    uni::UPacketDisplayList *displayList_;  //!< 显示方案列表。
     uni::UPacketInfoList *packetList_;
     uni::UPacketInfoListModel *packetListModel_;
     QPushButton *silentModePushButton_;
@@ -201,6 +210,7 @@ private:
 
     bool silentMode_;  //!< 是否处在静默模式。
     bool showOnlySelectedPackets_;  //!< 只显示选中的封包。
+
 };
 
 QDataStream &operator<<(QDataStream &, const UPacketView::PacketInfo &);

@@ -67,65 +67,16 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         }
         else if(columnNames_[column] == tr("ID"))
         {
-            return QString("0x%1").arg(packetData.id,4,16,QChar('0'));
+            return packetData.idString;
         }
         else if(columnNames_[column] == tr("PacketContent"))
         {
-            QString datas;
 
-            for(int i = 0; i < packetSize; i++)
-            {
-                if(i%16 == 0)
-                {
-                }
-                else if(i%4 == 0)
-                {
-                    datas += "|";
-                }
-                datas += QString("%1 ").arg(QString::number((unsigned char)packet[i],16),2,QChar('0'));
-                if(i%16 == 15 /*|| i == packetSize-1*/)
-                {
-                    datas += "\r\n";
-                }
-            }
-            return datas;
+            return packetData.contentString;
         }
         else if(columnNames_[column] == tr("Text"))
         {
-            QString text;
-
-            for(int i = 0; i < packetSize; i++)
-            {
-                if(packet[i] == '\0')
-                {
-                    text += ". ";
-                }
-                else if(packet[i] == '\r')
-                {
-                    text += ". ";
-                }
-                else if(packet[i] == '\n')
-                {
-                    text += ". ";
-                }
-                else if(packet[i] == '\t')
-                {
-                    text += ". ";
-                }
-                else if(packet[i] < 0)
-                {
-                    text += ". ";
-                }
-                else
-                {
-                    text += QString("%1 ").arg(packet[i],1,QChar(' '));
-                }
-                if(i%16 == 15 /*|| i == packetSize-1*/)
-                {
-                    text += "\r\n";
-                }
-            }
-            return text;
+            return packetData.text;
         }
         else if(columnNames_[column] == tr("Len"))
         {
@@ -204,6 +155,59 @@ void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
     //UTRACE("性能")<<"enter";
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
+
+    const char *packet = data.content.constData();
+    int packetSize = data.content.size();
+    data.idString = QString("0x%1").arg(data.id,4,16,QChar('0'));
+    
+    for(int i = 0; i < data.content.size(); i++)
+    {
+        if(i%16 == 0)
+        {
+        }
+        else if(i%4 == 0)
+        {
+            data.contentString += "|";
+        }
+        data.contentString += QString("%1 ").arg(QString::number((unsigned char)packet[i],16),2,QChar('0'));
+        if(i%16 == 15 /*|| i == packetSize-1*/)
+        {
+            data.contentString += "\r\n";
+        }
+    }
+
+    //text
+    for(int i = 0; i < packetSize; i++)
+    {
+        if(packet[i] == '\0')
+        {
+            data.text += ". ";
+        }
+        else if(packet[i] == '\r')
+        {
+            data.text += ". ";
+        }
+        else if(packet[i] == '\n')
+        {
+            data.text += ". ";
+        }
+        else if(packet[i] == '\t')
+        {
+            data.text += ". ";
+        }
+        else if(packet[i] < 0)
+        {
+            data.text += ". ";
+        }
+        else
+        {
+            data.text += QString("%1 ").arg(packet[i],1,QChar(' '));
+        }
+        if(i%16 == 15 /*|| i == packetSize-1*/)
+        {
+            data.text += "\r\n";
+        }
+    }
     packetDatas_->push_back(data);
     endInsertRows();
 }

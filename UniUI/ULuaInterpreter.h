@@ -11,6 +11,9 @@
 #include <QWidget>
 #include <QVariant>
 
+#define AUTO_LINK_LIB_NAME "UniUI"
+#include "../UniCore/AutoLink.h"
+
 extern "C"
 {
 

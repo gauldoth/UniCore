@@ -9,8 +9,12 @@
 namespace uni
 {
 
-UPacketInfoListModel::UPacketInfoListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent /*= 0*/ )
+UPacketInfoListModel::UPacketInfoListModel(
+    QList<UPacketView::PacketInfo> *packetInfos,
+    UPacketView::DisplayScheme *currentDisplayScheme,
+    QObject *parent /*= 0*/ )
 :QAbstractTableModel(parent)
+,currentDisplayScheme_(currentDisplayScheme)
 ,packetInfos_(packetInfos)
 {
     qSort(*packetInfos_);
@@ -72,7 +76,7 @@ QVariant UPacketInfoListModel::data( const QModelIndex &index, int role /*= Qt::
     {
         if(index.column() == 0)
         {
-            if(packetInfos_->at(index.row()).visible)
+            if(currentDisplayScheme_->visibilities[packetInfos_->at(index.row())])
             {
                 return Qt::Checked;
             }
@@ -159,7 +163,8 @@ bool UPacketInfoListModel::setData( const QModelIndex &index, const QVariant &va
             (*packetInfos_)[index.row()].name = value.toString();
             //这里暂时不通知封包监视器数据改变，因为代价较大。
             //且封包监视器刷新频繁，不通知应该影响不大。
-            emit dataChanged(index,index);  
+            emit dataChanged(index,index);
+            emit saveSettingsRequested();
             return true;
         }
         return false;
@@ -168,11 +173,11 @@ bool UPacketInfoListModel::setData( const QModelIndex &index, const QVariant &va
     {
         if(value == Qt::Checked)
         {
-            (*packetInfos_)[index.row()].visible = true; 
+            currentDisplayScheme_->visibilities[(*packetInfos_)[index.row()]] = true; 
         }
         else
         {
-            (*packetInfos_)[index.row()].visible = false;
+            currentDisplayScheme_->visibilities[(*packetInfos_)[index.row()]] = false;
         }
         emit dataChanged(index,index);
         emit visibilityChanged();
@@ -188,7 +193,7 @@ void UPacketInfoListModel::selectAll()
 {
     for(int i = 0; i < packetInfos_->size(); i++)
     {
-        (*packetInfos_)[i].visible = true;
+        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = true;
     }
     
     emit dataChanged(index(0,0),index(rowCount(),0));
@@ -199,7 +204,7 @@ void UPacketInfoListModel::deselectAll()
 {
     for(int i = 0; i < packetInfos_->size(); i++)
     {
-        (*packetInfos_)[i].visible = false;
+        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = false;
     }
     emit dataChanged(index(0,0),index(rowCount(),0));
     emit visibilityChanged();
@@ -210,6 +215,7 @@ void UPacketInfoListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
     if(!packetInfos_->contains(packetInfo))
     {
+        currentDisplayScheme_->visibilities[packetInfo] = true;
         packetInfos_->push_back(packetInfo);
         qSort(*packetInfos_);
     }
@@ -221,10 +227,16 @@ bool UPacketInfoListModel::removeRows( int row, int count, const QModelIndex &pa
     beginRemoveRows(parent,row,row+count-1);
     for(int i = 0; i < count; i++)
     {
+        currentDisplayScheme_->visibilities.remove((*packetInfos_)[row]);
         packetInfos_->removeAt(row);
     }
     endRemoveRows();
     return true;
+}
+
+void UPacketInfoListModel::visibilityChange()
+{
+    emit dataChanged(index(0,0),index(rowCount()-1,0));
 }
 
 }//namespace uni
