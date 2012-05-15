@@ -24,7 +24,8 @@ class UPacketInfoListModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit UPacketInfoListModel(QList<UPacketView::PacketInfo> *packetInfos,QObject *parent = 0);
+    explicit UPacketInfoListModel(QList<UPacketView::PacketInfo> *packetInfos,
+        UPacketView::DisplayScheme *currentDisplayScheme,QObject *parent = 0);
     virtual ~UPacketInfoListModel();
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
@@ -47,10 +48,14 @@ public slots:
         所有封包类型都不允许输出。
     */
     void deselectAll();
+    //! 加载了一个新的显示方案，重新显示。
+    void visibilityChange();
 signals:
     void visibilityChanged();
+    void saveSettingsRequested();
 private:
     QList<UPacketView::PacketInfo> *packetInfos_;
+    UPacketView::DisplayScheme *currentDisplayScheme_;
 };
 
 }//namespace uni
