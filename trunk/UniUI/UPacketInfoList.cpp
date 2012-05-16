@@ -5,6 +5,7 @@
 #include <QSizePolicy>
 
 #include "../UniCore/ULog.h"
+#include "UPacketInfoListModel.h"
 
 namespace uni
 {
@@ -40,25 +41,21 @@ UPacketInfoList::~UPacketInfoList()
 
 void UPacketInfoList::showSelectedPacketInfos()
 {
+    UPacketInfoListModel *model = qobject_cast<UPacketInfoListModel *>(this->model());
     QItemSelection selection = selectionModel()->selection();
     foreach(QItemSelectionRange range,selection)
     {
-        for(int i = range.top(); i <= range.bottom(); i++)
-        {
-            model()->setData(model()->index(i,0),Qt::Checked,Qt::CheckStateRole);
-        }
+        model->select(range.top(),range.height());
     }
 }
 
 void UPacketInfoList::hideSelectedPacketInfos()
 {
+    UPacketInfoListModel *model = qobject_cast<UPacketInfoListModel *>(this->model());
     QItemSelection selection = selectionModel()->selection();
     foreach(QItemSelectionRange range,selection)
     {
-        for(int i = range.top(); i <= range.bottom(); i++)
-        {
-            model()->setData(model()->index(i,0),Qt::Unchecked,Qt::CheckStateRole);
-        }
+        model->deselect(range.top(),range.height());
     }
 }
 

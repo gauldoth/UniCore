@@ -71,7 +71,6 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         }
         else if(columnNames_[column] == tr("PacketContent"))
         {
-
             return packetData.contentString;
         }
         else if(columnNames_[column] == tr("Text"))
@@ -100,50 +99,50 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         }
 
     }
-    else if(role == Qt::SizeHintRole)
-    {
-         QSize size;
-         int column = index.column();
-         int row = index.row();
-         int packetSize = packetDatas_->at(row).content.size();
-         int contentRowCount = (packetSize-1)/16+1;
-         if(columnNames_[column] == tr("Type"))
-         {
-             size.setWidth(40);
-             size.setHeight(12);
-         }
-         else if(columnNames_[column] == tr("ID"))
-         {
-             size.setWidth(55);
-             size.setHeight(12);
-         }
-         else if(columnNames_[column] == tr("PacketContent"))
-         {
-             size.setWidth(320);
-             size.setHeight(contentRowCount*12);
-         }
-         else if(columnNames_[column] == tr("Text"))
-         {
-             size.setWidth(220);
-             size.setHeight(contentRowCount*12);
-         }
-         else if(columnNames_[column] == tr("Len"))
-         {
-             size.setWidth(50);
-             size.setHeight(12);
-         }
-         else if(columnNames_[column] == tr("Time"))
-         {
-             size.setWidth(65);
-             size.setHeight(12);
-         }
-         else if(columnNames_[column] == tr("Name"))
-         {
-             size.setWidth(120);
-             size.setHeight(12);
-         }
-         return size;
-    }
+    //else if(role == Qt::SizeHintRole)
+    //{
+    //     QSize size;
+    //     int column = index.column();
+    //     int row = index.row();
+    //     int packetSize = packetDatas_->at(row).content.size();
+    //     int contentRowCount = (packetSize-1)/16+1;
+    //     if(columnNames_[column] == tr("Type"))
+    //     {
+    //         size.setWidth(40);
+    //         size.setHeight(12);
+    //     }
+    //     else if(columnNames_[column] == tr("ID"))
+    //     {
+    //         size.setWidth(55);
+    //         size.setHeight(12);
+    //     }
+    //     else if(columnNames_[column] == tr("PacketContent"))
+    //     {
+    //         size.setWidth(320);
+    //         size.setHeight(contentRowCount*12);
+    //     }
+    //     else if(columnNames_[column] == tr("Text"))
+    //     {
+    //         size.setWidth(220);
+    //         size.setHeight(contentRowCount*12);
+    //     }
+    //     else if(columnNames_[column] == tr("Len"))
+    //     {
+    //         size.setWidth(50);
+    //         size.setHeight(12);
+    //     }
+    //     else if(columnNames_[column] == tr("Time"))
+    //     {
+    //         size.setWidth(65);
+    //         size.setHeight(12);
+    //     }
+    //     else if(columnNames_[column] == tr("Name"))
+    //     {
+    //         size.setWidth(120);
+    //         size.setHeight(12);
+    //     }
+    //     return size;
+    //}
     else if(role == Qt::FontRole)
     {
         return (*font_);
@@ -153,7 +152,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
 
 void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
-    //UTRACE("性能")<<"enter";
+    UStopwatch stopwatch;
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
 
     const char *packet = data.content.constData();
@@ -210,6 +209,7 @@ void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
     }
     packetDatas_->push_back(data);
     endInsertRows();
+    UTRACE("性能")<<"1 "<<stopwatch.stime();
 }
 
 QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const

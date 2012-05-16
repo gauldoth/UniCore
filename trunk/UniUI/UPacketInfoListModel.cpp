@@ -239,4 +239,24 @@ void UPacketInfoListModel::visibilityChange()
     emit dataChanged(index(0,0),index(rowCount()-1,0));
 }
 
+void UPacketInfoListModel::select( int row,int count)
+{
+    for(int i = row; i < count; i++)
+    {
+        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = true; 
+    }
+    emit dataChanged(index(row,0),index(row+count-1,0));
+    emit visibilityChanged();
+}
+
+void UPacketInfoListModel::deselect( int row,int count )
+{
+    for(int i = row; i < count; i++)
+    {
+        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = false; 
+    }
+    emit dataChanged(index(row,0),index(row+count-1,0));
+    emit visibilityChanged();
+}
+
 }//namespace uni
