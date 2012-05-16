@@ -9,6 +9,9 @@
 
 #include <string>
 
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
+
 #define AUTO_LINK_LIB_NAME "UniCore"
 #include "AutoLink.h"
 
@@ -45,6 +48,46 @@ void DebugMessage(const wchar_t *format,...);
     \param ...用于格式化的参数。
 */
 void DebugMessage(const std::wstring &format,...);
+
+//! 用于计时的秒表。
+/*!
+    通常用于统计代码执行时间。
+    //局部使用的秒表。
+    UStopwatch stopwatch;
+    stopwatch.start();
+    stopwatch.stime();  //获得经过时间。
+
+    //全局使用的秒表。
+    UStopwatch(2);
+
+*/
+class UStopwatch
+{
+public:
+    enum {StopwatchCount = 50,};
+    explicit UStopwatch(int index = -1);
+    ~UStopwatch();
+
+    //! 获得当前时间。
+    std::string stime();
+    //! 获得当前时间。
+    static __int64 milliseconds(int index = -1);
+private:
+    //! 开始计时。
+    void start();
+    //! 停止计时。
+    void stop();
+    //! 暂停计时。
+    void pause();
+    //! 继续计时。
+    void restart();
+    LARGE_INTEGER beginTime_;
+    LARGE_INTEGER endTime_;
+    LARGE_INTEGER freqTime_;
+    int index_;
+    static __int64 s_milliseconds_[StopwatchCount];
+    __int64 elapsedMilliseconds_;
+};
 
 }//namespace uni
 

@@ -37,5 +37,6 @@ void UPacketView_Dev::addPacketTest()
         packet[i] = rand()%256;
     }
     packetView_->addPacket(type,packet,len);
+    delete []packet;
 
 }

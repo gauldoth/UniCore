@@ -15,8 +15,8 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     setAlternatingRowColors(true);
     setVerticalScrollMode(ScrollPerPixel);
     //setSortingEnabled(true);
-    horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    //horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    //verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
     setContextMenuPolicy(Qt::ActionsContextMenu);
 
     clearPacketsAction_ = new QAction(tr("Clear Packets"),this);

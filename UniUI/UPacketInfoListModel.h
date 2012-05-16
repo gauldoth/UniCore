@@ -50,6 +50,10 @@ public slots:
     void deselectAll();
     //! 加载了一个新的显示方案，重新显示。
     void visibilityChange();
+    //! 选择指定行。
+    void select(int row,int count);
+    //! 取消选择指定行。
+    void deselect(int row,int count);
 signals:
     void visibilityChanged();
     void saveSettingsRequested();

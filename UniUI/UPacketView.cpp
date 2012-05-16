@@ -127,6 +127,7 @@ void UPacketView::createPacketMonitorGroupBox()
 
 void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
 {
+    UStopwatch stopwatch;
     //假如静默模式，则不忽略要添加的封包。
     if(silentMode_)
     {
@@ -141,11 +142,13 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
     packetInfo.type = type;
     packetInfo.visible = true;
     //UTRACE("临时")<<"1";
+    UTRACE("性能")<<"1 "<<stopwatch.stime();
     if(!packetInfos_.contains(packetInfo))
     {
         packetListModel_->addPacketInfo(packetInfo);
         updateFilters();
     }
+    UTRACE("性能")<<"2 "<<stopwatch.stime();
     //UTRACE("临时")<<"2";
     //添加封包。
     PacketData packetData;
@@ -157,11 +160,13 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
     packetMonitorModel_->addPacketData(packetData);
     packetCountLabel_->setText(tr("Packet Count:%1").arg(packetMonitorModel_->rowCount()));
     //UTRACE("临时")<<"3";
+
+    UTRACE("性能")<<"3 "<<stopwatch.stime();
 }
 
 void UPacketView::updateFilters()
 {
-
+    UTRACE("临时")<<"start";
     QMap<PacketType,QSet<int> > filters;
     if(showOnlySelectedPackets_)
     {
@@ -195,7 +200,9 @@ void UPacketView::updateFilters()
             }
         }
     }
+    UTRACE<<"2";
     packetMonitorProxyModel_->setFilters(filters);
+    UTRACE("临时")<<"end";
 }
 
 
