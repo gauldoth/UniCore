@@ -310,7 +310,7 @@
 		/>
 		<Global
 			Name="QtVersion"
-			Value="4.6.3_static_linked"
+			Value="qt_static"
 		/>
 		<Global
 			Name="RccDir"

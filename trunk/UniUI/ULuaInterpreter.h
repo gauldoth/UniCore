@@ -25,8 +25,11 @@ extern "C"
 class QTextEdit;
 class QPushButton;
 
+
 namespace uni
 {
+
+class ULuaEdit;
 
 //! 执行Lua脚本的线程。
 class ULuaInterpreter_ExecRoutine : public QThread
@@ -96,13 +99,13 @@ private:
     void registerPrint();
 
     lua_State *L_;
-    QTextEdit *scriptEdit_;
+    uni::ULuaEdit *scriptEdit_;
     QTextEdit *outputEdit_;
     QPushButton *execButton_;
     QPushButton *stopButton_;
     ULuaInterpreter_ExecRoutine *execRoutine_;
 };
 
-};
+}//namespace uni
 
 #endif//UNIUI_ULUA_INTERPRETER_H

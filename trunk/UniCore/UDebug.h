@@ -75,8 +75,6 @@ public:
 private:
     //! 开始计时。
     void start();
-    //! 停止计时。
-    void stop();
     //! 暂停计时。
     void pause();
     //! 继续计时。
@@ -85,7 +83,7 @@ private:
     LARGE_INTEGER endTime_;
     LARGE_INTEGER freqTime_;
     int index_;
-    static __int64 s_milliseconds_[StopwatchCount];
+    static volatile __int64 s_milliseconds_[StopwatchCount];
     __int64 elapsedMilliseconds_;
 };
 
