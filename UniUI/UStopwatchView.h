@@ -13,6 +13,8 @@
 #define AUTO_LINK_LIB_NAME "UniUI"
 #include "../UniCore/AutoLink.h"
 
+class QStandardItemModel;
+
 namespace uni
 {
 
@@ -23,6 +25,10 @@ class UStopwatchView : public QTableView
 public:
     explicit UStopwatchView(QWidget *parent = 0);
     ~UStopwatchView();
+public slots:
+    void update();
+private:
+    QStandardItemModel *model_;
 };
 
 }//namespace uni

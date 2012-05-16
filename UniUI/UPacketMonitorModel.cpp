@@ -40,6 +40,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
 //     {
 //     UTRACE("性能")<<"row:"<<index.row()<<" column:"<<index.column()<<" role:"<<role;
 //     }
+    UStopwatch a(2);
     Q_ASSERT(index.isValid());
     if(role == Qt::DisplayRole || role == Qt::EditRole 
         || role == Qt::ToolTipRole)
@@ -152,7 +153,6 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
 
 void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 {
-    UStopwatch stopwatch;
     beginInsertRows(QModelIndex(),rowCount(),rowCount());
 
     const char *packet = data.content.constData();
@@ -209,7 +209,6 @@ void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
     }
     packetDatas_->push_back(data);
     endInsertRows();
-    UTRACE("性能")<<"1 "<<stopwatch.stime();
 }
 
 QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const

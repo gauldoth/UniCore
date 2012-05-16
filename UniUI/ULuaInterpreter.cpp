@@ -10,6 +10,7 @@
 #include <QSplitter>
 #include <QVBoxLayout>
 
+#include "ULuaEdit.h"
 #include "../UniCore/ULua.h"
 #include "../UniCore/ULog.h"
 
@@ -42,7 +43,7 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
     //将L_和当前窗体记录到interpreters_中。
     interpreters_[L_] = this;
 
-    scriptEdit_ = new QTextEdit(this);
+    scriptEdit_ = new ULuaEdit(this);
     outputEdit_ = new QTextEdit(this);
     execButton_ = new QPushButton(tr("&exec"),this);
     stopButton_ = new QPushButton(tr("&stop"),this);

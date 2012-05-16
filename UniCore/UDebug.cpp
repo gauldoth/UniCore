@@ -1,8 +1,11 @@
 ﻿#include "UDebug.h"
 
+#include <typeinfo>
 #include <locale.h>
 #include <stdarg.h>
 #include <stdio.h>
+
+#include "..//UniCore//ULog.h"
 
 namespace uni
 {
@@ -75,17 +78,18 @@ void DebugMessage(const std::wstring &format,...)
     delete[] buffer;
 }
 
-__int64 UStopwatch::s_milliseconds_[50] = {0};
+volatile __int64 UStopwatch::s_milliseconds_[50] = {0};
 
 UStopwatch::UStopwatch(int index /*= -1*/)
 :index_(index)
 ,elapsedMilliseconds_(0)
 {
+    DebugMessage("enter ctor");
     beginTime_.QuadPart = 0;
     endTime_.QuadPart = 0;
     freqTime_.QuadPart = 0;
     QueryPerformanceFrequency(&freqTime_);
-    if(index_ >= -1 && index_ < StopwatchCount)
+    if(index_ < -1 && index_ >= StopwatchCount)
     {
         index_ = -1;
     }
@@ -105,35 +109,13 @@ UStopwatch::UStopwatch(int index /*= -1*/)
 
 UStopwatch::~UStopwatch()
 {
+    //DebugMessage("enter dtor");
     pause();
 }
 
 void UStopwatch::start()
 {
     QueryPerformanceCounter(&beginTime_);
-}
-
-void UStopwatch::stop()
-{
-    QueryPerformanceCounter(&endTime_);
-
-    __int64 result = 0;
-    result = 
-        (endTime_.QuadPart - beginTime_.QuadPart) * 1000 / freqTime_.QuadPart;
-
-
-    if(index_ >= -1 && index_ < StopwatchCount)
-    {
-        index_ = -1;
-    }
-    if(index_ != -1)
-    {
-        s_milliseconds_[index_] += result;
-    }
-    else
-    {
-        elapsedMilliseconds_ += result;
-    }
 }
 
 void UStopwatch::pause()
@@ -144,13 +126,16 @@ void UStopwatch::pause()
     result = 
         (endTime_.QuadPart - beginTime_.QuadPart) * 1000 / freqTime_.QuadPart;
 
-    if(index_ >= -1 && index_ < StopwatchCount)
+    UTRACE<<delim<<"result:"<<result<<"endTime:"<<endTime_.QuadPart<<"beginTime:"<<beginTime_.QuadPart<<"freqTime:"<<freqTime_.QuadPart;
+
+    if(index_ < -1 && index_ >= StopwatchCount)
     {
         index_ = -1;
     }
     if(index_ != -1)
     {
         s_milliseconds_[index_] += result;
+        UTRACE<<"s_milliseconds_["<<index_<<"]"<<s_milliseconds_[index_];
     }
     else
     {
@@ -176,7 +161,7 @@ std::string UStopwatch::stime()
 {
     pause();
     __int64 milliseconds = 0;
-    if(index_ >= -1 && index_ < StopwatchCount)
+    if(index_ < -1 && index_ >= StopwatchCount)
     {
         index_ = -1;
     }
@@ -202,6 +187,7 @@ std::string UStopwatch::stime()
 
 __int64 UStopwatch::milliseconds( int index /*= -1*/ )
 {
+
     return s_milliseconds_[index];
 }
 
