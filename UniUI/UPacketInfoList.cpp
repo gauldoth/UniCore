@@ -13,8 +13,8 @@ namespace uni
 UPacketInfoList::UPacketInfoList( QWidget *parent /*= 0*/ )
 :QTableView(parent)
 {
-    horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+    verticalHeader()->setResizeMode(QHeaderView::Interactive);
     horizontalHeader()->setStretchLastSection(true);
     QSizePolicy sizePolicy(QSizePolicy::Maximum,QSizePolicy::Preferred);
     setSizePolicy(sizePolicy);
