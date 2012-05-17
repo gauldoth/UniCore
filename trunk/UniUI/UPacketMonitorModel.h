@@ -43,7 +43,6 @@ public:
 private:
     QList<UPacketView::PacketInfo> *packetInfos_;
     QList<UPacketView::PacketData> *packetDatas_;
-    QFont *font_;  //!< 所有数据使用的字体。
     QStringList columnNames_;  //!< 列信息。
 };
 

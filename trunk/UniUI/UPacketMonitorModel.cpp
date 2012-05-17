@@ -1,5 +1,6 @@
 ﻿#include "UPacketMonitorModel.h"
 
+#include <QApplication>
 #include <QTime>
 
 #include "../UniCore/UMemory.h"
@@ -14,7 +15,6 @@ UPacketMonitorModel::UPacketMonitorModel(QList<UPacketView::PacketInfo> *packetI
 ,packetInfos_(packetInfos)
 ,packetDatas_(packetDatas)
 {
-    font_ = new QFont();
     columnNames_<<tr("Time")<<tr("Type")<<tr("ID")<<tr("Name")<<tr("PacketContent")
         <<tr("Text")<<tr("Len");
 }
@@ -144,10 +144,6 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
     //     }
     //     return size;
     //}
-    else if(role == Qt::FontRole)
-    {
-        return (*font_);
-    }
     return QVariant();
 }
 
@@ -220,17 +216,50 @@ QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientati
         {
             return columnNames_.at(section);
         }
-//         else if(role == Qt::SizeHintRole)
-//         {
-//             return QSize(50,50);
-//         }
+        else if(role == Qt::SizeHintRole)
+        {
+            QSize size;
+            static QFontMetrics fontMetric(QApplication::font());
+            size.setHeight(fontMetric.height()+6);
+            
+            if(columnNames_[section] == tr("Type"))
+            {
+                size.setWidth(fontMetric.width("Send"));
+            }
+            else if(columnNames_[section] == tr("ID"))
+            {
+                size.setWidth(55);
+            }
+            else if(columnNames_[section] == tr("PacketContent"))
+            {
+                size.setWidth(320);
+            }
+            else if(columnNames_[section] == tr("Text"))
+            {
+                size.setWidth(220);
+            }
+            else if(columnNames_[section] == tr("Len"))
+            {
+                size.setWidth(50);
+            }
+            else if(columnNames_[section] == tr("Time"))
+            {
+                size.setWidth(65);
+            }
+            else if(columnNames_[section] == tr("Name"))
+            {
+                size.setWidth(120);
+            }
+            return size;
+        }
     }
     else if(orientation == Qt::Vertical)
     {
-//         if(role == Qt::SizeHintRole)
-//         {
-//             return QSize(50,50);
-//         }
+        if(role == Qt::SizeHintRole)
+        {
+            static int height = QFontMetrics(QApplication::font()).height();
+            return QSize(0,height);
+        }
     }
     return QVariant();
 }
