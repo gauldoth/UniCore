@@ -6,6 +6,7 @@
 
 #include "../UniUI/UPacketView.h"
 #include "../UniCore/UMemory.h"
+#include "../UniCore/UDebug.h"
 
 using namespace uni;
 
@@ -18,7 +19,7 @@ UPacketView_Dev::UPacketView_Dev(QWidget *parent, Qt::WFlags flags)
     setCentralWidget(packetView_);
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(addPacketTest()));
-    timer->start(100);
+    timer->start(50);
 }
 
 UPacketView_Dev::~UPacketView_Dev()
@@ -28,6 +29,7 @@ UPacketView_Dev::~UPacketView_Dev()
 
 void UPacketView_Dev::addPacketTest()
 {
+    UStopwatch a(3);
     UPacketView::PacketType type = static_cast<UPacketView::PacketType>(rand()%2);
     int len = 2+rand()%800;
     char *packet = new char[len];

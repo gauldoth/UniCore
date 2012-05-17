@@ -26,8 +26,6 @@ UStopwatchView::~UStopwatchView()
 
 void UStopwatchView::update()
 {
-    UTRACE<<"milliseconds"<<UStopwatch::milliseconds(2);
-    UTRACE<<"enter";
     for(int i = 0; i < UStopwatch::StopwatchCount; i++)
     {
 
