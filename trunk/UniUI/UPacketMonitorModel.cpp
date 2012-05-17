@@ -72,11 +72,11 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         }
         else if(columnNames_[column] == tr("PacketContent"))
         {
-            return packetData.contentString;
+            return "";//packetData.contentString;
         }
         else if(columnNames_[column] == tr("Text"))
         {
-            return packetData.text;
+            return "";//packetData.text;
         }
         else if(columnNames_[column] == tr("Len"))
         {
@@ -213,9 +213,24 @@ void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
 
 QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientation, int role /*= Qt::DisplayRole*/ ) const
 {
-    if(orientation == Qt::Horizontal && role == Qt::DisplayRole)
+    UStopwatch a(5);
+    if(orientation == Qt::Horizontal)
     {
-        return columnNames_.at(section);
+        if(role == Qt::DisplayRole)
+        {
+            return columnNames_.at(section);
+        }
+//         else if(role == Qt::SizeHintRole)
+//         {
+//             return QSize(50,50);
+//         }
+    }
+    else if(orientation == Qt::Vertical)
+    {
+//         if(role == Qt::SizeHintRole)
+//         {
+//             return QSize(50,50);
+//         }
     }
     return QVariant();
 }

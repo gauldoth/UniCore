@@ -32,6 +32,10 @@ public slots:
     void onShowHideColumnToggled(bool checked);
     //! 拷贝选中的项的内容。
     void copySelected();
+protected:
+    void updateGeometries();
+    int sizeHintForRow(int row) const;
+    virtual void paintEvent ( QPaintEvent * event );
 private:
     QAction *clearPacketsAction_;  //!< 清除所有封包。
     QAction *copyAction_;  //!< 复制当前项的内容到剪贴板。

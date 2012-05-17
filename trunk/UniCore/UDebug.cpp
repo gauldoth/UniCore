@@ -78,13 +78,12 @@ void DebugMessage(const std::wstring &format,...)
     delete[] buffer;
 }
 
-volatile __int64 UStopwatch::s_milliseconds_[50] = {0};
+volatile double UStopwatch::s_milliseconds_[50] = {0.0};
 
 UStopwatch::UStopwatch(int index /*= -1*/)
 :index_(index)
 ,elapsedMilliseconds_(0)
 {
-    DebugMessage("enter ctor");
     beginTime_.QuadPart = 0;
     endTime_.QuadPart = 0;
     freqTime_.QuadPart = 0;
@@ -122,11 +121,10 @@ void UStopwatch::pause()
 {
     QueryPerformanceCounter(&endTime_);
 
-    __int64 result = 0;
+    double result = 0;
     result = 
-        (endTime_.QuadPart - beginTime_.QuadPart) * 1000 / freqTime_.QuadPart;
+        (double)(endTime_.QuadPart - beginTime_.QuadPart) * 1000 / (double)freqTime_.QuadPart;
 
-    UTRACE<<delim<<"result:"<<result<<"endTime:"<<endTime_.QuadPart<<"beginTime:"<<beginTime_.QuadPart<<"freqTime:"<<freqTime_.QuadPart;
 
     if(index_ < -1 && index_ >= StopwatchCount)
     {
@@ -135,7 +133,6 @@ void UStopwatch::pause()
     if(index_ != -1)
     {
         s_milliseconds_[index_] += result;
-        UTRACE<<"s_milliseconds_["<<index_<<"]"<<s_milliseconds_[index_];
     }
     else
     {
@@ -160,7 +157,7 @@ void UStopwatch::restart()
 std::string UStopwatch::stime()
 {
     pause();
-    __int64 milliseconds = 0;
+    double milliseconds = 0.0;
     if(index_ < -1 && index_ >= StopwatchCount)
     {
         index_ = -1;
@@ -173,10 +170,10 @@ std::string UStopwatch::stime()
     {
         milliseconds = elapsedMilliseconds_;
     }
-    __int64 hour = milliseconds/3600000;
-    __int64 minute = (milliseconds/60000)%60;
-    __int64 second = (milliseconds/1000)%60;
-    __int64 miliSecond = milliseconds%1000;
+    __int64 hour = (__int64)milliseconds/3600000;
+    __int64 minute = ((__int64)milliseconds/60000)%60;
+    __int64 second = ((__int64)milliseconds/1000)%60;
+    __int64 miliSecond = (__int64)milliseconds%1000;
 
     char buf[100] = "";
     sprintf_s(buf,"%02d:%02d:%02d'%03d",(int)hour,(int)minute,(int)second,(int)miliSecond);
@@ -185,7 +182,7 @@ std::string UStopwatch::stime()
     return time;
 }
 
-__int64 UStopwatch::milliseconds( int index /*= -1*/ )
+double UStopwatch::milliseconds( int index /*= -1*/ )
 {
 
     return s_milliseconds_[index];

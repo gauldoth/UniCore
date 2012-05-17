@@ -71,7 +71,7 @@ public:
     //! 获得当前时间。
     std::string stime();
     //! 获得当前时间。
-    static __int64 milliseconds(int index = -1);
+    static double milliseconds(int index = -1);
 private:
     //! 开始计时。
     void start();
@@ -83,8 +83,8 @@ private:
     LARGE_INTEGER endTime_;
     LARGE_INTEGER freqTime_;
     int index_;
-    static volatile __int64 s_milliseconds_[StopwatchCount];
-    __int64 elapsedMilliseconds_;
+    static volatile double s_milliseconds_[StopwatchCount];
+    double elapsedMilliseconds_;
 };
 
 }//namespace uni

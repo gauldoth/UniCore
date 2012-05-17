@@ -6,6 +6,8 @@
 #include <QClipboard>
 #include <QSignalMapper>
 
+#include "../UniCore/UDebug.h"
+
 namespace uni
 {
 
@@ -14,9 +16,10 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
 {
     setAlternatingRowColors(true);
     setVerticalScrollMode(ScrollPerPixel);
+    //setWordWrap(false);
     //setSortingEnabled(true);
-    //horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
-    //verticalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+    horizontalHeader()->setResizeMode(QHeaderView::Interactive);
+    verticalHeader()->setResizeMode(QHeaderView::Interactive);
     setContextMenuPolicy(Qt::ActionsContextMenu);
 
     clearPacketsAction_ = new QAction(tr("Clear Packets"),this);
@@ -78,6 +81,23 @@ void UPacketMonitor::onShowHideColumnToggled(bool checked)
 void UPacketMonitor::copySelected()
 {
     QApplication::clipboard()->setText(currentIndex().data(Qt::DisplayRole).toString());
+}
+
+void UPacketMonitor::updateGeometries()
+{
+    UStopwatch a(7);
+    QTableView::updateGeometries();
+}
+
+int UPacketMonitor::sizeHintForRow( int row ) const
+{
+    return QTableView::sizeHintForRow(row);
+}
+
+void UPacketMonitor::paintEvent( QPaintEvent * event )
+{
+    UStopwatch a(4);
+    QTableView::paintEvent(event);
 }
 
 }//namespace uni
