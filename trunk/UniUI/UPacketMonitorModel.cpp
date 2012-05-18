@@ -42,8 +42,7 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
 //     }
     UStopwatch a(2);
     Q_ASSERT(index.isValid());
-    if(role == Qt::DisplayRole || role == Qt::EditRole 
-        || role == Qt::ToolTipRole)
+    if(role == Qt::DisplayRole || role == Qt::EditRole)
     {
         int column = index.column();
         int row = index.row();
@@ -72,11 +71,11 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
         }
         else if(columnNames_[column] == tr("PacketContent"))
         {
-            return "";//packetData.contentString;
+            return packetData.contentString;
         }
         else if(columnNames_[column] == tr("Text"))
         {
-            return "";//packetData.text;
+            return packetData.text;
         }
         else if(columnNames_[column] == tr("Len"))
         {
@@ -99,6 +98,66 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
             return QVariant();
         }
 
+    }
+    else if(role == Qt::ToolTipRole)
+    {
+        int column = index.column();
+        int row = index.row();
+        const char *packet = packetDatas_->at(index.row()).content.constData();
+        int packetSize = packetDatas_->at(index.row()).content.size();
+        UPacketView::PacketData packetData = packetDatas_->at(row);
+
+        if(columnNames_[column] == tr("Type"))
+        {
+            if(packetData.type == UPacketView::SendType)
+            {
+                return tr("Send");
+            }
+            else if(packetData.type == UPacketView::RecvType)
+            {
+                return tr("Recv");
+            }
+            else
+            {
+                return tr("Unknown");
+            }
+        }
+        else if(columnNames_[column] == tr("ID"))
+        {
+            return packetData.idString;
+        }
+        else if(columnNames_[column] == tr("PacketContent"))
+        {
+            return packetData.contentTooltip;
+        }
+        else if(columnNames_[column] == tr("Text"))
+        {
+            return packetData.textTooltip;
+        }
+        else if(columnNames_[column] == tr("Len"))
+        {
+            return packetSize;
+        }
+        else if(columnNames_[column] == tr("Time"))
+        {
+            return packetData.time;
+        }
+        else if(columnNames_[column] == tr("Name"))
+        {
+            for(int i = 0; i < packetInfos_->size(); i++)
+            {
+                if(packetInfos_->at(i).id == packetData.id 
+                    && packetInfos_->at(i).type == packetData.type)
+                {
+                    return packetInfos_->at(i).name;
+                }
+            }
+            return QVariant();
+        }
+    }
+    else if(role == Qt::UserRole)
+    {
+        return QVariant::fromValue((void *)&(packetDatas_->at(index.row())));
     }
     //else if(role == Qt::SizeHintRole)
     //{
@@ -155,52 +214,60 @@ void UPacketMonitorModel::addPacketData(UPacketView::PacketData data)
     int packetSize = data.content.size();
     data.idString = QString("0x%1").arg(data.id,4,16,QChar('0'));
     
-    for(int i = 0; i < data.content.size(); i++)
+    for(int i = 0; i < packetSize; i++)
     {
         if(i%16 == 0)
         {
         }
         else if(i%4 == 0)
         {
-            data.contentString += "|";
+            data.contentTooltip += "|";
         }
-        data.contentString += QString("%1 ").arg(QString::number((unsigned char)packet[i],16),2,QChar('0'));
-        if(i%16 == 15 /*|| i == packetSize-1*/)
+        data.contentTooltip += QString("%1 ").arg(QString::number((unsigned char)packet[i],16),2,QChar('0'));
+        if(i < 16)
         {
-            data.contentString += "\r\n";
+            data.contentString = data.contentTooltip;
+        }
+        if(i%16 == 15)
+        {
+            data.contentTooltip += "\r\n";
         }
     }
 
     //text
     for(int i = 0; i < packetSize; i++)
-    {
+    { 
         if(packet[i] == '\0')
         {
-            data.text += ". ";
+            data.textTooltip += ". ";
         }
         else if(packet[i] == '\r')
         {
-            data.text += ". ";
+            data.textTooltip += ". ";
         }
         else if(packet[i] == '\n')
         {
-            data.text += ". ";
+            data.textTooltip += ". ";
         }
         else if(packet[i] == '\t')
         {
-            data.text += ". ";
+            data.textTooltip += ". ";
         }
         else if(packet[i] < 0)
         {
-            data.text += ". ";
+            data.textTooltip += ". ";
         }
         else
         {
-            data.text += QString("%1 ").arg(packet[i],1,QChar(' '));
+            data.textTooltip += QString("%1 ").arg(packet[i],1,QChar(' '));
         }
-        if(i%16 == 15 /*|| i == packetSize-1*/)
+        if(i < 16)
         {
-            data.text += "\r\n";
+            data.text = data.textTooltip;
+        }
+        if(i%16 == 15)
+        {
+            data.textTooltip += "\r\n";
         }
     }
     packetDatas_->push_back(data);
@@ -224,31 +291,31 @@ QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientati
             
             if(columnNames_[section] == tr("Type"))
             {
-                size.setWidth(fontMetric.width("Send"));
+                size.setWidth(fontMetric.width("X")*6);
             }
             else if(columnNames_[section] == tr("ID"))
             {
-                size.setWidth(55);
+                size.setWidth(fontMetric.width('X')*8);
             }
             else if(columnNames_[section] == tr("PacketContent"))
             {
-                size.setWidth(320);
+                size.setWidth(fontMetric.width('X')*55);
             }
             else if(columnNames_[section] == tr("Text"))
             {
-                size.setWidth(220);
+                size.setWidth(fontMetric.width('X')*36);
             }
             else if(columnNames_[section] == tr("Len"))
             {
-                size.setWidth(50);
+                size.setWidth(fontMetric.width('X')*8);
             }
             else if(columnNames_[section] == tr("Time"))
             {
-                size.setWidth(65);
+                size.setWidth(fontMetric.width('X')*8);
             }
             else if(columnNames_[section] == tr("Name"))
             {
-                size.setWidth(120);
+                size.setWidth(fontMetric.width('X')*15);
             }
             return size;
         }

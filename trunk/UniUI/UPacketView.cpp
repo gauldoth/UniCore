@@ -110,18 +110,20 @@ void UPacketView::createPacketMonitorGroupBox()
     //packetMonitor_->setModel(packetMonitorModel_);
     autoScrollPushButton_ = new QPushButton(tr("Auto Scroll"),this);
     autoScrollPushButton_->setCheckable(true);
-    autoScrollPushButton_->setSizePolicy(QSizePolicy(QSizePolicy::Preferred,QSizePolicy::Preferred));
+    clearPacketsButton_ = new QPushButton(tr("Clear Packets"),this);
     packetCountLabel_ = new QLabel(tr("Packet Count:0"),this);
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(packetCountLabel_);
     layout->addWidget(packetMonitor_);
-    QHBoxLayout *layout2 = new QHBoxLayout;
+    UFlowLayout *layout2 = new UFlowLayout;
     layout2->addWidget(autoScrollPushButton_);
+    layout2->addWidget(clearPacketsButton_);
     layout->addLayout(layout2);
     packetMonitorGroupBox_->setLayout(layout);
 
     connect(autoScrollPushButton_,SIGNAL(toggled(bool)),this,SLOT(setAutoScroll(bool)));
+    connect(clearPacketsButton_,SIGNAL(clicked()),this,SLOT(clearPackets()));
     
 }
 
@@ -318,6 +320,11 @@ void UPacketView::loadScheme( const QString &schemeName )
     showSendPacketsButton_->setChecked(currentDisplayScheme_.showSendPackets);
     packetListModel_->visibilityChange();
     updateFilters();
+}
+
+void UPacketView::clearPackets()
+{
+    packetMonitorModel_->removeRows(0,packetMonitorModel_->rowCount());
 }
 
 QDataStream & operator<<( QDataStream &s, const UPacketView::PacketInfo &packetInfo )
