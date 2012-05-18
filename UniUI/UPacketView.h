@@ -99,7 +99,9 @@ public:
         QTime time;  //!< 封包时间。
         QString idString;
         QString contentString;
+        QString contentTooltip;
         QString text;
+        QString textTooltip;
     };
     //! 显示方案。
     /*!
@@ -175,6 +177,11 @@ private slots:
         将封包信息保存到配置档，配置档放在当前进程所在目录。
     */
     void saveSettings();
+    //! 清除封包。
+    /*!
+        清空封包监视器中的封包。
+    */
+    void clearPackets();
 private:
     //! 创建封包信息列表处的组合框。
     void createPacketListGroupBox();
@@ -203,6 +210,7 @@ private:
 
     QGroupBox *packetMonitorGroupBox_;
     QPushButton *autoScrollPushButton_;
+    QPushButton *clearPacketsButton_;
     QLabel *packetCountLabel_;
     uni::UPacketMonitor *packetMonitor_;
     UPacketMonitorProxyModel *packetMonitorProxyModel_;

@@ -7,6 +7,8 @@
 #include <QSignalMapper>
 
 #include "../UniCore/UDebug.h"
+#include "../UniCore/ULog.h"
+#include "UPacketView.h"
 
 namespace uni
 {
@@ -18,12 +20,11 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     setVerticalScrollMode(ScrollPerPixel);
     //setWordWrap(false);
     //setSortingEnabled(true);
-    horizontalHeader()->setResizeMode(QHeaderView::Interactive);
-    verticalHeader()->setResizeMode(QHeaderView::Interactive);
+    QFontMetrics fontMetrics(font());
+    horizontalHeader()->setResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setDefaultSectionSize(fontMetrics.height()+3);
     setContextMenuPolicy(Qt::ActionsContextMenu);
-
-    clearPacketsAction_ = new QAction(tr("Clear Packets"),this);
-    addAction(clearPacketsAction_);
 
     copyAction_ = new QAction(tr("Copy"),this);
     addAction(copyAction_);
@@ -31,19 +32,13 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
     horizontalHeader()->setMovable(true);
 
-    connect(clearPacketsAction_,SIGNAL(triggered()),this,SLOT(clearPackets()));
     connect(copyAction_,SIGNAL(triggered()),this,SLOT(copySelected()));
+    connect(this,SIGNAL(activated(const QModelIndex &)),this,SLOT(showPacket(const QModelIndex &)));
 }
 
 UPacketMonitor::~UPacketMonitor()
 {
     
-}
-
-//这里只清代理模型数据，有问题。
-void UPacketMonitor::clearPackets()
-{
-    model()->removeRows(0,model()->rowCount());
 }
 
 void UPacketMonitor::setModel( QAbstractItemModel *model )
@@ -57,7 +52,10 @@ void UPacketMonitor::setModel( QAbstractItemModel *model )
         action->setChecked(true);
         horizontalHeader()->addAction(action);
         connect(action,SIGNAL(toggled(bool)),this,SLOT(onShowHideColumnToggled(bool)));
+
     }
+    //重设列宽。
+    horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 void UPacketMonitor::onShowHideColumnToggled(bool checked)
@@ -73,14 +71,12 @@ void UPacketMonitor::onShowHideColumnToggled(bool checked)
         {
             hideColumn(action->data().toInt());
         }
-        resizeRowsToContents();
     }
-    resizeRowsToContents();
 }
 
 void UPacketMonitor::copySelected()
 {
-    QApplication::clipboard()->setText(currentIndex().data(Qt::DisplayRole).toString());
+    QApplication::clipboard()->setText(currentIndex().data(Qt::ToolTipRole).toString());
 }
 
 void UPacketMonitor::updateGeometries()
@@ -98,6 +94,13 @@ void UPacketMonitor::paintEvent( QPaintEvent * event )
 {
     UStopwatch a(4);
     QTableView::paintEvent(event);
+}
+
+void UPacketMonitor::showPacket( const QModelIndex &index )
+{
+    UPacketView::PacketData *packetData = 
+        (UPacketView::PacketData *)(index.data(Qt::UserRole).value<void *>());
+    UTRACE<<packetData->id;
 }
 
 }//namespace uni
