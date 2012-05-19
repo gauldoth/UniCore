@@ -17,7 +17,6 @@ UPacketInfoListModel::UPacketInfoListModel(
 ,currentDisplayScheme_(currentDisplayScheme)
 ,packetInfos_(packetInfos)
 {
-    qSort(*packetInfos_);
 }
 
 UPacketInfoListModel::~UPacketInfoListModel()
@@ -70,6 +69,13 @@ QVariant UPacketInfoListModel::data( const QModelIndex &index, int role /*= Qt::
             {
                 return QVariant();
             }
+        }
+    }
+    else if(role == Qt::BackgroundColorRole)
+    {
+        if(packetInfos_->at(index.row()).outOfDate)
+        {
+            return Qt::red;
         }
     }
     else if(role == Qt::CheckStateRole)
@@ -132,6 +138,7 @@ QVariant UPacketInfoListModel::headerData( int section, Qt::Orientation orientat
             }
         }
     }
+
     return QVariant();
 }
 
@@ -141,7 +148,7 @@ Qt::ItemFlags UPacketInfoListModel::flags( const QModelIndex &index ) const
     {
         return 0;
     }
-    if(index.column() == 3)
+    if(index.column() == 3 || index.column() == 2)
     {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
     }
@@ -167,6 +174,28 @@ bool UPacketInfoListModel::setData( const QModelIndex &index, const QVariant &va
             emit saveSettingsRequested();
             return true;
         }
+        else if(index.column() == 2)
+        {
+            //假如要修改成的目标ID存在，将原ID对应的封包信息置为过期。
+            //修改ID，并将修改的封包信息改为未过期。
+            for(int i = 0; i < packetInfos_->size(); i++)
+            {
+                if(i != index.row())
+                {
+                    if(value.toString().toInt(0,16) == packetInfos_->at(i).id 
+                        && (*packetInfos_)[index.row()].type == packetInfos_->at(i).type)
+                    {
+                        (*packetInfos_)[i].outOfDate = true;
+                        emit dataChanged(this->index(i,0),this->index(i,columnCount()));
+                        break;
+                    }
+                }
+            }
+            (*packetInfos_)[index.row()].id = value.toString().toInt(0,16);
+            (*packetInfos_)[index.row()].outOfDate = false;
+            emit dataChanged(this->index(index.row(),0),this->index(index.row(),columnCount()));
+            emit saveSettingsRequested();
+        }
         return false;
     }
     else if(index.column() == 0 && role == Qt::CheckStateRole)
@@ -180,34 +209,12 @@ bool UPacketInfoListModel::setData( const QModelIndex &index, const QVariant &va
             currentDisplayScheme_->visibilities[(*packetInfos_)[index.row()]] = false;
         }
         emit dataChanged(index,index);
-        emit visibilityChanged();
         return true;
     }
     else
     {
         return false;
     }
-}
-
-void UPacketInfoListModel::selectAll()
-{
-    for(int i = 0; i < packetInfos_->size(); i++)
-    {
-        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = true;
-    }
-    
-    emit dataChanged(index(0,0),index(rowCount(),0));
-    emit visibilityChanged();
-}
-
-void UPacketInfoListModel::deselectAll()
-{
-    for(int i = 0; i < packetInfos_->size(); i++)
-    {
-        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = false;
-    }
-    emit dataChanged(index(0,0),index(rowCount(),0));
-    emit visibilityChanged();
 }
 
 void UPacketInfoListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
@@ -217,7 +224,6 @@ void UPacketInfoListModel::addPacketInfo( UPacketView::PacketInfo packetInfo )
     {
         currentDisplayScheme_->visibilities[packetInfo] = true;
         packetInfos_->push_back(packetInfo);
-        qSort(*packetInfos_);
     }
     endInsertRows();
 }
@@ -239,24 +245,81 @@ void UPacketInfoListModel::visibilityChange()
     emit dataChanged(index(0,0),index(rowCount()-1,0));
 }
 
-void UPacketInfoListModel::select( int row,int count)
+
+bool UPacketInfoListProxyModel::lessThan( const QModelIndex & left, const QModelIndex & right ) const
 {
-    for(int i = row; i < count; i++)
+    QString leftType = sourceModel()->index(left.row(),1).data().toString();
+    QString rightType = sourceModel()->index(right.row(),1).data().toString();
+    int leftID = sourceModel()->index(left.row(),2).data().toString().toInt(0,16);
+    int rightID = sourceModel()->index(right.row(),2).data().toString().toInt(0,16);
+    if(leftType == "Send")
     {
-        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = true; 
+        if(rightType == "Recv")
+        {
+            return false;
+        }
+        else if(rightType == "Send")
+        {
+            if(leftID < rightID)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {//未知类型。
+            return true;
+        }
     }
-    emit dataChanged(index(row,0),index(row+count-1,0));
-    emit visibilityChanged();
+    else if(leftType == "Recv")
+    {
+        if(rightType == "Send")
+        {
+            return true;
+        }
+        else if(rightType == "Recv")
+        {
+            if(leftID < rightID)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if(rightType != "Unknown")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
 
-void UPacketInfoListModel::deselect( int row,int count )
+UPacketInfoListProxyModel::UPacketInfoListProxyModel( QObject *parent /*= 0*/ )
+:QSortFilterProxyModel(parent)
 {
-    for(int i = row; i < count; i++)
-    {
-        currentDisplayScheme_->visibilities[(*packetInfos_)[i]] = false; 
-    }
-    emit dataChanged(index(row,0),index(row+count-1,0));
-    emit visibilityChanged();
+    setDynamicSortFilter(true);
+    sort(2,Qt::AscendingOrder);
+}
+
+UPacketInfoListProxyModel::~UPacketInfoListProxyModel()
+{
+
 }
 
 }//namespace uni

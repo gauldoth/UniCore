@@ -8,6 +8,7 @@
 #define UNIUI_UPACKET_LIST_MODEL_H
 
 #include <QAbstractTableModel>
+#include <QSortFilterProxyModel>
 #include <QList>
 
 #include "UPacketView.h"
@@ -17,6 +18,19 @@
 
 namespace uni
 {
+
+//! 用于排序UPacketInfoListModel中数据。
+class UPacketInfoListProxyModel : public QSortFilterProxyModel
+{
+    Q_OBJECT
+
+public:
+    explicit UPacketInfoListProxyModel(QObject *parent = 0);
+    ~UPacketInfoListProxyModel();
+
+protected:
+    virtual bool lessThan( const QModelIndex & left, const QModelIndex & right) const;
+};
 
 //! UPacketList使用的Model。
 class UPacketInfoListModel : public QAbstractTableModel
@@ -38,24 +52,9 @@ public:
     virtual Qt::ItemFlags flags(const QModelIndex &index) const;
     void addPacketInfo(UPacketView::PacketInfo packetInfo);
 public slots:
-    //! 全选。
-    /*!
-        所有封包类型都允许输出。
-    */
-    void selectAll();
-    //! 全部取消选择。
-    /*!
-        所有封包类型都不允许输出。
-    */
-    void deselectAll();
     //! 加载了一个新的显示方案，重新显示。
     void visibilityChange();
-    //! 选择指定行。
-    void select(int row,int count);
-    //! 取消选择指定行。
-    void deselect(int row,int count);
 signals:
-    void visibilityChanged();
     void saveSettingsRequested();
 private:
     QList<UPacketView::PacketInfo> *packetInfos_;
