@@ -32,6 +32,8 @@ class UPacketInfoList : public QTableView
 public:
     explicit UPacketInfoList(QWidget *parent = 0);
     virtual ~UPacketInfoList();
+signals:
+    void visibilityChanged();
 private slots:
     //! 显示选择的封包信息。
     void showSelectedPacketInfos();
@@ -39,6 +41,7 @@ private slots:
     void hideSelectedPacketInfos();
     //! 删除选择的封包信息。
     void deleteSelectedPacketInfos();
+    void onClicked( const QModelIndex &index );
 private:
     QAction *showSelectedPacketInfos_;  //!< 显示选择的封包信息。
     QAction *hideSelectedPacketInfos_;  //!< 隐藏选择的封包信息。

@@ -58,8 +58,12 @@ void UPacketView::createPacketListGroupBox()
 {
     packetListGroupBox_ = new QGroupBox(tr("Packet List"),this);
     packetList_ = new UPacketInfoList(this);
+    packetList_->setSortingEnabled(true);
     packetListModel_ = new UPacketInfoListModel(&packetInfos_,&currentDisplayScheme_,this);
-    packetList_->setModel(packetListModel_);
+    UPacketInfoListProxyModel *proxyModel_ = new UPacketInfoListProxyModel(this);
+    proxyModel_->setSourceModel(packetListModel_);
+    packetList_->setModel(proxyModel_);
+    
     displayList_ = new UPacketDisplayList(&savedDisplaySchemes_,this);
 
     silentModePushButton_ = new QPushButton(tr("Silent Mode"),this);
@@ -87,7 +91,7 @@ void UPacketView::createPacketListGroupBox()
     mainLayout->addLayout(bottomLayout,0);
     packetListGroupBox_->setLayout(mainLayout);
 
-    connect(packetListModel_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
+    connect(packetList_,SIGNAL(visibilityChanged()),this,SLOT(updateFilters()));
     connect(packetListModel_,SIGNAL(saveSettingsRequested()),this,SLOT(saveSettings()));
     connect(silentModePushButton_,SIGNAL(toggled(bool)),this,SLOT(setSilentMode(bool)));
     connect(showOnlySelectedButton_,SIGNAL(toggled(bool)),this,SLOT(setShowOnlySelectedPackets(bool)));
