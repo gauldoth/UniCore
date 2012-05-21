@@ -27,9 +27,11 @@ namespace uni
 class UPacketDisplayList;
 class UPacketInfoList;
 class UPacketInfoListModel;
+class UPacketInfoListProxyModel;
 class UPacketMonitor;
 class UPacketMonitorModel;
 class UPacketMonitorProxyModel;
+
 
 //! 封包视图。
 /*!
@@ -203,6 +205,7 @@ private:
     uni::UPacketDisplayList *displayList_;  //!< 显示方案列表。
     uni::UPacketInfoList *packetList_;
     uni::UPacketInfoListModel *packetListModel_;
+    uni::UPacketInfoListProxyModel *packetInfoProxyModel_; 
     QPushButton *silentModePushButton_;
     QPushButton *showSendPacketsButton_;
     QPushButton *showRecvPacketsButton_;

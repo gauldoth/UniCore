@@ -60,9 +60,9 @@ void UPacketView::createPacketListGroupBox()
     packetList_ = new UPacketInfoList(this);
     packetList_->setSortingEnabled(true);
     packetListModel_ = new UPacketInfoListModel(&packetInfos_,&currentDisplayScheme_,this);
-    UPacketInfoListProxyModel *proxyModel_ = new UPacketInfoListProxyModel(this);
-    proxyModel_->setSourceModel(packetListModel_);
-    packetList_->setModel(proxyModel_);
+    packetInfoProxyModel_ = new UPacketInfoListProxyModel(this);
+    packetInfoProxyModel_->setSourceModel(packetListModel_);
+    packetList_->setModel(packetInfoProxyModel_);
     
     displayList_ = new UPacketDisplayList(&savedDisplaySchemes_,this);
 
@@ -169,21 +169,32 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
 
 void UPacketView::updateFilters()
 {
-    UTRACE("临时")<<"start";
     QMap<PacketType,QSet<int> > filters;
     if(showOnlySelectedPackets_)
     {
         QItemSelection selection = packetList_->selectionModel()->selection();
         foreach(QItemSelectionRange range,selection)
         {
+            PacketInfo packetInfo;
             for(int i = range.top(); i <= range.bottom(); i++)
             {
-                if(currentDisplayScheme_.visibilities[packetInfos_[i]])
+                packetInfo.id = packetInfoProxyModel_->index(i,2).data().toString().toInt(0,16);
+                QString type = packetInfoProxyModel_->index(i,1).data().toString();
+                if(type == "Send")
                 {
-                    if((packetInfos_[i].type == SendType && currentDisplayScheme_.showSendPackets)
-                        || (packetInfos_[i].type == RecvType && currentDisplayScheme_.showRecvPackets))
+                    packetInfo.type = SendType;
+                }
+                else if(type == "Recv")
+                {
+                    packetInfo.type = RecvType;
+                }
+                
+                if(currentDisplayScheme_.visibilities[packetInfo])
+                {
+                    if((packetInfo.type == SendType && currentDisplayScheme_.showSendPackets)
+                        || (packetInfo.type == RecvType && currentDisplayScheme_.showRecvPackets))
                     {
-                        filters[packetInfos_[i].type].insert(packetInfos_[i].id);
+                        filters[packetInfo.type].insert(packetInfo.id);
                     }
                 }
             }
@@ -203,9 +214,7 @@ void UPacketView::updateFilters()
             }
         }
     }
-    UTRACE<<"2";
     packetMonitorProxyModel_->setFilters(filters);
-    UTRACE("临时")<<"end";
 }
 
 
