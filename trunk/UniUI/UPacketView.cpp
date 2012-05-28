@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QTime>
 
+#include "..//UniCore//UDebug.h"
 #include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
 #include "UFlowLayout.h"
@@ -151,6 +152,8 @@ void UPacketView::addPacket(PacketType type, const char *packet,int packetSize )
     if(!packetInfos_.contains(packetInfo))
     {
         packetListModel_->addPacketInfo(packetInfo);
+        //新增加的封包是否显示？
+        currentDisplayScheme_.visibilities[packetInfo] = true;
         updateFilters();
     }
 
