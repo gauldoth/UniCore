@@ -9,6 +9,7 @@
 #include "../UniCore/UDebug.h"
 #include "../UniCore/ULog.h"
 #include "UPacketView.h"
+#include "UPacketContentView.h"
 
 namespace uni
 {
@@ -100,7 +101,12 @@ void UPacketMonitor::showPacket( const QModelIndex &index )
 {
     UPacketView::PacketData *packetData = 
         (UPacketView::PacketData *)(index.data(Qt::UserRole).value<void *>());
-    UTRACE<<packetData->id;
+    UPacketContentView *packetContentView = new UPacketContentView(this);
+    packetContentView->setAttribute(Qt::WA_DeleteOnClose,true);
+    packetContentView->setPacket(packetData);
+    packetContentView->show();
+    packetContentView->raise();
+    packetContentView->activateWindow();
 }
 
 }//namespace uni
