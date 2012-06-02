@@ -37,6 +37,8 @@ public:
     {
         buf_.append(data);
     }
+    //! 追加16进制数据，这里以字符串方式添加。
+    void appendHexPattern(const std::string &pattern);
 private:
     std::string buf_;
 };
