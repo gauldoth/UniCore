@@ -12,6 +12,8 @@ static const char *g_prefix[] = {
 "Cloudy",
 "Sadllly",
 "Bubble",
+"QX",
+"Cobra",
 0
 };
 
@@ -19,6 +21,8 @@ static const char *g_suffix[] = {
 "ManX",
 "Sharker",
 "Bomb",
+"Code",
+"Strike",
 0
 };
 
