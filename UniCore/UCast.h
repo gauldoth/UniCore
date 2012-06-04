@@ -97,6 +97,15 @@ std::wstring s2ws(const std::string &s,_locale_t locale);
 
 void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
 
+//! 字符串表示的数字转换成整形。
+/*!
+    \param s 要转换的字符串。
+    \param base 转换的进制，目前只能是10或者16。
+    \param ok ok指向的bool变量用于存放是否转换成功。
+    \return 转换后的数字。
+*/
+int ToInt(const std::string &s,int base = 10,bool *ok = 0);
+
 
 }//namespace uni
 

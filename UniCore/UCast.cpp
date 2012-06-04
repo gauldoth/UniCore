@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <sstream>
 
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
@@ -177,6 +178,26 @@ void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
         assert(!"UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
         OutputDebugStringA("UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
     }
+}
+
+int ToInt( const std::string &s,int base /*= 10*/,bool *ok /*= 0*/ )
+{
+    std::stringstream stm;
+    stm<<s;
+    int result;
+    if(base == 10)
+    {
+
+    }
+    else if(base == 16)
+    {
+        stm<<hex;
+    }
+    else
+    {
+    }
+    stm>>result;
+    return result;
 }
 
 }//namespace uni
