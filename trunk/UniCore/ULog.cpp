@@ -353,6 +353,14 @@ void ULogDumpMemory( ULog &log,const char *address,int len )
             //dumpMessage<<"0"<<setw(2)<<"\\0";
             dumpMessage<<setw(3)<<setfill(' ')<<"."<<setw(0);
         }
+        else if(word == '\r')
+        {
+            dumpMessage<<setw(3)<<setfill(' ')<<"\r"<<setw(0);
+        }
+        else if(word == '\n')
+        {
+            dumpMessage<<setw(3)<<setfill(' ')<<"\n"<<setw(0);
+        }
         else if(word < 0)
         {
             dumpMessage<<hex<<noshowbase<<setw(3)<<setfill(' ')
