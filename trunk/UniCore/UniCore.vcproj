@@ -323,6 +323,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\UConfig.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UConfig.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ULua.cpp"
 				>
 			</File>
