@@ -48,11 +48,13 @@ namespace uni
 {
 //! 获得一个随机的角色名字。
 /*! 
-    \param sizeLimit 名字允许的最大长度，假如生成的名字大于该长度，则重新生成。
-    假如为0（默认值），则代表名字长度无限制。
+    \param minSize 名字允许的最小长度，假如生成的名字长度小于该值，则重新生成。
+    假如为0（默认值）则表示不限制最小长度。
+    \param maxSize 名字允许的最大长度，假如生成的名字长度大于该值，则重新生成。
+    假如为0（默认值）则表示不限制最大长度。
     \return 随机的角色名。
 */
-std::string GetRandomRoleName(int sizeLimit = 0);
+std::string GetRandomRoleName(int minSize = 0,int maxSize = 0);
 
 }//namespace uni
 
