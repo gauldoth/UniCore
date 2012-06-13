@@ -25,8 +25,8 @@ void UBuffer::appendHexPattern( const std::string &pattern )
             //向word加入字符后，word已经包含2个字符，将word代表的16进制数据存入缓冲区中。
             if(word.size() == 2)
             {
-                short data = strtol(word.c_str(),0,16);
-                appendShort(data);
+                char data = strtol(word.c_str(),0,16);
+                appendChar(data);
                 //准备下个数据的输入。
                 word.clear();
             }
@@ -38,8 +38,8 @@ void UBuffer::appendHexPattern( const std::string &pattern )
             assert(word.size() < 2);
             if(!word.empty())
             {
-                short data = strtol(word.c_str(),0,16);
-                appendShort(data);
+                char data = strtol(word.c_str(),0,16);
+                appendChar(data);
                 //准备下个数据的输入。
                 word.clear();
             }

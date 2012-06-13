@@ -14,6 +14,11 @@ static const char *g_prefix[] = {
 "Bubble",
 "QX",
 "Cobra",
+"Bad",
+"Good",
+"Lucky",
+"Warm",
+"Shadowy",
 0
 };
 
@@ -23,10 +28,17 @@ static const char *g_suffix[] = {
 "Bomb",
 "Code",
 "Strike",
+"Applee",
+"Ninnja",
+"Cobara",
+"Conraaa",
+"Cannoner",
+"Summoner",
+"Beatler",
 0
 };
 
-std::string GetRandomRoleName(int sizeLimit /*= 0*/)
+std::string GetRandomRoleName(int minSize /*= 0*/,int maxSize /*= 0*/)
 {
     int prefixCount = 0;
     int suffixCount = 0;
@@ -48,11 +60,18 @@ std::string GetRandomRoleName(int sizeLimit /*= 0*/)
     const char *suffix = g_suffix[rand()%suffixCount];
     std::string result = prefix;
     result += suffix;
-    if(sizeLimit)
+    if(minSize)
     {
-        if((int)result.size() > sizeLimit)
+        if((int)result.size() < minSize)
         {   
-            return GetRandomRoleName(sizeLimit);
+            return GetRandomRoleName(minSize,maxSize);
+        }
+    }
+    if(maxSize)
+    {
+        if((int)result.size() > maxSize)
+        {
+            return GetRandomRoleName(minSize,maxSize);
         }
     }
     return result;
