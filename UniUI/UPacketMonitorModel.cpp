@@ -311,7 +311,7 @@ QVariant UPacketMonitorModel::headerData( int section, Qt::Orientation orientati
             }
             else if(columnNames_[section] == tr("Time"))
             {
-                size.setWidth(fontMetric.width('X')*8);
+                size.setWidth(fontMetric.width('X')*12);
             }
             else if(columnNames_[section] == tr("Name"))
             {
