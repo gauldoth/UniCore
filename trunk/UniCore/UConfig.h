@@ -35,21 +35,21 @@ public:
     /*!
         \param key 数据的键名，格式如下："通用配置/账号"，"网络/服务器/1/IP"。
         各个子项以'/'分隔。这个参数可以是类似printf函数中的格式字符串，可变参在
-        最后指定。
+        最后指定。这里不传引用，因为有用到可变参。
         \param value 要写入的数据。
         \param ... 可变参，用于key中的格式字符串。
     */
-    void set(const std::string &key,const std::string &value,...);
+    void set(std::string key,std::string value,...);
     
     //! 从配置档读取数据。
     /*!
         \param key 数据的键名，格式如下："通用配置/账号"，"网络/服务器/1/IP"。
         各个子项以'/'分隔。这个参数可以是类似printf函数中的格式字符串，可变参在
-        最后指定。
+        最后指定。这里不传引用，因为有用到可变参。
         \param ... 可变参，用于key中的格式字符串。
         \return 取出的数据。
     */
-    std::string get(const std::string &key,...);
+    std::string get(std::string key,...);
 private:
     std::string filePath_;
 };
