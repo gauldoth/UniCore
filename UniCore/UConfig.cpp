@@ -16,7 +16,7 @@ UConfig::UConfig( const std::string &filePath )
 
 }
 
-void UConfig::set( const std::string &key,const std::string &value,...)
+void UConfig::set( std::string key,std::string value,...)
 {
     va_list ap;
     va_start(ap,value);
@@ -60,7 +60,7 @@ void UConfig::set( const std::string &key,const std::string &value,...)
     }
 }
 
-std::string UConfig::get( const std::string &key,...)
+std::string UConfig::get( std::string key,...)
 {
     va_list ap;
     va_start(ap,key);

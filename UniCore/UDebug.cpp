@@ -27,7 +27,7 @@ void DebugMessage(const char *format,...)
     delete[] buffer;
 }
 
-void DebugMessage(const std::string &format,...)
+void DebugMessage(std::string format,...)
 {
     va_list ap;
     va_start(ap,format);
@@ -61,7 +61,7 @@ void DebugMessage(const wchar_t *format,...)
     delete[] buffer;
 }
 
-void DebugMessage(const std::wstring &format,...)
+void DebugMessage(std::wstring format,...)
 {
     va_list ap;
     va_start(ap,format);

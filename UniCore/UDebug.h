@@ -28,10 +28,10 @@ void DebugMessage(const char *format,...);
 
 //! 格式化输出调试信息到调试器，使用方法和printf类似。
 /*!
-    \param format 待格式化的字符串。
+    \param format 待格式化的字符串，这里不传引用，因为有用到可变参。
     \param ...用于格式化的参数。
 */
-void DebugMessage(const std::string &format,...);
+void DebugMessage(std::string format,...);
 
 /*! \fn void DebugMessage(const wchar_t *format,...)
     \brief 格式化输出调试信息到调试器，使用方法和printf类似。
@@ -44,10 +44,10 @@ void DebugMessage(const wchar_t *format,...);
 
 //! 格式化输出调试信息到调试器，使用方法和printf类似。
 /*!
-    \param format 待格式化的字符串。
+    \param format 待格式化的字符串，这里不传引用，因为有用到可变参。
     \param ...用于格式化的参数。
 */
-void DebugMessage(const std::wstring &format,...);
+void DebugMessage(std::wstring format,...);
 
 //! 用于计时的秒表。
 /*!
