@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <sstream>
+#include <stdlib.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
@@ -198,6 +199,13 @@ int ToInt( const std::string &s,int base /*= 10*/,bool *ok /*= 0*/ )
     }
     stm>>result;
     return result;
+}
+
+std::string i2s( int i )
+{
+    char buf[100] = "";
+    _itoa_s(i,buf,10);
+    return buf;
 }
 
 }//namespace uni

@@ -106,6 +106,13 @@ void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
 */
 int ToInt(const std::string &s,int base = 10,bool *ok = 0);
 
+//! 整形转成字符串。
+/*!
+    \param i 要转换的整形。
+    \return 字符串表示的数字。
+*/
+std::string i2s(int i);
+
 
 }//namespace uni
 
