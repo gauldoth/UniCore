@@ -3,11 +3,14 @@
 
 #include "..//UniCore//UDebug.h"
 #include "..//UniUI//UStopwatchView.h"
+#include "..//UniCore//UConfig.h"
 
 using namespace uni;
 
 int main(int argc, char *argv[])
 {
+    UConfig config("./≈‰÷√.ini");
+    config.set("µ»º∂≈‰÷√/%d/µÿÕºID","2",100);
     QApplication a(argc, argv);
     UPacketView_Dev w;
     w.show();

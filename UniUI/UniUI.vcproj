@@ -327,34 +327,6 @@
 			SourceControlFiles="false"
 			>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_ULogConfigPanel.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MTd\moc_ULogConfigPanel.cpp"
 				>
 				<FileConfiguration
@@ -431,6 +403,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_ULogConfigPanel.cpp"
+				>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -551,34 +551,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_ULuaInterpreter.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MD\moc_ULuaInterpreter.cpp"
 				>
 				<FileConfiguration
@@ -655,6 +627,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MT\moc_ULuaInterpreter.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -775,34 +775,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UMemoryTable.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MD\moc_UMemoryTable.cpp"
 				>
 				<FileConfiguration
@@ -887,7 +859,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UMemoryView.cpp"
+				RelativePath=".\GeneratedFiles\MT\moc_UMemoryTable.cpp"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
@@ -898,7 +870,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MD|Win32"
+					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -906,7 +878,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MT|Win32"
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -999,6 +971,174 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UMemoryView.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MD\moc_UPacketContentView.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketContentView.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketContentView.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MT\moc_UPacketContentView.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\MDd\moc_UPacketDisplayList.cpp"
 				>
 				<FileConfiguration
@@ -1011,6 +1151,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MD\moc_UPacketDisplayList.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1083,34 +1251,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MD\moc_UPacketDisplayList.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MT\moc_UPacketInfoList.cpp"
 				>
 				<FileConfiguration
@@ -1139,7 +1279,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UPacketInfoList.cpp"
+				RelativePath=".\GeneratedFiles\MD\moc_UPacketInfoList.cpp"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
@@ -1150,7 +1290,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MD|Win32"
+					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1195,7 +1335,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MD\moc_UPacketInfoList.cpp"
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketInfoList.cpp"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
@@ -1206,7 +1346,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MTd|Win32"
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1279,34 +1419,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UPacketInfoListModel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MTd\moc_UPacketInfoListModel.cpp"
 				>
 				<FileConfiguration
@@ -1335,10 +1447,38 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitor.cpp"
+				RelativePath=".\GeneratedFiles\MT\moc_UPacketInfoListModel.cpp"
 				>
 				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
 					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitor.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1391,6 +1531,34 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitor.cpp"
+				>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\MD\moc_UPacketMonitor.cpp"
 				>
 				<FileConfiguration
@@ -1419,10 +1587,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitor.cpp"
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorModel.cpp"
 				>
 				<FileConfiguration
-					Name="MDd|Win32"
+					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1439,34 +1607,6 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UPacketMonitorModel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1479,34 +1619,6 @@
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorModel.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1559,6 +1671,62 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\GeneratedFiles\MT\moc_UPacketMonitorModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitorProxyModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\GeneratedFiles\MD\moc_UPacketMonitorProxyModel.cpp"
 				>
 				<FileConfiguration
@@ -1571,6 +1739,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorProxyModel.cpp"
+				>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1615,38 +1811,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketMonitorProxyModel.cpp"
+				RelativePath=".\GeneratedFiles\MDd\moc_UPacketView.cpp"
 				>
 				<FileConfiguration
 					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UPacketMonitorProxyModel.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1675,34 +1843,6 @@
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UPacketView.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1783,7 +1923,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MD\moc_UProcessModel.cpp"
+				RelativePath=".\GeneratedFiles\MT\moc_UProcessModel.cpp"
 				>
 				<FileConfiguration
 					Name="MDd|Win32"
@@ -1802,7 +1942,7 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="MT|Win32"
+					Name="MD|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1823,6 +1963,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MD\moc_UProcessModel.cpp"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1867,16 +2035,8 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MT\moc_UProcessModel.cpp"
+				RelativePath=".\GeneratedFiles\MDd\moc_UProcessView.cpp"
 				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
 				<FileConfiguration
 					Name="MTd|Win32"
 					ExcludedFromBuild="true"
@@ -1887,6 +2047,14 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -1923,34 +2091,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MTd\moc_UProcessView.cpp"
-				>
-				<FileConfiguration
-					Name="MDd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath=".\GeneratedFiles\MD\moc_UProcessView.cpp"
 				>
 				<FileConfiguration
@@ -1979,38 +2119,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UProcessView.cpp"
+				RelativePath=".\GeneratedFiles\MTd\moc_UProcessView.cpp"
 				>
 				<FileConfiguration
-					Name="MTd|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MD|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="MT|Win32"
-					ExcludedFromBuild="true"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\GeneratedFiles\MDd\moc_UStopwatchView.cpp"
-				>
-				<FileConfiguration
-					Name="MTd|Win32"
+					Name="MDd|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -2055,6 +2167,34 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\GeneratedFiles\MDd\moc_UStopwatchView.cpp"
+				>
+				<FileConfiguration
+					Name="MTd|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -2458,6 +2598,58 @@
 		<Filter
 			Name="UPacketView"
 			>
+			<File
+				RelativePath=".\UPacketContentView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UPacketContentView.h"
+				>
+				<FileConfiguration
+					Name="MDd|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing UPacketContentView.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketContentView.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketContentView.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MTd|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing UPacketContentView.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketContentView.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketContentView.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MD|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing UPacketContentView.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketContentView.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketContentView.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="MT|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Moc&apos;ing UPacketContentView.h..."
+						CommandLine="&quot;$(QTDIR)\bin\moc.exe&quot;  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I&quot;.\GeneratedFiles\.&quot; -I&quot;$(QTDIR)\include\.&quot; -I&quot;.\GeneratedFiles\$(ConfigurationName)\.&quot; -I&quot;.\.&quot; -I&quot;$(QTDIR)\include\QtCore\.&quot; -I&quot;$(QTDIR)\include\QtGui\.&quot; &quot;.\UPacketContentView.h&quot; -o &quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;&#x0D;&#x0A;"
+						AdditionalDependencies="&quot;$(QTDIR)\bin\moc.exe&quot;;.\UPacketContentView.h"
+						Outputs="&quot;.\GeneratedFiles\$(ConfigurationName)\moc_UPacketContentView.cpp&quot;"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath=".\UPacketDisplayList.cpp"
 				>
