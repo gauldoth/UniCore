@@ -1,18 +1,18 @@
 ﻿/*! \mainpage UniCore文档
 
 	\section intro_sec 简介
-	UniCore是一个静态库工程，包含了一些常用的函数。
-	编译时会生成4个版本的静态库，连接到不同的C运行时库。
+	UniCore是一个静态库工程,包含了一些常用的函数.
+	编译时会生成4个版本的静态库,连接到不同的C运行时库.
 	
 	\section common_sec 其他
-		- AutoLink	提供自动连接机制。
-		- Common.h 定义了一些常用的宏。
+		- AutoLink	提供自动连接机制.
+		- Common.h 定义了一些常用的宏.
 	
 	\section debug_sec 调试
-		- uni::ULog 新的日志系统，支持流方式和格式化方式输出。
-		- uni::DebugMessage 格式化输出调试信息。
+		- uni::ULog 新的日志系统，支持流方式和格式化方式输出,具体使用方式请看 \ref ulog_page.
+		- uni::DebugMessage 格式化输出调试信息.
 		
 	\namespace uni
-    \brief UniCore的函数和类都放在uni命名空间下。
+    \brief UniCore的函数和类都放在uni命名空间下.
 	
 */
