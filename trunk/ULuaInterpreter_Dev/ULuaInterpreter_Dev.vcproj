@@ -274,10 +274,10 @@
 			SourceControlFiles="false"
 			>
 			<File
-				RelativePath=".\GeneratedFiles\Release\moc_ULuaInterpreter_Dev.cpp"
+				RelativePath=".\GeneratedFiles\Debug\moc_ULuaInterpreter_Dev.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -286,10 +286,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\Debug\moc_ULuaInterpreter_Dev.cpp"
+				RelativePath=".\GeneratedFiles\Release\moc_ULuaInterpreter_Dev.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -310,7 +310,7 @@
 		/>
 		<Global
 			Name="QtVersion"
-			Value="4.6.3_static_linked"
+			Value="qt_static"
 		/>
 		<Global
 			Name="RccDir"
