@@ -1,5 +1,6 @@
 ﻿/*! \file UProcess.h
     \brief 包含了一些进程相关的函数。
+    这里函数使用Unicode,这样不同系统的语言
 
     \date 2011-9-6
 */

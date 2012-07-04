@@ -40,6 +40,14 @@ public:
         \param ... 可变参，用于key中的格式字符串。
     */
     void set(std::string key,std::string value,...);
+
+    //! 向配置档写入整型.
+    /*!
+        \param key 数据的键名.
+        \param value 要写入的数据.
+        \param ... 可变参,用于key中的格式字符串.
+    */
+    void setInt(std::string key,int value,...);
     
     //! 从配置档读取数据。
     /*!
@@ -50,6 +58,14 @@ public:
         \return 取出的数据。
     */
     std::string get(std::string key,...);
+
+    //! 从配置档读取整型数据.
+    /*!
+        \param key 数据的键名,参考UConfig键名格式.
+        \param ... 可变参,用于key中的格式字符串.
+        \return 取出的数据.
+    */
+    int getInt(std::string key,...);
 private:
     std::string filePath_;
 };

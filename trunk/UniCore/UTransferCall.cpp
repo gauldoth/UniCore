@@ -54,7 +54,6 @@ void TransferCallManager::processRequests()
         scoped_lock<interprocess_mutex> lock(queueLock_);
         while(!requests_.empty())
         {
-            UTRACE("临时")<<"处理函数。";
             (*(requests_.front().functor))();
             requests_.pop();
         }

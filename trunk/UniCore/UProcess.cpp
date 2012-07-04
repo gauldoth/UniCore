@@ -105,7 +105,7 @@ std::wstring GetCurrentProcessDirectory()
 {
     std::wstring result;
     wchar_t path[MAX_PATH] = L"";
-    int ret = GetModuleFileName(NULL,path,MAX_PATH);
+    int ret = GetModuleFileNameW(NULL,path,MAX_PATH);
     if(!ret)
     {
         UERROR<<"GetModuleFileName失败。"<<lasterr;
