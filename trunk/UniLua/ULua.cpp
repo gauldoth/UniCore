@@ -1,10 +1,16 @@
-﻿#include "ULua.h"
+﻿extern "C"
+{
+#include "../lua/lauxlib.h"
+#include "../lua/lua.h"
+#include "../lua/lualib.h"
+}
+
 
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
 
-#include "ULog.h"
-#include "UMemory.h"
+#include "../UniCore/ULog.h"
+#include "../UniCore/UMemory.h"
 
 
 namespace uni
@@ -33,7 +39,7 @@ static int lua_get_at(lua_State *L)
     }
     catch (...)
     {
-    	lua_pushnil(L);
+        lua_pushnil(L);
     }
     return 1;
 }
@@ -127,7 +133,7 @@ static const struct luaL_reg g_luaFunctions[] = {
     {NULL, NULL}  /* sentinel */
 };
 
-int RegisterCommonLuaFunctions( lua_State *L )
+extern "C" __declspec(dllexport) int luaopen_unilua( lua_State *L )
 {
     for(int i = 0; g_luaFunctions[i].func; i++)
     {

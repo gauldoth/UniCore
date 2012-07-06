@@ -229,10 +229,10 @@
 			SourceControlFiles="false"
 			>
 			<File
-				RelativePath=".\GeneratedFiles\Debug\moc_UPacketView_Dev.cpp"
+				RelativePath=".\GeneratedFiles\Release\moc_UPacketView_Dev.cpp"
 				>
 				<FileConfiguration
-					Name="Release|Win32"
+					Name="Debug|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -241,10 +241,10 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\GeneratedFiles\Release\moc_UPacketView_Dev.cpp"
+				RelativePath=".\GeneratedFiles\Debug\moc_UPacketView_Dev.cpp"
 				>
 				<FileConfiguration
-					Name="Debug|Win32"
+					Name="Release|Win32"
 					ExcludedFromBuild="true"
 					>
 					<Tool
@@ -303,7 +303,7 @@
 		/>
 		<Global
 			Name="QtVersion"
-			Value="qt_static"
+			Value="4.6.3_static_linked"
 		/>
 		<Global
 			Name="RccDir"
