@@ -7,6 +7,7 @@
 #define UNICORE_UMEMORY_H
 
 #include <assert.h>
+#include <string>
 
 namespace uni
 {
@@ -81,6 +82,12 @@ inline RetType &GetAt(BaseType base,int offsets[],int count)
 
     return *reinterpret_cast<RetType *>(basePtr);
 }
+
+//! Dump字符串.
+/*!
+    
+*/
+std::string DumpString(int address);
 
 }//namespace uni
 

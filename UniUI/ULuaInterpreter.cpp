@@ -11,7 +11,7 @@
 #include <QVBoxLayout>
 
 #include "ULuaEdit.h"
-#include "../UniCore/ULua.h"
+#include "../UniLua/ULua.h"
 #include "../UniCore/ULog.h"
 
 using namespace std;
@@ -35,7 +35,7 @@ ULuaInterpreter::ULuaInterpreter(lua_State *L /*= 0*/, QWidget *parent /*= 0*/)
         }
         lua_gc(L_,LUA_GCSTOP,0);
         luaL_openlibs(L_);
-        RegisterCommonLuaFunctions(L_);
+        ULuaInit(L_);
         registerPrint();  //修改print函数为显示到output编辑框。
         lua_gc(L_,LUA_GCRESTART,0);
     }

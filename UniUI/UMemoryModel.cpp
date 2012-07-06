@@ -3,8 +3,9 @@
 #include <QTimer>
 
 #include "../UniCore/ULog.h"
-#include "../UniCore/ULua.h"
+#include "../UniLua/ULua.h"
 #include "../UniCore/UMemory.h"
+
 
 namespace uni
 {
@@ -66,7 +67,8 @@ UMemoryModel::UMemoryModel(QObject *parent /*= 0*/)
 
     lua_gc(L_,LUA_GCSTOP,0);
     luaL_openlibs(L_);
-    RegisterCommonLuaFunctions(L_);
+    ULuaInit(L_);
+    //RegisterCommonLuaFunctions(L_);
     lua_gc(L_,LUA_GCRESTART,0);
 
     QTimer *timer = new QTimer(this);
