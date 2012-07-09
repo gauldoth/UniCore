@@ -30,6 +30,15 @@ namespace uni
 */
 std::string ws2s(const std::wstring &ws,const char *locale = "");
 
+//! 将std::wstring转换为std::string.
+/*!
+    根据指定代码页将wstring转换为string.
+    \param ws utf-16编码的字符串.
+    \param codepage 根据哪个代码页来转换.
+    \return 转换后的字符串.
+*/
+std::string ws2s(const std::wstring &ws,int codepage);
+
 
 //! 将std::wstring转换为std::string。
 /*!
@@ -72,6 +81,14 @@ void ws2s(char *dest,int len,const wchar_t *source,const char *locale);
 */
 std::wstring s2ws(const std::string &s,const char *locale = "");
 
+//! 将std::string转换为std::wstring.
+/*!
+    根据指定代码页将std::string转换为std::wstring.
+    \param s 源字符串.
+    \param codepage 转换时采用的代码页.
+    \return 转换后的unicode字串.
+*/
+std::wstring s2ws(const std::string &s,int codepage);
 
 //! 将std::string转换为std::wstring。
 /*!
@@ -96,15 +113,6 @@ std::wstring s2ws(const std::string &s,const char *locale = "");
 std::wstring s2ws(const std::string &s,_locale_t locale); 
 
 void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
-
-//! 字符串表示的数字转换成整形。
-/*!
-    \param s 要转换的字符串。
-    \param base 转换的进制，目前只能是10或者16。
-    \param ok ok指向的bool变量用于存放是否转换成功。
-    \return 转换后的数字。
-*/
-int ToInt(const std::string &s,int base = 10,bool *ok = 0);
 
 //! 整形转成字符串。
 /*!

@@ -97,6 +97,31 @@ void ws2s(char *dest,int len,const wchar_t *source,const char *locale )
     }
 }
 
+std::string ws2s( const std::wstring &ws,int codepage )
+{
+    string result;
+
+    int requiredSize = WideCharToMultiByte(codepage,0,ws.c_str(),ws.size(),0,0,0,0);
+    if(requiredSize == 0)
+    {
+        DebugMessage("UniCore ws2s 转换字符串时发生错误.Last Error:%d",GetLastError());
+        return result;
+    }
+    char *dest = new char[requiredSize];
+    int numWritten = WideCharToMultiByte(codepage,0,ws.c_str(),ws.size(),dest,requiredSize,0,0);
+    if(numWritten == 0)
+    {
+        delete []dest;
+        DebugMessage("UniCore ws2s 转换字符串时发生错误.Last Error:%d",GetLastError());
+        return result;
+    }
+
+    result.assign(dest,requiredSize);  //dest中保存的字符串不是以0结尾.
+    delete []dest;
+
+    return result;
+}
+
 wstring s2ws(const string &s,const char *locale /*= ""*/)
 {
     wstring result;
@@ -156,6 +181,31 @@ wstring s2ws(const string &s,_locale_t locale)
     return result;
 }
 
+std::wstring s2ws( const std::string &s,int codepage )
+{
+    wstring result;
+
+    int requiredSize = MultiByteToWideChar(codepage,0,s.c_str(),s.size(),0,0);
+    if(requiredSize == 0)
+    {
+        DebugMessage("UniCore s2ws 转换字符串时发生错误.Last Error:%d",GetLastError());
+        return result;
+    }
+    wchar_t *dest = new wchar_t[requiredSize];
+    int numWritten = MultiByteToWideChar(codepage,0,s.c_str(),s.size(),dest,requiredSize);
+    if(numWritten == 0)
+    {
+        delete []dest;
+        DebugMessage("UniCore s2ws 转换字符串时发生错误.Last Error:%d",GetLastError());
+        return result;
+    }
+
+    result.assign(dest,requiredSize);  //dest中保存的字符串不是以0结尾.
+    delete []dest;
+
+    return result;
+}
+
 void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
 {
     size_t numOfCharConverted = 0;
@@ -179,26 +229,6 @@ void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
         assert(!"UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
         OutputDebugStringA("UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
     }
-}
-
-int ToInt( const std::string &s,int base /*= 10*/,bool *ok /*= 0*/ )
-{
-    std::stringstream stm;
-    stm<<s;
-    int result;
-    if(base == 10)
-    {
-
-    }
-    else if(base == 16)
-    {
-        stm<<hex;
-    }
-    else
-    {
-    }
-    stm>>result;
-    return result;
 }
 
 std::string i2s( int i )
