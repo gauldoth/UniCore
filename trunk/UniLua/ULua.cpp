@@ -9,6 +9,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
 
+#include "../UniCore/UCast.h"
 #include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
 

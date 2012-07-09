@@ -14,7 +14,7 @@
 	用时,包含ULua.h后,调用ULuaInit(L)注册Lua函数到L.
 	在Lua中使用时,直接require("unilua")即可,注意要unilua.dll必须在系统目录或者其
 	他能找到的目录.
-		
+	
 	\namespace uni
     \brief UniCore和UniUI中的函数和类都放在uni命名空间下.
 	
