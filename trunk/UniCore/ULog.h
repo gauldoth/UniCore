@@ -35,7 +35,7 @@ namespace uni
     ULog采用流的方式输出日志信息，并且兼容标准库中流支持的类型和操纵符。
     实际使用时请使用UTRACE，XDBG等宏来输出日志信息，使用宏还可以使用类似printf的方式输出日志。
 
-    \section ulog_type_sec 日志类型和日志级别u
+    \section ulog_type_sec 日志类型和日志级别
     日志共有6种类型，Trace为最低级别，往下级别越来越高：
         - \b Trace 最精细的调试信息，多用于定位错误，查看某些变量的值。
         - \b Debug 普通的调试信息，这类信息发布时一般不输出。
