@@ -82,7 +82,6 @@ void UPacketMonitor::copySelected()
 
 void UPacketMonitor::updateGeometries()
 {
-    UStopwatch a(7);
     QTableView::updateGeometries();
 }
 
@@ -93,7 +92,6 @@ int UPacketMonitor::sizeHintForRow( int row ) const
 
 void UPacketMonitor::paintEvent( QPaintEvent * event )
 {
-    UStopwatch a(4);
     QTableView::paintEvent(event);
 }
 
