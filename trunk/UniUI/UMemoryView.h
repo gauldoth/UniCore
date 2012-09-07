@@ -59,6 +59,12 @@ public:
 public slots:
     //! 设置当前地址。
     void setAddress(int address);
+    //! 设置要显示内存的进程ID.
+    /*!
+        \param pid 为-1时,代表自身所在进程.否则为其他进程.
+        当目标进程不是自身进程时,会从共享内存中取得单元格数据.
+    */
+    void setTargetProcessID(int pid = -1);
     //! addressEdit内容改变。
     void addressEditChanged(const QString &text);
     //! 读取配置。
