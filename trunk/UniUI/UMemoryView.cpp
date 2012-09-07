@@ -15,7 +15,7 @@
 
 #include "UMemoryModel.h"
 #include "UMemoryTable.h"
-#include "../UniCore/ULua.h"
+#include "../UniLua/ULua.h"
 
 #pragma comment(lib,"lua51.lib")
 
