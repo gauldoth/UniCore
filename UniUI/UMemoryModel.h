@@ -99,6 +99,8 @@ private:
     void compileScripts();
     int baseAddress_;  //!< 基地址。
     int currentRowCount_;  //!< 当前要查看的行数，这个数据模型会根据视图的需要自动扩展数据的行数。
+    QList<ColumnInfo> fixedColumnInfos_;
+    QList<ColumnInfo> userDefinedColumnInfos_;
     QList<ColumnInfo> columnInfos_;
     lua_State *L_;
 };

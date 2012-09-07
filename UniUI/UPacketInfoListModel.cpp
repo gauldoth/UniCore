@@ -237,6 +237,7 @@ bool UPacketInfoListModel::removeRows( int row, int count, const QModelIndex &pa
         packetInfos_->removeAt(row);
     }
     endRemoveRows();
+    emit saveSettingsRequested();
     return true;
 }
 

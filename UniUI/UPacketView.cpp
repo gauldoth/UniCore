@@ -294,6 +294,7 @@ void UPacketView::setAutoScroll( bool isAutoScroll )
 void UPacketView::setSilentMode( bool enable )
 {
     silentMode_ = enable;
+    saveSettings();
 }
 
 void UPacketView::setShowOnlySelectedPackets( bool enable )
