@@ -108,6 +108,11 @@ void UMemoryView::runLuaCFunction( lua_CFunction function )
     memoryModel_->runLuaCFunction(function);
 }
 
+void UMemoryView::setTargetProcessID( int pid /*= -1*/ )
+{
+
+}
+
 
 
 
