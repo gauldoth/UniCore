@@ -7,6 +7,7 @@
 #define UNICORE_UCOMMON_H
 
 #include <string>
+#include <vector>
 
 #define AUTO_LINK_LIB_NAME "UniCore"
 #include "AutoLink.h"
@@ -54,7 +55,21 @@ namespace uni
     假如为0（默认值）则表示不限制最大长度。
     \return 随机的角色名。
 */
-std::string GetRandomRoleName(int minSize = 0,int maxSize = 0);
+std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,int randomSuffixCount = 0);
+
+//! 分割字符串.
+/*!
+    \param s 要分割的字符串.
+    \param delim 分割用token.
+    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中.
+
+    \code
+    std::string s = "Acc Psw Credit";
+    std::vector<std::string> results = split(s,
+    \endcode
+*/
+std::vector<std::string> split(const std::string &s,const std::string &delim = " ");
+
 
 }//namespace uni
 
