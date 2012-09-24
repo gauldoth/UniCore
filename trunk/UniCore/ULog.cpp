@@ -64,6 +64,7 @@ ULog & ULog::operator=( const ULog &log )
 
 ULog::~ULog()
 {
+    
     if(!--message_->ref_)
     {
         //获得当前日志所允许的等级。
@@ -79,17 +80,23 @@ ULog::~ULog()
         {
             //允许输出。
             //检查是否有分隔符。
-            string message = message_->stm_.str();
+            //DebugMessage("%08x",message_);
+            //DebugMessage("%d",message_->stm_.rdbuf()->str().size());
+
+            std::string message = message_->stm_.str();
+            //OutputDebugStringA("ULog::~ULog 2.5");
+            //OutputDebugStringA(message_->delim_.c_str());
             if(!message_->delim_.empty())
             {
                 string::size_type pos = message.rfind(message_->delim_);
+                //DebugMessage("pos:%d",pos);
                 if(pos != string::npos
                     && pos + message_->delim_.size() == message.size())
                 {
-                    message_->stm_.str().erase(pos);
+                    message.erase(pos);
+                    message_->stm_.str(message);
                 }
             }
-            
             scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
             if(!appenders_.count(message_->name_))
             {
@@ -99,6 +106,7 @@ ULog::~ULog()
             appenders_[message_->name_]->append(message_);
         }
         delete message_;
+        message_ = 0;
     }
 }
 
@@ -333,6 +341,8 @@ void ULogDumpMemory( ULog &log,const char *address,int len )
     stringstream dumpMessage;
     for(int i = 0; i < len; i++)
     {
+        char tempBuf[255] = "";
+        _itoa_s(i,tempBuf,255,10);
         if(i%16 == 0)
         {
             dumpInfo<<reinterpret_cast<void *>(beginAddress+i);
