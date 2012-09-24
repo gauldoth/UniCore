@@ -45,7 +45,6 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
     {
         int column = index.column();
         int row = index.row();
-        const char *packet = packetDatas_->at(index.row()).content.constData();
         int packetSize = packetDatas_->at(index.row()).content.size();
         UPacketView::PacketData packetData = packetDatas_->at(row);
 
@@ -102,7 +101,6 @@ QVariant UPacketMonitorModel::data( const QModelIndex &index,int role /*= Qt::Di
     {
         int column = index.column();
         int row = index.row();
-        const char *packet = packetDatas_->at(index.row()).content.constData();
         int packetSize = packetDatas_->at(index.row()).content.size();
         UPacketView::PacketData packetData = packetDatas_->at(row);
 
