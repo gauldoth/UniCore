@@ -519,6 +519,8 @@ ULog uLog(ULog::Type type,const char *file,int line,const char *function);
 #define UNI_LOG_LEVEL 0
 #endif
 
+#define ULOG uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+
 #define UTRACE if(UNI_LOG_LEVEL <= ULog::TraceLevel) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
 
 #define UDEBUG if(UNI_LOG_LEVEL <= ULog::DebugLevel) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
