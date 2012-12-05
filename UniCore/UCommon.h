@@ -53,6 +53,9 @@ namespace uni
     假如为0（默认值）则表示不限制最小长度。
     \param maxSize 名字允许的最大长度，假如生成的名字长度大于该值，则重新生成。
     假如为0（默认值）则表示不限制最大长度。
+    \param wordCount 名字所使用的单词个数.
+    \param randomSuffixCount 名字末尾添加的随机数字的位数.
+    例如randomSuffixCount = 3,则生成Apple251,Xore546之类的名字,后面附加3个随机数字.
     \return 随机的角色名。
 */
 std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,int randomSuffixCount = 0);

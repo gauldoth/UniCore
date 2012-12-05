@@ -54,7 +54,6 @@ void DebugMessage(std::wstring format,...);
     通常用于统计代码执行时间。
     //局部使用的秒表。
     UStopwatch stopwatch;
-    stopwatch.start();
     stopwatch.stime();  //获得经过时间。
 
     //全局使用的秒表。

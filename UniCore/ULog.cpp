@@ -145,6 +145,11 @@ void ULog::setAppender(const std::string &name,AppenderType type)
             appender = new DebuggerAppender;
             break;
         }
+    case LoggerAppenderType:
+        {
+            appender = new LoggerAppender;
+            break;
+        }
     default:
         {
             appender = new DebuggerAppender;
@@ -391,5 +396,90 @@ void ULogDumpMemory( ULog &log,const char *address,int len )
     }
 }
 
+
+
+ULog::LoggerAppender::LoggerAppender()
+{
+    //打开当前的日志文件,没有则创建.
+    string logFileName = "ulog_";
+    char currentTime[255] = "";
+    time_t t;
+    tm timeStruct;
+    time(&t);
+    localtime_s(&timeStruct,&t);
+    strftime(currentTime,255,"%Y_%m_%d",&timeStruct);
+    logFileName += currentTime;
+    logFileName += ".log";
+    logFile_.open(logFileName.c_str(),ios_base::out|ios_base::app);
+    if(!logFile_.is_open())
+    {
+        DebugMessage("UniCore ULog::LoggerAppender::LoggerAppender() 无法打开日志文件.");
+    }
+}
+
+ULog::LoggerAppender::~LoggerAppender()
+{
+    logFile_.close();
+}
+
+void ULog::LoggerAppender::append( Message *message )
+{
+    if(logFile_)
+    {
+        string type;
+        switch(message->type_)
+        {
+        case TraceType:
+            {
+                type = "trace";
+                break;
+            }
+        case DebugType:
+            {
+                type = "debug";
+                break;
+            }
+        case InfoType:
+            {
+                type = "info";
+                break;
+            }
+        case WarnType:
+            {
+                type = "warn";
+                break;
+            }
+        case ErrorType:
+            {
+                type = "error";
+                break;
+            }
+        case FatalType:
+            {
+                type = "fatal";
+                break;
+            }
+        default:
+            {
+                assert(!"未知的日志类型。");
+            }
+        }
+        time_t t;
+        tm timeStruct;
+        time(&t);
+        localtime_s(&timeStruct,&t);
+        char currentTime[255] = "";
+        if(asctime_s(currentTime,&timeStruct) != 0)
+        {
+            DebugMessage("UniCore ULog::LoggerAppender::append( Message *message ) asctime_s失败.");
+        }
+        logFile_<<currentTime<<" "
+            <<"{"<<message->name_<<"}"
+            <<"["<<type<<"]"
+            <<"["<<message->func_<<"]"
+            <<" "<<message->stm_.str()<<" "
+            <<"<"<<message->line_<<">"<<endl;
+    }
+}
 
 }//namespace uni
