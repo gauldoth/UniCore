@@ -15,6 +15,7 @@
 
 #include <assert.h>
 #include <errno.h>
+#include <fstream>
 #include <iomanip>
 #include <map>
 #include <memory>
@@ -204,6 +205,7 @@ public:
     enum AppenderType
     {
         DebuggerAppenderType,  //<! 输出到调试器的输出源。
+        LoggerAppenderType,  //!<  输出到日志.
     };
 
     //! 保存了一条日志信息的内容。
@@ -244,6 +246,18 @@ public:
     private:
         DebuggerAppender(const DebuggerAppender &);
         DebuggerAppender &operator=(const DebuggerAppender &);
+    };
+
+    class LoggerAppender : public Appender
+    {
+    public:
+        LoggerAppender();
+        virtual ~LoggerAppender();
+        virtual void append(Message *message);
+    private:
+        LoggerAppender(const LoggerAppender &);
+        LoggerAppender &operator=(const LoggerAppender &);
+        std::ofstream logFile_;
     };
 
     //! 无参数的操纵符。
@@ -503,7 +517,7 @@ ULog uLog(ULog::Type type,const char *file,int line,const char *function);
 #define UNI_LOG_LEVEL 700
 #elif defined UNI_LOG_LEVEL_FATAL   //严重的错误，导致程序终止。
 #define UNI_LOG_LEVEL 600
-#elif defined UNI_LOG_LEVEL_ERROR   //错误，允许程序继续运行。
+#elif defined UNI_LOG_LEVEL_ERROR   //错误。
 #define UNI_LOG_LEVEL 500
 #elif defined UNI_LOG_LEVEL_WARN    //警告，反映潜在的有害的状态。
 #define UNI_LOG_LEVEL 400

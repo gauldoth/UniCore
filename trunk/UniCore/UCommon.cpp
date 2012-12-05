@@ -36,6 +36,9 @@ static const char *g_wordsForGetRandomName[] = {
 "Sunny",
 "Warm",
 "X",
+"XX",
+"Zero",
+"Zebra"
 };
 
 std::string GetRandomRoleName(int minSize /*= 0*/,int maxSize /*= 0*/,int wordCount /*= 1*/,int randomSuffixCount /*= 0*/)
