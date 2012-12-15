@@ -33,18 +33,18 @@ namespace uni
 {
 
 /*! \page ulog_page 日志系统说明
-    ULog采用流的方式输出日志信息，并且兼容标准库中流支持的类型和操纵符。
-    实际使用时请使用UTRACE，XDBG等宏来输出日志信息，使用宏还可以使用类似printf的方式输出日志。
+    ULog采用流的方式输出日志信息，并且兼容标准库中输入输出流支持的类型和操纵符。
+    实际使用时请使用UTRACE，UDEBUG等宏来输出日志信息。
 
     \section ulog_type_sec 日志类型和日志级别
     日志共有6种类型，Trace为最低级别，往下级别越来越高：
-        - \b Trace 最精细的调试信息，多用于定位错误，查看某些变量的值。
+        - \b Trace 最精细的调试信息，多用于定位错误，监视某些变量的值。
         - \b Debug 普通的调试信息，这类信息发布时一般不输出。
-        - \b Info 表示程序进程的信息，例如"开始打怪"，"开始出售物品"之类。
+        - \b Info 表示程序当前状况的信息，例如"开始打怪"，"开始出售物品"之类。
         - \b Warn 反映某些需要注意的可能有潜在危险的情况，可能会造成崩溃或逻辑错误之类。
           例如取内存值时捕捉到异常，这情况很常见，允许程序继续执行，但仍需注意。
-        - \b Error 反映错误，例如一些API的调用失败。
-        - \b Fatal 致命错误，程序无法继续执行。
+        - \b Error 程序错误,例如一些API的调用失败,错误应当被妥善处理.
+        - \b Fatal 致命错误,程序无法继续执行.
 
     我们通过设置日志级别来禁止某些日志的输出，日志级别有8种：
         - \b AllLevel   所有的日志都输出。
@@ -68,6 +68,11 @@ namespace uni
             - UNI_LOG_LEVEL_WARN
             - UNI_LOG_LEVEL_FATAL
             - UNI_LOG_LEVEL_OFF
+          可以在包含ULog.h之前定义以上宏,或者使用-D命令来设置,如:
+          \code
+          #define UNI_LOG_LEVEL_INFO
+          #include "ULog.h"
+          \endcode
 
     \section usage_sec 基本使用方法
     基本的使用方法有两种：
@@ -79,21 +84,13 @@ namespace uni
             - UERROR
             - UFATAL
             .
-           可以采用格式化输出，也可以采用流的方式输出：
-            - 格式化输出，使用和printf类似。
-            \code
-            char *name = "哥布林";
-            UINFO("找到一个单位。");  //char *版本。
-            UDEBUG("攻击单位:%s",name);  //char *版本，格式化。
-            UTRACE(L"攻击单位结束。");  //wchar_t *版本。
-            \endcode
-            - 流方式输出，使用和标准库中流类似。
-            \code
-            char *name = "哥布林";
-            UINFO<<"找到一个单位。";
-            UDEBUG<<"攻击单位:"<<name;
-            UTRACE<<L"攻击单位结束。";
-            \endcode
+           采用流的方式输出,使用和标准库中流类似。
+           \code
+           char *name = "哥布林";
+           UINFO<<"找到一个单位。";
+           UDEBUG<<"攻击单位:"<<name;
+           UTRACE<<L"攻击单位结束。";
+           \endcode
             .
         -# 直接使用ULog类（不常用，请咨询作者）。
           \code
@@ -104,7 +101,7 @@ namespace uni
           \endcode
 
     \section appender_sec 添加输出源
-    ULog可以输出到调试器，文件，控制台等，这里把这些输出方式撑做输出源。
+    ULog可以输出到调试器，文件，控制台等，这里把这些输出方式称做输出源。
     可以使用静态函数 ULog::setAppender(const std::string &name,UAppender *appender) 设置或添加输出源。
     ULog默认使用一个名为"default"的 UDebuggerAppender 将日志信息输出到调试器。
     本库还提供了以下几种输出源：
@@ -152,7 +149,7 @@ namespace uni
       int c = 3;
       //分别输出a,b,c的值。
       UTRACE<<delim<<a<<b<<c;  //delim不带参数时，以空格分隔，输出的信息为"1 2 3"。
-      TTRACE<<delim(",")<<a<<b<<c;  //delim带参数时，以参数字符串分隔，输出的信息为"1,2,3"。
+      UTRACE<<delim(",")<<a<<b<<c;  //delim带参数时，以参数字符串分隔，输出的信息为"1,2,3"。
       \endcode
 
     \section expand_sec 扩展ULog支持的类型
@@ -161,8 +158,8 @@ namespace uni
     ULog operator<<(ULog log,POINT pt)
     {
         //组织信息，不添加分隔符，这句只能使用ULog内部支持的类型。
-        log.noDelim()<<"(POINT:x="<<pt.x<<",y="<<pt.y<<")";  
-        return log.hasDelim();  
+        log.disableDelim()<<"(POINT:x="<<pt.x<<",y="<<pt.y<<")";  
+        return log.enableDelim();  
     }
     \endcode
 
@@ -212,7 +209,7 @@ public:
     struct Message
     {
         Message(Type type,const char *file,int line,const char *function)
-            :ref_(1),type_(type),file_(file),line_(line),func_(function),outputDelim_(true)
+            :ref_(1),type_(type),file_(file),line_(line),func_(function),delimEnabled_(true)
         {
         }
         int ref_;
@@ -222,7 +219,7 @@ public:
         std::string func_;
         int line_;
         std::string delim_;
-        bool outputDelim_;
+        bool delimEnabled_;
         std::ostringstream stm_;
     };
 
@@ -361,19 +358,17 @@ public:
         return (*this);
     }
 
-    ULog &hasDelim()
+    //重新启用分隔符,假如有指定分隔符,那么之后的输出会输出分隔符.
+    ULog &enableDelim()
     {
-        message_->outputDelim_ = true; 
-        if(!message_->delim_.empty() && message_->outputDelim_)
-        {
-            message_->stm_<<message_->delim_;
-        }
-        return *this;
+        message_->delimEnabled_ = true; 
+        return mayHasDelim();
     }
 
-    ULog &noDelim() {message_->outputDelim_ = false; return *this;}
+    //禁用分隔符,即使有设定分隔符,之后的输出也不会添加分隔符.
+    ULog &disableDelim() {message_->delimEnabled_ = false; return *this;}
 
-    ULog &mayHasDelim() {if(!message_->delim_.empty() && message_->outputDelim_) {message_->stm_<<message_->delim_;} return *this;}
+    ULog &mayHasDelim() {if(!message_->delim_.empty() && message_->delimEnabled_) {message_->stm_<<message_->delim_;} return *this;}
 
 	ULog &operator<<(bool t) {message_->stm_<<t; return mayHasDelim();}
 
@@ -465,6 +460,8 @@ public:
 
     friend void ULogDumpMemory(ULog &log,const char *address,int len);
 
+    friend void ULogHexDisp(ULog &log,int number);
+
 private:
     unsigned long lastError_;
     Message *message_;
@@ -499,10 +496,10 @@ inline ULog &delim(ULog &log)
     return log;
 }
 
-inline ULog &hexdisp(ULog &log)
+inline ULog::SManipulator<int> hexdisp(int number)
 {
-    log<<std::hex<<std::setfill('0')<<std::setw(8);
-    return log;
+    ULog::SManipulator<int> manipulator(&ULogHexDisp,number);
+    return manipulator;
 }
 
 inline ULog &decdisp(ULog &log)
@@ -513,29 +510,27 @@ inline ULog &decdisp(ULog &log)
 
 ULog uLog(ULog::Type type,const char *file,int line,const char *function);
 
-#if defined UNI_LOG_LEVEL_OFF       //无输出。
-#define UNI_LOG_LEVEL 700
-#elif defined UNI_LOG_LEVEL_FATAL   //严重的错误，导致程序终止。
-#define UNI_LOG_LEVEL 600
-#elif defined UNI_LOG_LEVEL_ERROR   //错误。
-#define UNI_LOG_LEVEL 500
-#elif defined UNI_LOG_LEVEL_WARN    //警告，反映潜在的有害的状态。
-#define UNI_LOG_LEVEL 400
-#elif defined UNI_LOG_LEVEL_INFO    //表明程序进程。
-#define UNI_LOG_LEVEL 300
-#elif defined UNI_LOG_LEVEL_DEBUG   //调试信息。
-#define UNI_LOG_LEVEL 200
-#elif defined UNI_LOG_LEVEL_TRACE   //更精细的调试信息。
-#define UNI_LOG_LEVEL 100
-#elif defined UNI_LOG_LEVEL_ALL
-#define UNI_LOG_LEVEL 0
-#else
-#define UNI_LOG_LEVEL 0
+#define UNI_LOG_LEVEL_OFF   700     //无输出。
+#define UNI_LOG_LEVEL_FATAL 600     //严重的错误，导致程序终止。
+#define UNI_LOG_LEVEL_ERROR 500     //错误。
+#define UNI_LOG_LEVEL_WARN  400     //警告，反映潜在的有害的状态。
+#define UNI_LOG_LEVEL_INFO  300     //表明程序进程。
+#define UNI_LOG_LEVEL_DEBUG 200     //调试信息。
+#define UNI_LOG_LEVEL_TRACE 100     //更精细的调试信息。
+#define UNI_LOG_LEVEL_ALL   0       //全部调试信息输出.
+
+#ifndef UNI_LOG_LEVEL
+#define UNI_LOG_LEVEL UNI_LOG_LEVEL_ALL
 #endif
 
 #define ULOG uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
 
-#define UTRACE if(UNI_LOG_LEVEL <= ULog::TraceLevel) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+//#ifndef UNI_LOG_LEVEL
+#define UTRACE(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::TraceLevel) \
+    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::TraceLevel)  ) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+//#else
+//#define UTRACE if(UNI_LOG_LEVEL <= ULog::TraceLevel) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+//#endif
 
 #define UDEBUG if(UNI_LOG_LEVEL <= ULog::DebugLevel) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
 

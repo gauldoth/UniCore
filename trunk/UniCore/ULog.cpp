@@ -396,6 +396,11 @@ void ULogDumpMemory( ULog &log,const char *address,int len )
     }
 }
 
+void ULogHexDisp(ULog &log,int number)
+{
+    log.disableDelim()<<"0x"<<(void *)number;
+    log.enableDelim();
+}
 
 
 ULog::LoggerAppender::LoggerAppender()
