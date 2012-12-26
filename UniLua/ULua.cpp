@@ -130,7 +130,7 @@ static int lua_print(lua_State *L)
 static const struct luaL_reg g_luaFunctions[] = {
     {"sleep",lua_sleep},
     {"get_at", lua_get_at},
-    {"print",lua_print},
+    {"debug_message",lua_print},
     {NULL, NULL}  /* sentinel */
 };
 

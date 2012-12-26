@@ -257,6 +257,11 @@ public:
         std::ofstream logFile_;
     };
 
+    class FileAppender : public Appender
+    {
+    public:
+    };
+
     //! 无参数的操纵符。
     typedef ULog &(__cdecl *NullaryManipulator)(ULog &);
 
@@ -325,6 +330,13 @@ public:
         \param type 输出源的类型。
     */
     static void setAppender(const std::string &name,AppenderType type);
+    //static void addAppender(const std::string &name,const std::string &appenderName,
+    //Appender *appender);
+    //static void removeAppender(const std::string &name,Appender *appender);
+    //registerAppender(appenderName,appender);
+    //addAppender(name,appenderName);
+    //addAppender(appenderName);
+    //removeAppender(name,appenderName);
 
     //! 获得输出过的日志名字。
     static std::set<std::string> names() {return names_;}
@@ -525,22 +537,47 @@ ULog uLog(ULog::Type type,const char *file,int line,const char *function);
 
 #define ULOG uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
 
-//#ifndef UNI_LOG_LEVEL
+#ifdef UNI_LOG_LEVEL_DETAIL
 #define UTRACE(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::TraceLevel) \
     || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::TraceLevel)  ) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
-//#else
-//#define UTRACE if(UNI_LOG_LEVEL <= ULog::TraceLevel) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-//#endif
+#else
+#define UTRACE if(UNI_LOG_LEVEL <= ULog::TraceLevel) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+#endif
 
+#ifdef UNI_LOG_LEVEL_DETAIL
+#define UDEBUG(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::DebugType) \
+    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::DebugType)  ) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+#else
 #define UDEBUG if(UNI_LOG_LEVEL <= ULog::DebugLevel) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+#endif
 
+#ifdef UNI_LOG_LEVEL_DETAIL
+#define UINFO(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::InfoType) \
+    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::InfoType)  ) uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+#else
 #define UINFO if(UNI_LOG_LEVEL <= ULog::InfoLevel) uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+#endif
 
+#ifdef UNI_LOG_LEVEL_DETAIL
+#define UWARN(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::WarnType) \
+    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::WarnType)  ) uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+#else
 #define UWARN if(UNI_LOG_LEVEL <= ULog::WarnLevel) uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+#endif
 
+#ifdef UNI_LOG_LEVEL_DETAIL
+#define UERROR(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::ErrorType) \
+    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::ErrorType)  ) uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+#else
 #define UERROR if(UNI_LOG_LEVEL <= ULog::ErrorLevel) uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+#endif
 
+#ifdef UNI_LOG_LEVEL_DETAIL
+#define UFATAL(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::FatalType) \
+    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::FatalType)  ) uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+#else
 #define UFATAL if(UNI_LOG_LEVEL <= ULog::FatalLevel) uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+#endif
 
 }//namespace uni
 
