@@ -25,3 +25,14 @@
 		dumpmem操纵符 Dump内存.
 		hexdisp操纵符 16进制显示数字.
 		decdisp操纵符 切换为10进制显示.(考虑移除)(已经移除)
+		
+实现
+	注册输出源
+		registerAppender(appenderName,appender);
+		unregisterAppender(appenderName);
+	配置全部日志的输出源
+		addAppender(appenderName);
+		removeAppender(appenderName);
+	配置指定日志的输出源.
+		addAppender(name,appenderName);
+		removeAppender(name,appenderName);

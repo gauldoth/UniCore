@@ -13,9 +13,11 @@ using namespace std;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    cout<<"DumpString"<<endl;
-    char *a = "asd";
-    cout<<DumpString((int)0xFFFFF02)<<endl;
+
+    UTRACE(流程)<<"线程开始执行."<<hexdisp(vbb);
+    //UERROR(流程)<<"线程终止.";
+
+    system("pause");
 	return 0;
 }
 
