@@ -22,6 +22,15 @@ namespace uni
 */
 bool EnableDebugPrivilege();
 
+//! 检查文件是否存在.
+/*!
+    \param fileName 文件路径,可以是完整路径也可以是相对路径,该参数会传递给ifstream.
+    \return 文件是否存在.
+    通过尝试打开文件来判断文件是否存在.
+*/
+bool FileExists(const std::string &fileName);
+bool FileExists(const std::wstring &fileName);
+
 //! 获得当前进程所在路径。
 /*!
     \return 当前进程的可执行文件所在路径，失败则返回空的字符串。
