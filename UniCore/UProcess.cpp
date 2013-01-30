@@ -36,6 +36,22 @@ bool EnableDebugPrivilege()
     return result;
 }
 
+
+bool FileExists( const std::wstring &fileName )
+{
+    ifstream ifs;
+    ifs.open(fileName.c_str());
+    return ifs.is_open();
+
+}
+
+bool FileExists( const std::string &fileName )
+{
+    ifstream ifs;
+    ifs.open(fileName.c_str());
+    return ifs.is_open(); 
+}
+
 wstring GetProcessName(unsigned int pid)
 {
     wstring name;
