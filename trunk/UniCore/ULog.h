@@ -33,63 +33,54 @@ namespace uni
 {
 
 /*! \page ulog_page 日志系统说明
-    ULog采用流的方式输出日志信息，并且兼容标准库中输入输出流支持的类型和操纵符。
-    实际使用时请使用UTRACE，UDEBUG等宏来输出日志信息。
+    ULog是一个简单的日志输出模块,用于弥补 DebugMessage() 功能上的不足.主要有以下特点:
+        - 采用流的方式输出日志信息，并且兼容标准库中输入输出流支持的类型和操纵符。
+        - 能够自定义输出源.
+        - 日志按名字分组,并且有调试,警告,错误等多种日志类型.
+        - 能够在编译时去除指定类型的日志的输出,提高代码效率,也能防止信息暴露.
+        - 能够在运行时指定哪些分组,哪些类型的日志不输出.
 
-    \section ulog_type_sec 日志类型和日志级别
-    日志共有6种类型，Trace为最低级别，往下级别越来越高：
-        - \b Trace 最精细的调试信息，多用于定位错误，监视某些变量的值。
-        - \b Debug 普通的调试信息，这类信息发布时一般不输出。
-        - \b Info 表示程序当前状况的信息，例如"开始打怪"，"开始出售物品"之类。
-        - \b Warn 反映某些需要注意的可能有潜在危险的情况，可能会造成崩溃或逻辑错误之类。
-          例如取内存值时捕捉到异常，这情况很常见，允许程序继续执行，但仍需注意。
+    \section ulog_type_sec 日志类型
+    日志共有以下几种类型:
+        - \b Trace 最精细的调试信息，多用于定位错误，或者监视某些变量的值.
+        - \b Debug 普通的调试信息，这类信息发布时一般不输出.
+        - \b Info 表示程序当前状况的信息，例如"开始加载资源"，"开始出售物品"之类.
+        - \b Warn 反映某些需要注意的可能有潜在危险的情况，可能会造成崩溃或逻辑错误之类.
+          例如捕捉到异常并正确处理，这情况很常见，允许程序继续执行，但仍需注意.
         - \b Error 程序错误,例如一些API的调用失败,错误应当被妥善处理.
         - \b Fatal 致命错误,程序无法继续执行.
+        - \b Hide 需要隐藏的信息,这类信息在Release版本(未定义_DEBUG)会自动被去除.
+        建议把需要在编译时去除的信息归到这一类.
+    使用UDEBUG,UTRACE,UINFO等宏进行输出的同时,也同时指定的了日志的类型.
 
-    我们通过设置日志级别来禁止某些日志的输出，日志级别有8种：
-        - \b AllLevel   所有的日志都输出。
-        - \b TraceLevel Trace及比Trace等级高的日志信息都会输出。
-        - \b DebugLevel Debug及比Debug等级高的日志信息都会输出。
-        - \b InfoLevel  Info及比Info等级高的日志信息都会输出。
-        - \b WarnLevel  Warn及比Warn等级高的日志信息都会输出。
-        - \b ErrorLevel Error及比Error等级高的日志信息都会输出。
-        - \b FatalLevel 只有Fatal信息会输出。
-        - \b OffLevel   所有日志信息都不输出。
-
-    有两种方法设置日志级别：
-        - 动态设置日志级别，通过这种方式屏蔽的日志信息仍会被编到可执行文件中，
-          可能造成信息暴露。通过调用静态函数 ULog::setLogLevel() 进行设置。
-        - 静态设置日志级别，通过这种方式屏蔽的日志信息不会被编到可执行文件中，
-          更加安全。通过定义以下宏以静态设置日志级别：
-            - UNI_LOG_LEVEL_ALL
-            - UNI_LOG_LEVEL_TRACE
-            - UNI_LOG_LEVEL_DEBUG
-            - UNI_LOG_LEVEL_INFO
-            - UNI_LOG_LEVEL_WARN
-            - UNI_LOG_LEVEL_FATAL
-            - UNI_LOG_LEVEL_OFF
-          可以在包含ULog.h之前定义以上宏,或者使用-D命令来设置,如:
-          \code
-          #define UNI_LOG_LEVEL_INFO
-          #include "ULog.h"
-          \endcode
+    \section ulog_name_sec 日志名和日志分组.
+    每条日志信息都可以设置一个名字,相同名字的日志属于同一个分组.
+    在使用UDEBUG,UTRACE,UINFO等宏进行输出时,后面可以附加上日志名.例如:
+    \code
+    //日志名为"安装".
+    UDEBUG("安装")<<"这是一条安装日志信息.";
+    \endcode
 
     \section usage_sec 基本使用方法
     基本的使用方法有两种：
-        -# 使用定义好的宏输出日志信息，对应6种日志类型，有以下6个宏可以使用：
+        -# 使用定义好的宏输出日志信息，对应每个日志类型，有以下宏可以使用：
             - UTRACE
             - UDEBUG
             - UINFO
             - UWARN
             - UERROR
             - UFATAL
+            - UHIDE
             .
            采用流的方式输出,使用和标准库中流类似。
            \code
            char *name = "哥布林";
-           UINFO<<"找到一个单位。";
+           UINFO<<"找到一个单位。";  
            UDEBUG<<"攻击单位:"<<name;
-           UTRACE<<L"攻击单位结束。";
+           UINFO("脚本")<<"调用攻击单位脚本.";
+           //输入宽字符串(或者字符)时,会根据当前配置的区域(所包含的代码页)
+           //转换成多字节字符串后再输出.
+           UTRACE<<L"攻击单位结束。";  
            \endcode
             .
         -# 直接使用ULog类（不常用，请咨询作者）。
@@ -100,39 +91,77 @@ namespace uni
           log<<a<<buf;  //向log输入日志信息。日志在log对象的所有引用都消失时才会输出。
           \endcode
 
-    \section appender_sec 添加输出源
-    ULog可以输出到调试器，文件，控制台等，这里把这些输出方式称做输出源。
-    可以使用静态函数 ULog::setAppender(const std::string &name,UAppender *appender) 设置或添加输出源。
-    ULog默认使用一个名为"default"的 UDebuggerAppender 将日志信息输出到调试器。
-    本库还提供了以下几种输出源：
-        - UDebuggerAppender 类，用于输出日志信息到调试器。
-        - UConsoleAppender 类，用于输出日志信息到控制台。
-        - UFileAppender 类，用于输出日志信息到文件。
-    使用方法：
-    \code
-    ULog::setAppender("default",new UFileAppender("C:\\a.txt"));  //将默认的输出源改为一个文件输出源。
-    ULog::setAppender("console",new UConsoleAppender());  //为ULog添加一个输出源，名字为"console"，实际输出到控制台。
-    \endcode
+    \section ulog_enable_output_sec 指定日志是否输出
+    可以在编译时以及运行时调整日志的输出.
+    - 编译时设置某类型日志是否输出,默认情况下所有类型的日志都会被输出.
+      编译时去除的日志输出不仅不会被指定,甚至可能不会被加到目标代码中,大多数
+      编译器开启优化时都会将输出代码优化掉.
+        - 去除所有类型的日志输出.
+            - 在预编译定义(Preprocessor Definitions)中加入UNI_LOG_DISABLE_ALL,
+              即可以去除本项目中所有类型的日志输出.
+            - 在包含Ulog.h前#define UNI_LOG_DISABLE_ALL则可以去除本cpp中的所有
+              类型的日志输出.如:
+              \code
+              #define UNI_LOG_DISABLE_ALL
+              #include "ULog.h"
+              \endcode
+            .
+        - 去除指定类型的日志输出和上述去除所有类型的日志输出方法相同.
+          只是将UNI_LOG_DISABLE_ALL换成如下宏,对应不同的日志类型:
+            - UNI_LOG_DISABLE_TRACE
+            - UNI_LOG_DISABLE_DEBUG
+            - UNI_LOG_DISABLE_INFO
+            - UNI_LOG_DISABLE_WARN
+            - UNI_LOG_DISABLE_ERROR
+            - UNI_LOG_DISABLE_FATAL
+            - UNI_LOG_DISABLE_HIDE
+        - 类型为HideType的日志类型在Release版本(_DEBUG未被定义)时总是不输出的.
+        - 通过这里的方式可以使指定类型的日志不输出,但是不能保证输出语句一定会被
+          编译器优化没掉,while(false)后的语句是否被优化没掉和编译器及优化选项都有
+          关系.
+        .
 
-    \section layout_sec 日志的输出格式
-    ULog可以自定义各种类型日志的输出格式，例如UTRACE可以输出具体行和函数，而UINFO则只输出信息。
-    默认情况下会以"[%t] %m"的格式输出，可以使用静态函数 ULog::setLayout 修改任意类型的输出格式，看下面例子：
-    \code 
-    UTRACE<<"abc";  //使用默认的"[%t] %m"输出，其中%t被替换为日志类型，%m替换为日志信息，结果为"[trace] abc"。
-    ULog::setLayout(ULog::TraceType,"[%t]%m - %f %l");  
-    UTRACE<<"abc";  //输出"[trace]abc - d:\myproject\test\testasm\testasm\testasm.cpp 62"。
-    ULog::setLayout(ULog::DebugType,"[%t]%m - %n");
-    UDEBUG<<"abc";  //输出"[debug]abc - main"。
-    \endcode
-    ULog::setLayout 支持下面几种转义符：
-    - %%t 日志类型。
-    - %%m 日志的信息主体部分。
-    - %%n 输出日志语句所在函数。
-    - %%l 输出日志语句所在行数。
-    - %%f 输出日志语句所属源文件。
+    - 运行时设置日志输出.\n
+      运行时通过静态函数enableOutput配置指定类型或者分组的日志是否输出.
+        - 配置指定分组的日志是否输出.
+          \code
+          ULog::enableOutput("初始化",false);  //禁止名字为"初始化"的日志信息输出.
+          ULog::enableOutput("流程",true);  //允许名字为"流程"的日志信息输出.
+          \endcode
+        - 配置指定类型的日志是否输出.
+          \code
+          ULog::enableOutput(ULog::TraceType,false);  //禁止Trace类型的日志信息输出.
+          ULog::enableOutput(ULog::WarnType,true);  //允许Warn类型的日志信息输出.
+          \endcode
+
+    \section ulog_appender_sec 添加和设置输出源
+    ULog可以输出到调试器，文件，控制台等不同的输出源。你也可以自定义输出源输出到任意媒介.
+        - 首先,你需要使用静态函数ULog::registerAppender注册输出源.
+          \code
+          //注册了一个文件输出源,名字为"errorlog",该输出源会输出到error.txt.
+          ULog::registerAppender("errorlog",new ULog::FileAppender("error.txt"));
+          //注册了一个控制台输出源,名字为"console",该输出源会输出到控制台.
+          ULog::registerAppender("console",new ULog::ConsoleAppender);
+          \endcode
+          本日志模块提供了以下几种输出源：
+          - DebuggerAppender 类，用于输出日志信息到调试器。
+          - ConsoleAppender 类，用于输出日志信息到控制台。
+          - FileAppender 类，用于输出日志信息到文件。
+          .
+        - 然后,使用setAppender设置指定分组的日志所要使用的输出源.
+          \code
+          //"初始化"日志仅输出到名字为"console"的输出源.
+          ULog::setAppender("初始化","console");
+          //"流程"日志会输出到"debugger","console","errorlog"这几个输出源.
+          //注意这里必须用空格分隔输出源的名字,如果格式错误,则不会输出或者输出
+          //到错误的输出源.
+          ULog::setAppender("流程","debugger console errorlog");
+          \endcode
+          如果某分组的日志没有输出源,则使用无分组日志的输出源.\n
+          若无分组日志也没有输出源,则为其初始化一个名为"default"的调试器输出源.
 
     \section manipulator_sec 操纵符
-    ULog支持streamstring所支持的所有操纵符。此外，还支持以下操纵符。
+    ULog支持stringstream所支持的所有操纵符。此外，还支持以下操纵符。
     - \b lasterr 输出GetLastError返回的错误信息。
       \code
       HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS,FALSE,2718);
@@ -150,6 +179,23 @@ namespace uni
       //分别输出a,b,c的值。
       UTRACE<<delim<<a<<b<<c;  //delim不带参数时，以空格分隔，输出的信息为"1 2 3"。
       UTRACE<<delim(",")<<a<<b<<c;  //delim带参数时，以参数字符串分隔，输出的信息为"1,2,3"。
+      \endcode
+    - \b dumpmem Dump内存,并且以日志方式显示.
+      \code
+      UDEBUG<<dumpmem(0x00AC1032,100);  //输出如下
+      //[5212] (ULogTest){内存}[trace][ULogTest] dumpmem(00AC1032,100) 
+      //[5212] 00AC1032|| e9 99 2d 00 | 00 e9 e4 15 | 00 00 e9 6f | 1f 00 00 e9    ||  .  .  -  . |  .  .  .   |  .  .  .  o |    .  .  . 
+      //[5212] 00AC1042|| 6a 4f 00 00 | e9 d5 52 00 | 00 e9 30 38 | 00 00 e9 fb    ||  j  O  .  . |  .  .  R  . |  .  .  0  8 |  .  .  .  . 
+      //[5212] 00AC1052|| 10 00 00 e9 | a6 47 00 00 | e9 11 22 00 | 00 e9 3c 3e    ||    .  .  . |  .  G  .  . |  .    "  . |  .  .  <  > 
+      //[5212] 00AC1062|| 00 00 e9 67 | 49 00 00 e9 | c2 2a 00 00 | e9 7d 41 00    ||  .  .  .  g |  I  .  .  . |  .  *  .  . |  .  }  A  . 
+      //[5212] 00AC1072|| 00 e9 b8 28 | 00 00 e9 43 | 2a 00 00 e9 | de 4c 00 00    ||  .  .  .  ( |  .  .  .  C |  *  .  .  . |  .  L  .  . 
+      //[5212] 00AC1082|| e9 89 21 00 | 00 e9 e4 53 | 00 00 e9 df | 36 00 00 e9    ||  .  .  !  . |  .  .  .  S |  .  .  .  . |  6  .  .  . 
+      //[5212] 00AC1092|| 3a 40 00 00                                              ||  :  @  .  . 
+      \endcode
+    - \b hexdisp 以16进制显示数字.
+      \code
+      UDEBUG<<1024<<"的16进制是"<<hexdisp(1024);  //输出如下
+      //[5492] (ULogTest){}[debug][ULogTest] 1024的16进制是0x00000400 <30>
       \endcode
 
     \section expand_sec 扩展ULog支持的类型
@@ -170,42 +216,19 @@ namespace uni
 class ULog
 {
 public:
-
     //! 日志类型。
     enum Type
     {
-        TraceType = 100,    //!< 最精细的调试信息。
-        DebugType = 200,    //!< 普通的调试信息。
-        InfoType = 300,     //!< 这类信息表明了程序的大体流程。
-        WarnType = 400,     //!< 警告信息，描述了可能有害的情况。
-        ErrorType = 500,    //!< 错误，但仍然允许程序继续运行。例如调用API失败之类的错误。
-        FatalType = 600,    //!< 致命错误，会导致程序终止。
+        TraceType,    //!< 最精细的调试信息。
+        DebugType,    //!< 普通的调试信息。
+        InfoType,     //!< 这类信息表明了程序的大体流程。
+        WarnType,     //!< 警告信息，描述了可能有害的情况。
+        ErrorType,    //!< 错误，但仍然允许程序继续运行。例如调用API失败之类的错误。
+        FatalType,    //!< 致命错误，会导致程序终止。
+        HideType,     //!< 这类信息期望在编译的时候被优化掉。
     };
 
-    //! 日志级别。
-    /*!
-        日志类型高于或等于日志级别的日志才允许被输出。
-    */
-    enum Level
-    {
-        AllLevel = 0,       //!< 所有级别的日志都允许输出。
-        TraceLevel = 100,   //!< Trace级别及更高级别的日志允许输出。
-        DebugLevel = 200,   //!< Debug级别及更高级别的日志允许输出。
-        InfoLevel = 300,    //!< Info级别及更高级别的日志允许输出。
-        WarnLevel = 400,    //!< Warn级别及更高级别的日志允许输出。
-        ErrorLevel = 500,   //!< Error级别及更高级别的日志允许输出。
-        FatalLevel = 600,   //!< Fatal级别及更高级别的日志允许输出。
-        OffLevel = 700,     //!< 全部日志都不允许输出。
-    };
-
-    //! 输出源类型。
-    enum AppenderType
-    {
-        DebuggerAppenderType,  //<! 输出到调试器的输出源。
-        LoggerAppenderType,  //!<  输出到日志.
-    };
-
-    //! 保存了一条日志信息的内容。
+    //! 保存了一条日志信息的所有内容。
     struct Message
     {
         Message(Type type,const char *file,int line,const char *function)
@@ -214,15 +237,19 @@ public:
         }
         int ref_;
         Type type_;
-        std::string name_;  //日志名。
-        std::string file_;
-        std::string func_;
-        int line_;
-        std::string delim_;
-        bool delimEnabled_;
-        std::ostringstream stm_;
+        std::string name_;  //!< 日志名.
+        std::string file_;  //!< 这条日志输出所在的源文件.
+        std::string func_;  //!< 这条日志输出所在的函数.
+        int line_;          //!< 这条日志输出位置所在的行号.
+        std::string delim_; //!< 流输出时所使用的分隔符.
+        bool delimEnabled_; //!< 是否在两次插入间添加分隔符.
+        std::ostringstream stm_;  //!< 保存了日志信息主体的流.
     };
 
+    //! 输出源的基类.
+    /*!
+        可以派生这个类以实现自定义输出源.append函数负责将日志信息输出到输出源.
+    */
     class Appender
     {
     public:
@@ -234,6 +261,10 @@ public:
         Appender &operator=(const Appender &);
     };
 
+    //! 调试器输出源.
+    /*!
+        通过OutputDebugString输出,推荐使用DebugView这个工具查看输出的信息.
+    */
     class DebuggerAppender : public Appender
     {
     public:
@@ -257,9 +288,35 @@ public:
         std::ofstream logFile_;
     };
 
+    //! 文件输出源
+    /*!
+        以文本格式将日志信息写入到文件,会从尾部追加.
+    */
     class FileAppender : public Appender
     {
     public:
+        explicit FileAppender(const wchar_t *fileName);
+        virtual ~FileAppender();
+        virtual void append(Message *message);
+    private:
+        FileAppender(const FileAppender &);
+        FileAppender &operator=(const FileAppender &);
+        std::ofstream file_;
+    };
+
+    //! 输出到控制台的输出源.
+    /*!
+        使用printf输出.
+    */
+    class ConsoleAppender : public Appender
+    {
+    public:
+        ConsoleAppender() {}
+        virtual ~ConsoleAppender(){}
+        virtual void append(Message *message);
+    private:
+        ConsoleAppender(const ConsoleAppender &);
+        ConsoleAppender &operator=(const ConsoleAppender &);
     };
 
     //! 无参数的操纵符。
@@ -310,33 +367,65 @@ public:
     //! 将当前对象和log对象互换。
     void swap(ULog &log);
 
-    //! 设置动态日志级别。
+    //! 设置输出源.
     /*!
-        类型大于等于日志级别的日志才会被输出。
-        \param name 要设置级别的日志名。
-        \param level 要设置的日志级别。
-    */
-    static void setLogLevel(const std::string &name,Level level);
+        \param name 日志分组名
+        \param appenderList 输出源名字列表,以空格分隔的输出源名字.
+        如"file debugger".
 
-    //! 获得当前的动态日志级别。
-    /*!
-        \param name 日志名，要获得哪个日志的级别。
+        设置名字为name的日志所使用的输出源,如果要设置多个输出源,
+        则以空格分隔多个输出源的名字,例如:
+        \code
+        //所有名字为"安装"的日志将输出到名字为"setup","console",
+        //"debugger"这3个输出源.
+        setAppender("安装","setup console debugger");
+        //名字为"错误"的日志将输出到名字为"error"的输出源.
+        setAppender("错误","error");
+        \endcode
     */
-    static Level logLevel(const std::string &name);
+    static void setAppender(const std::string &name,
+        const std::string &appenderList);
+    
+    //! 注册一个输出源到日志系统.
+    /*!
+        \param appenderName 输出源的名字,名字由字母数字下划线组成,不能包含空格.
+        \param appender 输出源指针.
+    */
+    static void registerAppender(const std::string &appenderName,Appender *appender);
 
-    //! 增加一个输出源。
+    //! 从日志系统删除一个输出源.
     /*!
-        \param name 输出源名字。
-        \param type 输出源的类型。
+        \param appenderName 输出源的名字,名字由字母数字下划线组成,不能包含空格.
     */
-    static void setAppender(const std::string &name,AppenderType type);
-    //static void addAppender(const std::string &name,const std::string &appenderName,
-    //Appender *appender);
-    //static void removeAppender(const std::string &name,Appender *appender);
-    //registerAppender(appenderName,appender);
-    //addAppender(name,appenderName);
-    //addAppender(appenderName);
-    //removeAppender(name,appenderName);
+    static void unregisterAppender(const std::string &appenderName);
+
+    //! 判断指定类型的日志是否输出.
+    /*!
+        \param type 日志类型.
+        \return 指定类型的日志是否输出.
+    */
+    static bool isOutputEnabled(Type type);
+
+    //! 设置指定类型的日志是否输出.
+    /*!
+        \param type 日志类型
+        \param enable 该类型的日志是否输出.
+    */
+    static void enableOutput(Type type,bool enable);
+
+    //! 判断指定分组的日志是否输出.
+    /*!
+        \param name 日志分组的名字.
+        \return 该分组的日志是否输出.
+    */
+    static bool isOutputEnabled(const std::string &name);
+
+    //! 设置指定分组的日志是否输出.
+    /*!
+        \param name 日志分组的名字.
+        \param enable 该分组的日志是否输出.
+    */
+    static void enableOutput(const std::string &name,bool enable);
 
     //! 获得输出过的日志名字。
     static std::set<std::string> names() {return names_;}
@@ -477,10 +566,12 @@ public:
 private:
     unsigned long lastError_;
     Message *message_;
-    static std::map<std::string,Level> levels_;
-    static boost::interprocess::interprocess_mutex mutexForLevels_;
     static std::map<std::string,std::tr1::shared_ptr<Appender> > appenders_;
+    static std::map<std::string,std::vector<std::string> > appendersForName_;
     static boost::interprocess::interprocess_mutex mutexForAppenders_;
+    static std::map<Type,bool> typeFilter_;  //!< true则代表指定类型的日志将被过滤.
+    static std::map<std::string,bool> nameFilter_;  //!< true则指定分组的日志将被过滤.
+    static boost::interprocess::interprocess_mutex mutexForFilters_;
     static std::set<std::string> names_;  //!< 保存了输出过的日志的名字。
     static boost::interprocess::interprocess_mutex mutexForNames_;
     static _locale_t loc_;
@@ -522,61 +613,55 @@ inline ULog &decdisp(ULog &log)
 
 ULog uLog(ULog::Type type,const char *file,int line,const char *function);
 
-#define UNI_LOG_LEVEL_OFF   700     //无输出。
-#define UNI_LOG_LEVEL_FATAL 600     //严重的错误，导致程序终止。
-#define UNI_LOG_LEVEL_ERROR 500     //错误。
-#define UNI_LOG_LEVEL_WARN  400     //警告，反映潜在的有害的状态。
-#define UNI_LOG_LEVEL_INFO  300     //表明程序进程。
-#define UNI_LOG_LEVEL_DEBUG 200     //调试信息。
-#define UNI_LOG_LEVEL_TRACE 100     //更精细的调试信息。
-#define UNI_LOG_LEVEL_ALL   0       //全部调试信息输出.
 
-#ifndef UNI_LOG_LEVEL
-#define UNI_LOG_LEVEL UNI_LOG_LEVEL_ALL
-#endif
-
-#define ULOG uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-
-#ifdef UNI_LOG_LEVEL_DETAIL
-#define UTRACE(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::TraceLevel) \
-    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::TraceLevel)  ) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
+#ifdef UNI_LOG_DISABLE_ALL
+  #define UTRACE while(false) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #define UDEBUG while(false) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #define UINFO while(false) uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #define UWARN while(false) uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #define UERROR while(false) uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #define UFATAL while(false) uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #define UHIDE while(false) uLog(ULog::HideType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
 #else
-#define UTRACE if(UNI_LOG_LEVEL <= ULog::TraceLevel) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-#endif
-
-#ifdef UNI_LOG_LEVEL_DETAIL
-#define UDEBUG(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::DebugType) \
-    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::DebugType)  ) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
-#else
-#define UDEBUG if(UNI_LOG_LEVEL <= ULog::DebugLevel) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-#endif
-
-#ifdef UNI_LOG_LEVEL_DETAIL
-#define UINFO(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::InfoType) \
-    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::InfoType)  ) uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
-#else
-#define UINFO if(UNI_LOG_LEVEL <= ULog::InfoLevel) uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-#endif
-
-#ifdef UNI_LOG_LEVEL_DETAIL
-#define UWARN(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::WarnType) \
-    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::WarnType)  ) uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
-#else
-#define UWARN if(UNI_LOG_LEVEL <= ULog::WarnLevel) uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-#endif
-
-#ifdef UNI_LOG_LEVEL_DETAIL
-#define UERROR(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::ErrorType) \
-    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::ErrorType)  ) uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
-#else
-#define UERROR if(UNI_LOG_LEVEL <= ULog::ErrorLevel) uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
-#endif
-
-#ifdef UNI_LOG_LEVEL_DETAIL
-#define UFATAL(name) if(  (UNI_LOG_LEVEL<=UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL_##name<=ULog::FatalType) \
-    || (UNI_LOG_LEVEL>UNI_LOG_LEVEL_##name) && (UNI_LOG_LEVEL<=ULog::FatalType)  ) uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName(#name)
-#else
-#define UFATAL if(UNI_LOG_LEVEL <= ULog::FatalLevel) uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #ifdef UNI_LOG_DISABLE_TRACE
+    #define UTRACE while(false) uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #define UTRACE uLog(ULog::TraceType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #endif
+  #ifdef UNI_LOG_DISABLE_DEBUG
+    #define UDEBUG while(false) uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #define UDEBUG uLog(ULog::DebugType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #endif
+  #ifdef UNI_LOG_DISABLE_INFO
+    #define UINFO while(false) uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #define UINFO uLog(ULog::InfoType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #endif
+  #ifdef UNI_LOG_DISABLE_WARN
+    #define UWARN while(false) uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #define UWARN uLog(ULog::WarnType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #endif
+  #ifdef UNI_LOG_DISABLE_ERROR
+    #define UERROR while(false) uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #define UERROR uLog(ULog::ErrorType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #endif
+  #ifdef UNI_LOG_DISABLE_FATAL
+    #define UFATAL while(false) uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #define UFATAL uLog(ULog::FatalType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #endif
+  #ifdef UNI_LOG_DISABLE_HIDE
+    #define UHIDE while(false) uLog(ULog::HideType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+  #else
+    #ifdef _DEBUG
+      #define UHIDE uLog(ULog::HideType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+    #else
+      #define UHIDE while(false) uLog(ULog::HideType,__FILE__,__LINE__,__FUNCTION__)<<ULogSetName
+    #endif
+  #endif
 #endif
 
 }//namespace uni
