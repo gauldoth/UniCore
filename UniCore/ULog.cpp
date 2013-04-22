@@ -7,6 +7,7 @@
 #include <string>
 
 #include "UCast.h"
+#include "UCommon.h"
 #include "UDebug.h"
 #include "UMemory.h"
 
@@ -17,16 +18,15 @@ using namespace boost::interprocess;
 namespace uni
 {
 
+std::map<std::string,std::tr1::shared_ptr<ULog::Appender> > ULog::appenders_;
+std::map<std::string,std::vector<std::string> > ULog::appendersForName_;
 boost::interprocess::interprocess_mutex ULog::mutexForAppenders_;
 
-std::map<std::string,std::tr1::shared_ptr<ULog::Appender> > ULog::appenders_;
-
-boost::interprocess::interprocess_mutex ULog::mutexForLevels_;
-
-std::map<std::string,ULog::Level> ULog::levels_;
+std::map<ULog::Type,bool> ULog::typeFilter_;
+std::map<std::string,bool> ULog::nameFilter_;
+boost::interprocess::interprocess_mutex ULog::mutexForFilters_;
 
 std::set<std::string> ULog::names_;
-
 boost::interprocess::interprocess_mutex ULog::mutexForNames_;
 
 _locale_t ULog::loc_ = _create_locale(LC_ALL,"");
@@ -64,32 +64,22 @@ ULog & ULog::operator=( const ULog &log )
 
 ULog::~ULog()
 {
-    
     if(!--message_->ref_)
     {
-        //获得当前日志所允许的等级。
-        Level minLevelAllowed = AllLevel;
+        bool filtered = false;
         {
-        scoped_lock<interprocess_mutex> lock(mutexForLevels_);
-        if(levels_.count(message_->name_))
-        {
-            minLevelAllowed = levels_[message_->name_];
+            scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+            filtered = typeFilter_[message_->type_] || nameFilter_[message_->name_];
         }
-        }
-        if(minLevelAllowed <= message_->type_)
+        if(!filtered)
         {
             //允许输出。
             //检查是否有分隔符。
-            //DebugMessage("%08x",message_);
-            //DebugMessage("%d",message_->stm_.rdbuf()->str().size());
-
             std::string message = message_->stm_.str();
-            //OutputDebugStringA("ULog::~ULog 2.5");
-            //OutputDebugStringA(message_->delim_.c_str());
             if(!message_->delim_.empty())
             {
+                //删除尾部多余的分隔符.
                 string::size_type pos = message.rfind(message_->delim_);
-                //DebugMessage("pos:%d",pos);
                 if(pos != string::npos
                     && pos + message_->delim_.size() == message.size())
                 {
@@ -98,12 +88,29 @@ ULog::~ULog()
                 }
             }
             scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
-            if(!appenders_.count(message_->name_))
+            vector<string> appenderNames = appendersForName_[message_->name_];
+            if(appenderNames.empty())
             {
-                std::tr1::shared_ptr<Appender> appenderPtr(new DebuggerAppender);
-                appenders_[message_->name_] = appenderPtr;
+                //当前分组没有输出源,使用无分组日志的输出源.
+                if(appendersForName_[""].empty())
+                {
+                    //无分组日志也没有输出源,添加一个默认输出源.
+                    if(!appenders_.count("default"))
+                    {
+                        appenders_["default"] = 
+                            std::tr1::shared_ptr<Appender>(new DebuggerAppender);
+                    }
+                    appendersForName_[""].push_back("default");
+                }
+                appenderNames = appendersForName_[""];
             }
-            appenders_[message_->name_]->append(message_);
+            for(int i = 0; i < appenderNames.size(); i++)
+            {
+                if(appenders_.count(appenderNames[i]))
+                {
+                    appenders_[appenderNames[i]]->append(message_);
+                }
+            }
         }
         delete message_;
         message_ = 0;
@@ -116,51 +123,49 @@ void ULog::swap(ULog &log)
     std::swap(message_,log.message_);
 }
 
-void ULog::setLogLevel(const std::string &name,Level level)
+void ULog::setAppender(const std::string &name,const std::string &appenderList)
 {
-    scoped_lock<interprocess_mutex> lock(mutexForLevels_);
-    levels_[name] = level;
-}
-
-ULog::Level ULog::logLevel(const std::string &name)
-{
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
-    if(levels_.count(name))
-    {
-        return levels_[name];
-    }
-    else
-    {
-        return AllLevel;
-    }
-}
-
-void ULog::setAppender(const std::string &name,AppenderType type)
-{
-    Appender *appender = 0;
-    switch(type)
-    {
-    case DebuggerAppenderType:
-        {
-            appender = new DebuggerAppender;
-            break;
-        }
-    case LoggerAppenderType:
-        {
-            appender = new LoggerAppender;
-            break;
-        }
-    default:
-        {
-            appender = new DebuggerAppender;
-            break;
-        }
-    }
-
-    std::tr1::shared_ptr<Appender> appenderPtr(appender);
+    vector<string> appenderNames = split(appenderList);
 
     scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
-    appenders_[name] = appenderPtr;
+    appendersForName_[name] = appenderNames;
+}
+
+void ULog::registerAppender( const std::string &appenderName,Appender *appender )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    std::tr1::shared_ptr<Appender> p(appender);
+    appenders_[appenderName] = p;
+}
+
+void ULog::unregisterAppender( const std::string &appenderName )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    appenders_.erase(appenderName);
+}
+
+bool ULog::isOutputEnabled( Type type )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    return !typeFilter_[type];
+}
+
+void ULog::enableOutput( Type type,bool enable )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    typeFilter_[type] = !enable;
+}
+
+bool ULog::isOutputEnabled( const std::string &name )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    return !nameFilter_[name];
+}
+
+void ULog::enableOutput( const std::string &name,bool enable )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    nameFilter_[name] = !enable;
 }
 
 _locale_t ULog::locale()
@@ -203,7 +208,7 @@ ULog &ULog::operator<<(wchar_t t)
 
 ULog &ULog::operator<<(const std::wstring &t) 
 {
-    message_->stm_<<ws2s(t);
+    message_->stm_<<ws2s(t,loc_);
     return mayHasDelim();
 }
 
@@ -215,7 +220,6 @@ ULog &ULog::operator<<(const wchar_t *t)
     message_->stm_<<ws2s(t,loc_);
     return mayHasDelim();
 }
-
 
 ULog &lasterr(ULog &log)
 {
@@ -292,52 +296,6 @@ ULog::SManipulator<const char *> ULogSetName(const char *name)
     return ULog::SManipulator<const char *>(&ULogSetName,name);
 }
 
-
-void ULog::DebuggerAppender::append( Message *message )
-{
-    string type;
-    switch(message->type_)
-    {
-    case TraceType:
-        {
-            type = "trace";
-            break;
-        }
-    case DebugType:
-        {
-            type = "debug";
-            break;
-        }
-    case InfoType:
-        {
-            type = "info";
-            break;
-        }
-    case WarnType:
-        {
-            type = "warn";
-            break;
-        }
-    case ErrorType:
-        {
-            type = "error";
-            break;
-        }
-    case FatalType:
-        {
-            type = "fatal";
-            break;
-        }
-    default:
-        {
-            assert(!"未知的日志类型。");
-        }
-    }
-    DebugMessage("(%s){%s}[%s][%s] %s <%d>",projectName_.c_str(),message->name_.c_str(),type.c_str(),message->func_.c_str(),message->stm_.str().c_str(),message->line_);
-}
-
-
-
 void ULogDumpMemory( ULog &log,const char *address,int len )
 {
     log<<"dumpmem("<<(void *)address<<","<<len<<")\r\n";
@@ -402,6 +360,48 @@ void ULogHexDisp(ULog &log,int number)
     log.enableDelim();
 }
 
+void ULog::DebuggerAppender::append( Message *message )
+{
+    string type;
+    switch(message->type_)
+    {
+    case TraceType:
+        {
+            type = "trace";
+            break;
+        }
+    case DebugType:
+        {
+            type = "debug";
+            break;
+        }
+    case InfoType:
+        {
+            type = "info";
+            break;
+        }
+    case WarnType:
+        {
+            type = "warn";
+            break;
+        }
+    case ErrorType:
+        {
+            type = "error";
+            break;
+        }
+    case FatalType:
+        {
+            type = "fatal";
+            break;
+        }
+    default:
+        {
+            assert(!"未知的日志类型。");
+        }
+    }
+    DebugMessage("(%s){%s}[%s][%s] %s <%d>",projectName_.c_str(),message->name_.c_str(),type.c_str(),message->func_.c_str(),message->stm_.str().c_str(),message->line_);
+}
 
 ULog::LoggerAppender::LoggerAppender()
 {
@@ -485,6 +485,130 @@ void ULog::LoggerAppender::append( Message *message )
             <<" "<<message->stm_.str()<<" "
             <<"<"<<message->line_<<">"<<endl;
     }
+}
+
+ULog::FileAppender::FileAppender(const wchar_t *fileName)
+{
+    file_.open(fileName,ios_base::out|ios_base::app);
+    if(!file_.is_open())
+    {
+        assert(false && "UniCore ULog::FileAppender::FileAppender(const wchar_t *fileName) Open file failed.");
+        DebugMessage("UniCore ULog::FileAppender::FileAppender(const wchar_t *fileName) 无法打开文件.");
+    }
+}
+
+ULog::FileAppender::~FileAppender()
+{
+    file_.close();
+}
+
+void ULog::FileAppender::append( Message *message )
+{
+    if(file_)
+    {
+        string type;
+        switch(message->type_)
+        {
+        case TraceType:
+            {
+                type = "trace";
+                break;
+            }
+        case DebugType:
+            {
+                type = "debug";
+                break;
+            }
+        case InfoType:
+            {
+                type = "info";
+                break;
+            }
+        case WarnType:
+            {
+                type = "warn";
+                break;
+            }
+        case ErrorType:
+            {
+                type = "error";
+                break;
+            }
+        case FatalType:
+            {
+                type = "fatal";
+                break;
+            }
+        default:
+            {
+                assert(!"未知的日志类型。");
+            }
+        }
+        time_t t;
+        tm timeStruct;
+        time(&t);
+        localtime_s(&timeStruct,&t);
+        char currentTime[255] = "";
+        if(asctime_s(currentTime,&timeStruct) != 0)
+        {
+            DebugMessage("UniCore ULog::LoggerAppender::append( Message *message ) asctime_s失败.");
+        }
+        file_<<currentTime<<" "
+            <<"{"<<message->name_<<"}"
+            <<"["<<type<<"]"
+            <<"["<<message->func_<<"]"
+            <<" "<<message->stm_.str()<<" "
+            <<"<"<<message->line_<<">"<<endl;
+    }
+}
+
+
+void ULog::ConsoleAppender::append( Message *message )
+{
+    string type;
+    switch(message->type_)
+    {
+    case TraceType:
+        {
+            type = "trace";
+            break;
+        }
+    case DebugType:
+        {
+            type = "debug";
+            break;
+        }
+    case InfoType:
+        {
+            type = "info";
+            break;
+        }
+    case WarnType:
+        {
+            type = "warn";
+            break;
+        }
+    case ErrorType:
+        {
+            type = "error";
+            break;
+        }
+    case FatalType:
+        {
+            type = "fatal";
+            break;
+        }
+    default:
+        {
+            assert(!"未知的日志类型。");
+        }
+    }
+
+    printf("{%s}[%s][%s]%s<%d>\n",
+        message->name_.c_str(),type.c_str(),
+        message->func_.c_str(),message->stm_.str().c_str(),
+        message->line_);
+
 }
 
 }//namespace uni
