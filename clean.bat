@@ -7,5 +7,6 @@ del BuildLog.htm /s /f
 del *.pdb /s /f
 del *.ncb /s /f
 del *.suo /s /f
+del *.sdf /s /f /A H
 rmdir html /s /q
 rmdir latex /s /q

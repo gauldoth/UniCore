@@ -6,6 +6,7 @@
 #include <iostream>
 #include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
+#include "ULiteTest.h"
 
 using namespace uni;
 using namespace std;
@@ -45,9 +46,17 @@ void ULogTest()
     UINFO("安装")<<"安装结束.";
 }
 
+void EndlTest(bool endl)
+{
+    cout<<"endl="<<endl<<endl;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
     ULogTest();
+
+    ULiteTest();
+    EndlTest(true);
 
     system("pause");
 	return 0;
