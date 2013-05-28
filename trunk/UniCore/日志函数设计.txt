@@ -47,3 +47,4 @@
 	配置指定日志的输出源.
 		addAppender(name,appenderName);
 		removeAppender(name,appenderName);
+
