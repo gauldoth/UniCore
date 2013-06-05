@@ -7,6 +7,7 @@
 #include "../UniCore/ULog.h"
 #include "../UniCore/UMemory.h"
 #include "ULiteTest.h"
+#include "../UniCore/UCommon.h"
 
 using namespace uni;
 using namespace std;
@@ -44,19 +45,33 @@ void ULogTest()
         }
     }
     UINFO("安装")<<"安装结束.";
+    ULog::enableOutput(ULog::ErrorType,true);
 }
 
-void EndlTest(bool endl)
+void UCommonTest()
 {
-    cout<<"endl="<<endl<<endl;
+    ULog::setProjectName("ULogTest");
+    ULog::registerAppender("default",
+        new ULog::DebuggerAppender);
+    ULog::registerAppender("console",new ULog::ConsoleAppender);
+
+    ULog::setAppender("接口测试","default console");
+
+    UINFO("接口测试")<<"UCommonTest 开始.";
+    UINFO("接口测试")<<"1> trim ";
+    std::string trimString = " ; 测试 ; ;  ";
+    UDEBUG("接口测试")<<"trim space ["<<trimString<<"] ---> ["
+        <<trim(trimString)<<"].";
+    UDEBUG("接口测试")<<"trim space and ; ["<<trimString<<"] ---> ["
+        <<trim(trimString," ;")<<"].";
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
     ULogTest();
+    UCommonTest();
 
     ULiteTest();
-    EndlTest(true);
 
     system("pause");
 	return 0;
