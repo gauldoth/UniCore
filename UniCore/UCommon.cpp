@@ -5,6 +5,7 @@
 
 #include <sstream>
 #include <time.h>
+#include <cassert>
 
 using namespace std;
 
@@ -91,35 +92,45 @@ std::string GetRandomRoleName(int minSize /*= 0*/,int maxSize /*= 0*/,int wordCo
 
 vector<string> split( const string &s,const string &delim /*= " "*/ )
 {
+
     vector<string> results;
-    string::size_type startPos = 0;
+    if(s.empty() || delim.empty())
+    {
+        //源字符串为空或者分隔符为空都无法进行分割.
+        return results;
+    }
+    if(s.size() <= delim.size())
+    {
+        return results;
+    }
+    string::size_type currentPos = 0;
     string::size_type delimPos = 0;
     while(true)
     {
-        delimPos = s.find(delim,startPos);
-        if(delimPos == startPos)
+        delimPos = s.find(delim,currentPos);
+        if(delimPos == string::npos)
         {
-            //开始位置就找到分割符,或者遇到连续的分割符,子字符串长度为0,不保存.
-        }
-        else if(delimPos == string::npos)
-        {
-            //找到结尾了.
-            results.push_back(s.substr(startPos));
+            //找到结尾都没找到分隔符,将剩余的字符串加入结果数组.
+            results.push_back(s.substr(currentPos));
             break;
         }
         else
         {
-            if(delimPos > startPos)
+            //找到分隔符
+            assert(delimPos >= currentPos);
+            if(delimPos > currentPos)
             {
-                results.push_back(s.substr(startPos,delimPos-startPos));
+                //分隔符位置如果等于当前位置,则子字符串为空.
+                results.push_back(s.substr(currentPos,delimPos-currentPos));
+            }
+            currentPos = delimPos+delim.length();
+            if(currentPos >= s.length())
+            {
+                //startPos已经超出字符串范围.
+                break;
             }
         }
-        startPos = delimPos+delim.length();
-        if(startPos >= s.length())
-        {
-            //startPos已经超出字符串范围.
-            break;
-        }
+
     }
     return results;
 }
