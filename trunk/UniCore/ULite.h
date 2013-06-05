@@ -171,7 +171,8 @@ inline std::string ws2s(const std::wstring &ws,const char *locale = "")
 /*!
     \param s 要分割的字符串.
     \param delim 分割用token.
-    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中.
+    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中,空字符串
+    会被跳过.
 
     \code
     std::string s = "Acc Psw Credit";
@@ -182,37 +183,47 @@ inline std::vector<std::string> split(const std::string &s,const std::string &de
 {
     using namespace std;
     vector<string> results;
-    string::size_type startPos = 0;
+    if(s.empty() || delim.empty())
+    {
+        //源字符串为空或者分隔符为空都无法进行分割.
+        return results;
+    }
+    if(s.size() <= delim.size())
+    {
+        return results;
+    }
+    string::size_type currentPos = 0;
     string::size_type delimPos = 0;
     while(true)
     {
-        delimPos = s.find(delim,startPos);
-        if(delimPos == startPos)
+        delimPos = s.find(delim,currentPos);
+        if(delimPos == string::npos)
         {
-            //开始位置就找到分割符,或者遇到连续的分割符,子字符串长度为0,不保存.
-        }
-        else if(delimPos == string::npos)
-        {
-            //找到结尾了.
-            results.push_back(s.substr(startPos));
+            //找到结尾都没找到分隔符,将剩余的字符串加入结果数组.
+            results.push_back(s.substr(currentPos));
             break;
         }
         else
         {
-            if(delimPos > startPos)
+            //找到分隔符
+            assert(delimPos >= currentPos);
+            if(delimPos > currentPos)
             {
-                results.push_back(s.substr(startPos,delimPos-startPos));
+                //分隔符位置如果等于当前位置,则子字符串为空.
+                results.push_back(s.substr(currentPos,delimPos-currentPos));
+            }
+            currentPos = delimPos+delim.length();
+            if(currentPos >= s.length())
+            {
+                //startPos已经超出字符串范围.
+                break;
             }
         }
-        startPos = delimPos+delim.length();
-        if(startPos >= s.length())
-        {
-            //startPos已经超出字符串范围.
-            break;
-        }
+
     }
     return results;
 }
+
 
 //! 从字符串的首尾剔除指定字符串.
 /*!

@@ -64,7 +64,8 @@ std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,
 /*!
     \param s 要分割的字符串.
     \param delim 分割用token.
-    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中.
+    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中,空字符串
+    会被跳过.
 
     \code
     std::string s = "Acc Psw Credit";
