@@ -18,6 +18,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 /*! \fn void DebugMessage(const char *format,...)
     \brief 格式化输出调试信息到调试器，使用方法和printf类似。
@@ -163,6 +164,96 @@ inline std::string ws2s(const std::wstring &ws,const char *locale = "")
         OutputDebugStringA("UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
     }
     delete []dest;
+    return result;
+}
+
+//! 分割字符串.
+/*!
+    \param s 要分割的字符串.
+    \param delim 分割用token.
+    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中.
+
+    \code
+    std::string s = "Acc Psw Credit";
+    std::vector<std::string> results = split(s,
+    \endcode
+*/
+inline std::vector<std::string> split(const std::string &s,const std::string &delim = " ")
+{
+    using namespace std;
+    vector<string> results;
+    string::size_type startPos = 0;
+    string::size_type delimPos = 0;
+    while(true)
+    {
+        delimPos = s.find(delim,startPos);
+        if(delimPos == startPos)
+        {
+            //开始位置就找到分割符,或者遇到连续的分割符,子字符串长度为0,不保存.
+        }
+        else if(delimPos == string::npos)
+        {
+            //找到结尾了.
+            results.push_back(s.substr(startPos));
+            break;
+        }
+        else
+        {
+            if(delimPos > startPos)
+            {
+                results.push_back(s.substr(startPos,delimPos-startPos));
+            }
+        }
+        startPos = delimPos+delim.length();
+        if(startPos >= s.length())
+        {
+            //startPos已经超出字符串范围.
+            break;
+        }
+    }
+    return results;
+}
+
+//! 从字符串的首尾剔除指定字符串.
+/*!
+    \param s 处理的字符串.
+    \paran trim 要剔除的字符集合,默认为空格.
+    该函数从s的首尾剔除字符,任何出现在字符串两端的trimChars中包含的字符都会被剔除.
+    s为空字符串时也将返回空字符串.
+    \code
+    std::string s = "    this is a string with space.    ";
+    std::string trimed = trim(s);  //trimed: "this is a string with space."
+    trimed = trim(s," .");  //trimed: "this is a string with space"  这里空格和'.'都被剔除了.
+    \endcode
+*/
+inline std::string trim(const std::string &s,const std::string &trimChars = " ")
+{
+    using namespace std;
+    std::string result = s;
+    // Remove char at the end.
+    while(!result.empty())
+    {
+        if(trimChars.find(result.back()) != string::npos)
+        {
+            result.pop_back();
+        }
+        else
+        {
+            break;
+        }
+    }
+    // Remove char at the beginning.
+    while(!result.empty())
+    {
+        if(trimChars.find(result.front()) != string::npos)
+        {
+            result.erase(result.begin());
+        }
+        else
+        {
+            break;
+        }
+    }
     return result;
 }
 

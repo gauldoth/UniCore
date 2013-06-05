@@ -109,7 +109,10 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
         }
         else
         {
-            results.push_back(s.substr(startPos,delimPos-startPos));
+            if(delimPos > startPos)
+            {
+                results.push_back(s.substr(startPos,delimPos-startPos));
+            }
         }
         startPos = delimPos+delim.length();
         if(startPos >= s.length())
@@ -119,6 +122,36 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
         }
     }
     return results;
+}
+
+std::string trim(const std::string &s,const std::string &trimChars /*= " "*/)
+{
+    std::string result = s;
+    // Remove char at the end.
+    while(!result.empty())
+    {
+        if(trimChars.find(result.back()) != string::npos)
+        {
+            result.pop_back();
+        }
+        else
+        {
+            break;
+        }
+    }
+    // Remove char at the beginning.
+    while(!result.empty())
+    {
+        if(trimChars.find(result.front()) != string::npos)
+        {
+            result.erase(result.begin());
+        }
+        else
+        {
+            break;
+        }
+    }
+    return result;
 }
 
 }//namespace uni
