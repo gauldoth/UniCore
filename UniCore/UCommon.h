@@ -62,19 +62,40 @@ std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,
 
 //! 分割字符串.
 /*!
-    \param s 要分割的字符串.
-    \param delim 分割用token.
-    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中,空字符串
-    会被跳过.
+    \param s 源字符串,被分割的字符串.
+    \param delim 分隔符.这里的分隔符可能不止一个字符,而可以是字符串.
+	\return 分割后的子字符串组成的数组.
+
+    分割字符串s.每遇到一次分隔符就生成一个子字符串并保存到结果数组中,
+	空的子字符串会被跳过.
 
     \code
     std::string s = "Acc Psw Credit";
-    std::vector<std::string> results = split(s,
+    std::vector<std::string> results = split(s);
+	//以空格分割字符串s,results将包含"Acc","Psw","Credit"三个字符串.
     \endcode
 */
 std::vector<std::string> split(const std::string &s,const std::string &delim = " ");
 
-//! 从字符串的首尾剔除指定字符串.
+//! 分割字符串.
+/*!
+    \param s 源字符串,被分割的字符串.
+    \param delim 分隔符.这里的分隔符可能不止一个字符,而可以是字符串.
+	\return 分割后的子字符串组成的数组.
+
+    分割字符串s.每遇到一次分隔符就生成一个子字符串并保存到结果数组中,
+	空的子字符串会被跳过.
+
+    \code
+    std::wstring s = L"Acc Psw Credit";
+    std::vector<std::wstring> results = split(s);
+	//以空格分割字符串s,results将包含L"Acc",L"Psw",L"Credit"三个字符串.
+    \endcode
+*/
+std::vector<std::wstring> split(const std::wstring &s,const std::wstring &delim = L" ");
+
+
+//! 从字符串的首尾剔除指定字符.
 /*!
     \param s 处理的字符串.
     \paran trim 要剔除的字符集合,默认为空格.
