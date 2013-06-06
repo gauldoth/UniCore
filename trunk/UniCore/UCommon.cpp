@@ -101,6 +101,7 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
     }
     if(s.size() <= delim.size())
     {
+		//源字符串长度小于等于分隔符时也无法分割.
         return results;
     }
     string::size_type currentPos = 0;
@@ -110,7 +111,7 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
         delimPos = s.find(delim,currentPos);
         if(delimPos == string::npos)
         {
-            //找到结尾都没找到分隔符,将剩余的字符串加入结果数组.
+            //从当前位置开始找不到分隔符,将剩余的字符串加入结果数组.
             results.push_back(s.substr(currentPos));
             break;
         }
@@ -123,16 +124,63 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
                 //分隔符位置如果等于当前位置,则子字符串为空.
                 results.push_back(s.substr(currentPos,delimPos-currentPos));
             }
-            currentPos = delimPos+delim.length();
+            currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
             if(currentPos >= s.length())
             {
-                //startPos已经超出字符串范围.
+                //currentPos已经超出字符串范围.
                 break;
             }
         }
 
     }
     return results;
+}
+
+std::vector<std::wstring> split( const std::wstring &s,const std::wstring &delim /*= L" "*/ )
+{
+
+	vector<wstring> results;
+	if(s.empty() || delim.empty())
+	{
+		//源字符串为空或者分隔符为空都无法进行分割.
+		return results;
+	}
+	if(s.size() <= delim.size())
+	{
+		//源字符串长度小于等于分隔符时也无法分割.
+		return results;
+	}
+	wstring::size_type currentPos = 0;
+	wstring::size_type delimPos = 0;
+	while(true)
+	{
+		delimPos = s.find(delim,currentPos);
+		if(delimPos == wstring::npos)
+		{
+			//从当前位置开始找不到分隔符,将剩余的字符串加入结果数组.
+			results.push_back(s.substr(currentPos));
+			break;
+		}
+		else
+		{
+			//找到分隔符
+			assert(delimPos >= currentPos);
+			if(delimPos > currentPos)
+			{
+				//分隔符位置如果等于当前位置,则子字符串为空.
+				results.push_back(s.substr(currentPos,delimPos-currentPos));
+			}
+			currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
+			if(currentPos >= s.length())
+			{
+				//currentPos已经超出字符串范围.
+				break;
+			}
+		}
+
+	}
+	return results;
+
 }
 
 std::string trim(const std::string &s,const std::string &trimChars /*= " "*/)

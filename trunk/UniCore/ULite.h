@@ -169,63 +169,128 @@ inline std::string ws2s(const std::wstring &ws,const char *locale = "")
 
 //! 分割字符串.
 /*!
-    \param s 要分割的字符串.
-    \param delim 分割用token.
-    分割字符串s.每遇到一次delim就生成一个子字符串并保存到结果数组中,空字符串
-    会被跳过.
+    \param s 源字符串,被分割的字符串.
+    \param delim 分隔符.这里的分隔符可能不止一个字符,而可以是字符串.
+	\return 分割后的子字符串组成的数组.
+
+    分割字符串s.每遇到一次分隔符就生成一个子字符串并保存到结果数组中,
+	空的子字符串会被跳过.
 
     \code
     std::string s = "Acc Psw Credit";
-    std::vector<std::string> results = split(s,
+    std::vector<std::string> results = split(s);
+	//以空格分割字符串s,results将包含"Acc","Psw","Credit"三个字符串.
     \endcode
 */
-inline std::vector<std::string> split(const std::string &s,const std::string &delim = " ")
+inline std::vector<std::string> split( const std::string &s,const std::string &delim /*= " "*/ )
 {
-    using namespace std;
-    vector<string> results;
-    if(s.empty() || delim.empty())
-    {
-        //源字符串为空或者分隔符为空都无法进行分割.
-        return results;
-    }
-    if(s.size() <= delim.size())
-    {
-        return results;
-    }
-    string::size_type currentPos = 0;
-    string::size_type delimPos = 0;
-    while(true)
-    {
-        delimPos = s.find(delim,currentPos);
-        if(delimPos == string::npos)
-        {
-            //找到结尾都没找到分隔符,将剩余的字符串加入结果数组.
-            results.push_back(s.substr(currentPos));
-            break;
-        }
-        else
-        {
-            //找到分隔符
-            assert(delimPos >= currentPos);
-            if(delimPos > currentPos)
-            {
-                //分隔符位置如果等于当前位置,则子字符串为空.
-                results.push_back(s.substr(currentPos,delimPos-currentPos));
-            }
-            currentPos = delimPos+delim.length();
-            if(currentPos >= s.length())
-            {
-                //startPos已经超出字符串范围.
-                break;
-            }
-        }
+	using namespace std;
+	vector<string> results;
+	if(s.empty() || delim.empty())
+	{
+		//源字符串为空或者分隔符为空都无法进行分割.
+		return results;
+	}
+	if(s.size() <= delim.size())
+	{
+		//源字符串长度小于等于分隔符时也无法分割.
+		return results;
+	}
+	string::size_type currentPos = 0;
+	string::size_type delimPos = 0;
+	while(true)
+	{
+		delimPos = s.find(delim,currentPos);
+		if(delimPos == string::npos)
+		{
+			//从当前位置开始找不到分隔符,将剩余的字符串加入结果数组.
+			results.push_back(s.substr(currentPos));
+			break;
+		}
+		else
+		{
+			//找到分隔符
+			assert(delimPos >= currentPos);
+			if(delimPos > currentPos)
+			{
+				//分隔符位置如果等于当前位置,则子字符串为空.
+				results.push_back(s.substr(currentPos,delimPos-currentPos));
+			}
+			currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
+			if(currentPos >= s.length())
+			{
+				//currentPos已经超出字符串范围.
+				break;
+			}
+		}
 
-    }
-    return results;
+	}
+	return results;
 }
 
+//! 分割字符串.
+/*!
+    \param s 源字符串,被分割的字符串.
+    \param delim 分隔符.这里的分隔符可能不止一个字符,而可以是字符串.
+	\return 分割后的子字符串组成的数组.
 
-//! 从字符串的首尾剔除指定字符串.
+    分割字符串s.每遇到一次分隔符就生成一个子字符串并保存到结果数组中,
+	空的子字符串会被跳过.
+
+    \code
+    std::wstring s = L"Acc Psw Credit";
+    std::vector<std::wstring> results = split(s);
+	//以空格分割字符串s,results将包含L"Acc",L"Psw",L"Credit"三个字符串.
+    \endcode
+*/
+inline std::vector<std::wstring> split( const std::wstring &s,const std::wstring &delim /*= L" "*/ )
+{
+	using namespace std;
+	vector<wstring> results;
+	if(s.empty() || delim.empty())
+	{
+		//源字符串为空或者分隔符为空都无法进行分割.
+		return results;
+	}
+	if(s.size() <= delim.size())
+	{
+		//源字符串长度小于等于分隔符时也无法分割.
+		return results;
+	}
+	wstring::size_type currentPos = 0;
+	wstring::size_type delimPos = 0;
+	while(true)
+	{
+		delimPos = s.find(delim,currentPos);
+		if(delimPos == wstring::npos)
+		{
+			//从当前位置开始找不到分隔符,将剩余的字符串加入结果数组.
+			results.push_back(s.substr(currentPos));
+			break;
+		}
+		else
+		{
+			//找到分隔符
+			assert(delimPos >= currentPos);
+			if(delimPos > currentPos)
+			{
+				//分隔符位置如果等于当前位置,则子字符串为空.
+				results.push_back(s.substr(currentPos,delimPos-currentPos));
+			}
+			currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
+			if(currentPos >= s.length())
+			{
+				//currentPos已经超出字符串范围.
+				break;
+			}
+		}
+
+	}
+	return results;
+
+}
+
+//! 从字符串的首尾剔除指定字符.
 /*!
     \param s 处理的字符串.
     \paran trim 要剔除的字符集合,默认为空格.
