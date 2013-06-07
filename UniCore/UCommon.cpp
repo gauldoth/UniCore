@@ -213,4 +213,34 @@ std::string trim(const std::string &s,const std::string &trimChars /*= " "*/)
     return result;
 }
 
+std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
+{
+    std::wstring result = s;
+    // Remove char at the end.
+    while(!result.empty())
+    {
+        if(trimChars.find(result.back()) != wstring::npos)
+        {
+            result.pop_back();
+        }
+        else
+        {
+            break;
+        }
+    }
+    // Remove char at the beginning.
+    while(!result.empty())
+    {
+        if(trimChars.find(result.front()) != wstring::npos)
+        {
+            result.erase(result.begin());
+        }
+        else
+        {
+            break;
+        }
+    }
+    return result;
+}
+
 }//namespace uni
