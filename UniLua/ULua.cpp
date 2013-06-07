@@ -127,7 +127,7 @@ static int lua_print(lua_State *L)
     return 0;
 }
 
-static const struct luaL_reg g_luaFunctions[] = {
+static const struct luaL_Reg g_luaFunctions[] = {
     {"sleep",lua_sleep},
     {"get_at", lua_get_at},
     {"debug_message",lua_print},

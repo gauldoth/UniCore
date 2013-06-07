@@ -345,7 +345,7 @@ inline std::string trim(const std::string &s,const std::string &trimChars = " ")
     trimed = trim(s,L". ");  //trimed: L"this is a string with space"  这里空格和'.'都被剔除了.
     \endcode
 */
-std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
+inline std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
 {
     using namespace std;
     std::wstring result = s;
