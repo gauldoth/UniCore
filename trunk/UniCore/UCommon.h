@@ -104,10 +104,24 @@ std::vector<std::wstring> split(const std::wstring &s,const std::wstring &delim 
     \code
     std::string s = "    this is a string with space.    ";
     std::string trimed = trim(s);  //trimed: "this is a string with space."
-    trimed = trim(s," .");  //trimed: "this is a string with space"  这里空格和'.'都被剔除了.
+    trimed = trim(s,". ");  //trimed: "this is a string with space"  这里空格和'.'都被剔除了.
     \endcode
 */
 std::string trim(const std::string &s,const std::string &trimChars = " ");
+
+//! 从字符串的首尾剔除指定字符.
+/*!
+    \param s 处理的字符串.
+    \paran trim 要剔除的字符集合,默认为空格.
+    该函数从s的首尾剔除字符,任何出现在字符串两端的trimChars中包含的字符都会被剔除.
+    s为空字符串时也将返回空字符串.
+    \code
+    std::wstring s = L"    this is a string with space.    ";
+    std::wstring trimed = trim(s);  //trimed: L"this is a string with space."
+    trimed = trim(s,L". ");  //trimed: L"this is a string with space"  这里空格和'.'都被剔除了.
+    \endcode
+*/
+std::wstring trim(const std::wstring &s,const std::wstring &trimChars = L" ");
 
 }//namespace uni
 
