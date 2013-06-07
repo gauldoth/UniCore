@@ -143,7 +143,8 @@ void UConfig::setInt( std::string key,int value ,...)
         keyName = formattedKey.substr(slashIndex+1);
     }
 
-    if(!WritePrivateProfileStringA(sectionName.c_str(),keyName.c_str(),i2s(value).c_str(),filePath_.c_str()))
+    string strValue = i2s(value);
+    if(!WritePrivateProfileStringA(sectionName.c_str(),keyName.c_str(),strValue.c_str(),filePath_.c_str()))
     {
         UERROR("UniCore")<<"WritePrivateProfileStringA失败。"<<lasterr;
     }

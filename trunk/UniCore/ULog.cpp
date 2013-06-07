@@ -604,9 +604,10 @@ void ULog::ConsoleAppender::append( Message *message )
         }
     }
 
+    string messageString = message->stm_.str();
     printf("{%s}[%s][%s]%s<%d>\n",
         message->name_.c_str(),type.c_str(),
-        message->func_.c_str(),message->stm_.str().c_str(),
+        message->func_.c_str(),messageString.c_str(),
         message->line_);
 
 }
