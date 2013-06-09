@@ -1,6 +1,9 @@
 ﻿#ifndef UNICORE_UCONFIG_H
 #define UNICORE_UCONFIG_H
 
+#define AUTO_LINK_LIB_NAME "UniCore"
+#include "AutoLink.h"
+
 #include <string>
 
 namespace uni
