@@ -9,6 +9,9 @@
 #include <assert.h>
 #include <string>
 
+#define AUTO_LINK_LIB_NAME "UniCore"
+#include "AutoLink.h"
+
 namespace uni
 {
 

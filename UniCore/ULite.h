@@ -345,7 +345,7 @@ inline std::string trim(const std::string &s,const std::string &trimChars = " ")
     trimed = trim(s,L". ");  //trimed: L"this is a string with space"  这里空格和'.'都被剔除了.
     \endcode
 */
-inline std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
+inline std::wstring trim( const std::wstring &s,const std::wstring &trimChars = L" " )
 {
     using namespace std;
     std::wstring result = s;
@@ -375,6 +375,61 @@ inline std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*
     }
     return result;
 }
+
+//! 简单的锁.
+class ULock
+{
+public:
+    ULock():atomic_(0) {}
+    ~ULock() {}
+    //! 上锁.
+    void lock() 
+    {
+        do 
+        {
+            long prev = InterlockedCompareExchange(&atomic_,1,0);
+            if(atomic_ == 1 && prev == 0)
+            {
+                break;
+            }
+            if(!SwitchToThread())
+            {
+                Sleep(1);
+            }
+        } while (true);
+    }
+    //! 解锁.
+    void unlock()
+    {
+        InterlockedCompareExchange(&atomic_,0,1);
+    }
+private:
+    ULock(const ULock&);
+    ULock& operator=(const ULock&);
+    volatile long atomic_;
+};
+
+//! 区域锁.
+/*!
+    声明的时候加锁,变量销毁时(退出作用域)解锁.
+*/
+class UScopedLock
+{
+public:
+    explicit UScopedLock(ULock &ulock)
+        :lock_(ulock)
+    {
+        lock_.lock();
+    }
+    ~UScopedLock()
+    {
+        lock_.unlock();
+    }
+private:
+    UScopedLock(const UScopedLock&);
+    UScopedLock& operator=(const UScopedLock&);
+    ULock &lock_;
+};
 
 
 #endif//UNICORE_ULITE_H
