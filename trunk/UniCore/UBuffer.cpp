@@ -22,8 +22,8 @@ void UBuffer::appendHexPattern( const std::string &pattern )
             assert(word.size() < 2);
             word.push_back(pattern[i]);
             
-            //向word加入字符后，word已经包含2个字符，将word代表的16进制数据存入缓冲区中。
-            if(word.size() == 2)
+            //向word加入字符后，word已经包含2个字符, 或者取到pattern中最后一个字符,将word代表的16进制数据存入缓冲区中。
+            if(word.size() == 2 || i == pattern.size() - 1)
             {
                 char data = strtol(word.c_str(),0,16);
                 appendChar(data);

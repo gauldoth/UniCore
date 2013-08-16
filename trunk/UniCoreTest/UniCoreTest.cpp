@@ -1,4 +1,4 @@
-// UniCoreTest.cpp : Defines the entry point for the console application.
+ï»¿// UniCoreTest.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -8,70 +8,57 @@
 #include "../UniCore/UMemory.h"
 #include "ULiteTest.h"
 #include "../UniCore/UCommon.h"
+#include "gtest/gtest.h"
+#include "../UniCore/UBuffer.h"
+#include "../UniCore/UCast.h"
 
 using namespace uni;
 using namespace std;
 
-void ULogTest()
+TEST(UBufferTest,TestAppendHexPattern)
 {
-    ULog::setProjectName("ULogTest");
-    ULog::registerAppender("error",
-        new ULog::FileAppender(L"error.log"));
-    ULog::registerAppender("install",
-        new ULog::FileAppender(L"install.log"));
-    ULog::registerAppender("default",
-        new ULog::DebuggerAppender);
-    ULog::registerAppender("console",new ULog::ConsoleAppender);
-
-     ULog::setAppender("°²×°","default console install");
-//     ULog::setAppender("°²×°´íÎó","error");
-     ULog::setAppender("ÄÚ´æ","console");
-
-     ULog::enableOutput(ULog::ErrorType,false);
-     UTRACE("ÄÚ´æ")<<dumpmem((const char *)&ULogTest,100);
-     UDEBUG<<1024<<"µÄ16½øÖÆÊÇ"<<hexdisp(1024);
-    UTRACE("°²×°")<<"¿ªÊ¼°²×°...";
-
-    UDEBUG("°²×°")<<"ÕýÔÚ½âÑ¹ÎÄ¼þ...";
-
-    UDEBUG("°²×°")<<"½âÑ¹ÎÄ¼þ½áÊø.";
-    for(int i = 0; i < 100; i++)
-    {
-        UINFO("°²×°")<<"ÕýÔÚ°²×°µÚ"<<i<<"¸öÎÄ¼þ.";
-        if(rand()%10 == 0)
-        {
-            UERROR("°²×°´íÎó")<<"°²×°µÚ"<<i<<"¸öÎÄ¼þÊ±·¢Éú´íÎó,ºöÂÔ.";
-            ULog::enableOutput("°²×°",false);
-        }
-    }
-    UINFO("°²×°")<<"°²×°½áÊø.";
-    ULog::enableOutput(ULog::ErrorType,true);
+    UBuffer buffer;
+    buffer.appendHexPattern("31 31 31");
+    EXPECT_STRCASEEQ("111",buffer.data());
+    UBuffer buffer1;
+    buffer1.appendHexPattern("34@2123");
+    EXPECT_STRCASEEQ("4\x21\x23",buffer1.data());
+    UBuffer buffer2;
+    buffer2.appendHexPattern("3@4#5");
+    EXPECT_STRCASEEQ("\x3\x4\x5",buffer2.data());
+    UBuffer buffer3;
+    buffer3.appendHexPattern("");
+    EXPECT_STRCASEEQ("",buffer3.data());
 }
 
-void UCommonTest()
+TEST(UCastTest,Test_ws2s)
 {
-    ULog::setProjectName("ULogTest");
-    ULog::registerAppender("default",
-        new ULog::DebuggerAppender);
-    ULog::registerAppender("console",new ULog::ConsoleAppender);
+    EXPECT_STRCASEEQ("æˆ‘ä»¬",ws2s(L"æˆ‘ä»¬").c_str());
+    EXPECT_STRCASEEQ("æˆ‘ä»¬",ws2s(L"æˆ‘ä»¬",".936").c_str());
+    EXPECT_STRCASEEQ("ï¾‰ï¾ï¾ï¾„ï½¼",ws2s(L"ï¾‰ï¾ï¾ï¾„ï½¼",".932").c_str());
+}
 
-    ULog::setAppender("½Ó¿Ú²âÊÔ","default console");
+TEST(UCastTest,Test_i2s)
+{
+    EXPECT_STRCASEEQ("2",i2s(2).c_str());
+    EXPECT_STRCASEEQ("-1",i2s(0xFFFFFFFF).c_str());
+    EXPECT_STRCASEEQ("-25233",i2s(-25233).c_str());
+    EXPECT_STRCASEEQ("25",i2s(25.6).c_str());
+}
 
-    UINFO("½Ó¿Ú²âÊÔ")<<"UCommonTest ¿ªÊ¼.";
-    UINFO("½Ó¿Ú²âÊÔ")<<"1> trim ";
-    std::string trimString = " ; ²âÊÔ ; ;  ";
-    UDEBUG("½Ó¿Ú²âÊÔ")<<"trim space ["<<trimString<<"] ---> ["
-        <<trim(trimString)<<"].";
-    UDEBUG("½Ó¿Ú²âÊÔ")<<"trim space and ; ["<<trimString<<"] ---> ["
-        <<trim(trimString," ;")<<"].";
+TEST(UStringTest,Test_trim)
+{
+    EXPECT_STRCASEEQ("my precious",trim("  my precious   ").c_str());
+    EXPECT_EQ(L"my precious",trim(L"  my precious   "));
+    EXPECT_EQ(L"æˆ‘ä»¬",trim(L"@# $æˆ‘ä»¬;  ",L"@#$ ;"));
+    EXPECT_EQ(L"æˆ‘ä»¬",trim(L" @ # $æˆ‘ä»¬;  ",L"@#$$  @!$;; ;"));
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    ULogTest();
-    UCommonTest();
+    testing::InitGoogleTest(&argc,argv);
 
-    ULiteTest();
+    return RUN_ALL_TESTS();
 
     system("pause");
 	return 0;
