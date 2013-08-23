@@ -15,43 +15,47 @@
 using namespace uni;
 using namespace std;
 
-TEST(UBufferTest,TestAppendHexPattern)
+
+TEST(UStringTest,trim_EmptyString_ReturnsEmptyString)
 {
-    UBuffer buffer;
-    buffer.appendHexPattern("31 31 31");
-    EXPECT_STRCASEEQ("111",buffer.data());
-    UBuffer buffer1;
-    buffer1.appendHexPattern("34@2123");
-    EXPECT_STRCASEEQ("4\x21\x23",buffer1.data());
-    UBuffer buffer2;
-    buffer2.appendHexPattern("3@4#5");
-    EXPECT_STRCASEEQ("\x3\x4\x5",buffer2.data());
-    UBuffer buffer3;
-    buffer3.appendHexPattern("");
-    EXPECT_STRCASEEQ("",buffer3.data());
+    string result = trim("");
+    ASSERT_EQ("",result);
 }
 
-TEST(UCastTest,Test_ws2s)
+TEST(UStringTest,trim_StringWithSpace_ReturnsStringTrimmed)
 {
-    EXPECT_STRCASEEQ("我们",ws2s(L"我们").c_str());
-    EXPECT_STRCASEEQ("我们",ws2s(L"我们",".936").c_str());
-    EXPECT_STRCASEEQ("ﾉﾁﾐﾄｼ",ws2s(L"ﾉﾁﾐﾄｼ",".932").c_str());
+    string result = trim(" asd s   ");
+    ASSERT_EQ("asd s",result);
 }
 
-TEST(UCastTest,Test_i2s)
+TEST(UStringTest,trim_StringWithSpaceAndTab_ReturnsStringTrimmed)
 {
-    EXPECT_STRCASEEQ("2",i2s(2).c_str());
-    EXPECT_STRCASEEQ("-1",i2s(0xFFFFFFFF).c_str());
-    EXPECT_STRCASEEQ("-25233",i2s(-25233).c_str());
-    EXPECT_STRCASEEQ("25",i2s(25.6).c_str());
+    string result = trim("  asd\t "," \t");
+    ASSERT_EQ("asd",result);
 }
 
-TEST(UStringTest,Test_trim)
+TEST(UStringTest,trim_AllCharsInStringIsInTrimChars_ReturnsEmptyString)
 {
-    EXPECT_STRCASEEQ("my precious",trim("  my precious   ").c_str());
-    EXPECT_EQ(L"my precious",trim(L"  my precious   "));
-    EXPECT_EQ(L"我们",trim(L"@# $我们;  ",L"@#$ ;"));
-    EXPECT_EQ(L"我们",trim(L" @ # $我们;  ",L"@#$$  @!$;; ;"));
+    string result = trim("asd","asd");
+    ASSERT_TRUE(result.empty());
+}
+
+TEST(UStringTest,trim_TrimCharsIsEmpty_ReturnsOriginString)
+{
+    string result = trim("asd","");
+    ASSERT_EQ("asd",result);
+}
+
+
+TEST(UMemoryTest,GetAt_BaseAndOffsetAreZero_ThrowsException)
+{
+    ASSERT_ANY_THROW(GetAt<int>(0,0)= 0);
+}
+
+
+TEST(UMemoryTest,GetAt_BaseAndOffset1AndOffset2AreZero_ThrowsException)
+{
+    ASSERT_ANY_THROW(GetAt<int>(0,0,0));
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -59,8 +63,5 @@ int _tmain(int argc, _TCHAR* argv[])
     testing::InitGoogleTest(&argc,argv);
 
     return RUN_ALL_TESTS();
-
-    system("pause");
-	return 0;
 }
 
