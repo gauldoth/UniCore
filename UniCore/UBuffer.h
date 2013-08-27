@@ -35,10 +35,13 @@ public:
     {
         buf_.append((char *)&data,sizeof(data));
     }
-    //! 追加字符串。
-    void appendString(const std::string &data)
+    //! 追加string数据。
+    /*!
+        \param data 要添加到缓冲区的数据,中间可以包含0.
+    */
+    void appendString(const char *data, int size)
     {
-        buf_.append(data);
+        buf_.append(data,size);
     }
     //! 追加16进制数据，这里以字符串方式添加。
     void appendHexPattern(const std::string &pattern);
