@@ -1,0 +1,8 @@
+/COVERAGE 
+/Verbose 
+/Exclude:std::*
+/Exclude:testing::* 
+/Exclude:GTest*
+/Exclude:*_Test::
+/Exclude:operator delete
+/Exclude:operator new

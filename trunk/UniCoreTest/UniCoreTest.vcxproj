@@ -50,6 +50,8 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\gtest;$(IncludePath)</IncludePath>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -73,6 +75,19 @@
       <Profile>true</Profile>
       <OptimizeReferences>false</OptimizeReferences>
     </Link>
+    <PostBuildEvent>
+      <Command>"$(VSInstallDir)\Team Tools\Performance Tools\vsinstr" $(TargetPath) @$(SolutionDir)InstCommand.rsp
+"$(VSInstallDir)\Team Tools\Performance Tools\VSPerfCmd.exe" /Start:COVERAGE /Output:$(TargetDir)$(TargetName)
+$(TargetPath)
+"$(VSInstallDir)\Team Tools\Performance Tools\VSPerfCmd.exe" /SHUTDOWN
+$(TargetDir)$(TargetName).coverage</Command>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Outputs>
+      </Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -108,6 +123,7 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UBufferTest.cpp" />
     <ClCompile Include="ULiteTest.cpp" />
+    <ClCompile Include="ULogTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
   </ItemGroup>
   <ItemGroup>

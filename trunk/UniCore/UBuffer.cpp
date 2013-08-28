@@ -16,7 +16,7 @@ void UBuffer::appendHexPattern( const std::string &pattern )
     std::string word;  //保存从pattern分离出来的单个16进制数据，如"00"，"A3"之类。 
     for(int i = 0; i < pattern.size(); i++)
     {
-        if(isalnum(pattern[i]))
+        if(isxdigit(pattern[i]))
         {
             assert(pattern[i] != ' ' && pattern[i] != '|');
             assert(word.size() < 2);
