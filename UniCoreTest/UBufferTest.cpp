@@ -24,7 +24,7 @@ protected:
 };
 
 
-
+//UBuffer::data
 TEST_F(UBufferTest,data_NormalString_DataRight)
 {
     buffer_->appendString("str",3);
@@ -77,19 +77,66 @@ TEST_F(UBufferTest,size_NoDataAppended_Returns0)
 
 TEST_F(UBufferTest,size_WithData_ReturnsDataSize)
 {
-    const char *content = "content in buffer";
-    buffer_->appendString(content,strlen(content));
+    char content[] = "content in buffer \0\0 data after \0\0";
+
+    buffer_->appendString(content,sizeof(content));
     int size = buffer_->size();
-    ASSERT_EQ(strlen(content),size);
+    int expectedSize = sizeof(content);
+    ASSERT_EQ(expectedSize,size);
 }
 
-//错误的测试
-//TEST_F(UBufferTest,UBuffer_appendChar_SingleChar_DataCorrect)
-//{
-//    buffer_->appendChar('C');
-//    ASSERT_STRCASEEQ("C",buffer_->data());
-//}
+TEST_F(UBufferTest,appendChar_WithZero_DataRight)
+{
+    buffer_->appendChar(0);
+    buffer_->appendChar(0xFF);
+    buffer_->appendChar('A');
+    buffer_->appendChar('a');
+    const char *data = buffer_->data();
+    int size = buffer_->size();
+    EXPECT_EQ(4,size);
+    EXPECT_EQ(0,data[0]);
+    EXPECT_EQ('\xFF',data[1]);
+    EXPECT_EQ('A',data[2]);
+    EXPECT_EQ('a',data[3]);
+    if(HasNonfatalFailure())
+    {
+        FAIL();
+    }
+    else
+    {
+        SUCCEED();
+    }
+}
 
+TEST_F(UBufferTest,appendShort_DataRight)
+{
+    short shortNumber1 = 6000;
+    short shortNumber2 = -1;
+    buffer_->appendShort(shortNumber1);
+    buffer_->appendShort(shortNumber2);
+    const char *data = buffer_->data();
+    EXPECT_EQ(4,buffer_->size());
+    short shortNumber1InBuffer = *(short *)(data+0);
+    short shortNumber2InBuffer = *(short *)(data+2);
+    EXPECT_EQ(shortNumber1,shortNumber1InBuffer);
+    EXPECT_EQ(shortNumber2,shortNumber2InBuffer);
+    if(!HasNonfatalFailure())
+    {
+        SUCCEED();
+    }
+    else
+    {
+        FAIL();
+    }
+}
+
+TEST_F(UBufferTest,appendInt_DataRight)
+{
+    buffer_->appendInt(-1);
+    const char *data = buffer_->data();
+    int actualData = *(int *)data;
+    ASSERT_EQ(-1,actualData);
+}
 
 TEST_F(UBufferTest,appendHexPattern_SingleChar_dataRight)
 {
@@ -111,6 +158,50 @@ TEST_F(UBufferTest,appendHexPattern_EmptyString_sizeEqualsToZero)
 {
     buffer_->appendHexPattern("");
     ASSERT_EQ(0,buffer_->size());
+}
+
+TEST_F(UBufferTest,appendHexPattern_StringWithPunctuation_DataRight)
+{
+    buffer_->appendHexPattern("FD#435da^&C8");
+    const char *data = buffer_->data();
+    EXPECT_EQ(5,buffer_->size());
+    EXPECT_EQ('\xFD',data[0]);
+    EXPECT_EQ('\x43',data[1]);
+    EXPECT_EQ('\x5D',data[2]);
+    EXPECT_EQ('\x0A',data[3]);
+    EXPECT_EQ('\xC8',data[4]);
+    if(!HasNonfatalFailure())
+    {
+        SUCCEED();
+    }
+    else
+    {
+        FAIL();
+    }
+}
+
+TEST_F(UBufferTest,appendHexPattern_OnePunctuationChar_NoData)
+{
+    buffer_->appendHexPattern(";");
+    ASSERT_EQ(0,buffer_->size());
+}
+
+TEST_F(UBufferTest,appendHexPattern_LettersNotHexNumber_DataValid)
+{
+    buffer_->appendHexPattern("AFGGCSDVH");
+    const char *data = buffer_->data();
+    EXPECT_EQ('\xAF',data[0]);
+    EXPECT_EQ('\xC',data[1]);
+    EXPECT_EQ('\xD',data[2]);
+    EXPECT_EQ(3,buffer_->size());
+    if(!HasNonfatalFailure())
+    {
+        SUCCEED();
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST_F(UBufferTest,appendString_CStrDataContainsZero_DataRight)
