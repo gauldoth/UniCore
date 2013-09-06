@@ -7,11 +7,11 @@
 	- UniLua 动态库,LuaC库,导出UniCore中部分功能到Lua环境.
 		
 	\section usage_sec 使用说明
-	UniCore和UniUI都采用类似boost库的自动链接技术,使用时只需包含头文件,会根据使
-	用项目的配置自动链接到正确的静态库.
+	UniCore和UniUI都采用类似boost库的自动链接技术,使用时只需包含头文件,会根据
+	使用项目的配置自动链接到正确的静态库.
 	生成的静态库都在项目路径下的lib目录中,使用时只需将该路径作为lib搜索路径即可.
-	UniLua是一个LuaC库,生成的动态库为unilua.dll,默认生成到LuaC库的路径.项目中使
-	用时,包含ULua.h后,调用ULuaInit(L)注册Lua函数到L.
+	UniLua是一个LuaC库,生成的动态库为unilua.dll.项目中使用时,包含ULua.h后,调用
+	ULuaInit(L)注册Lua函数到L.
 	在Lua中使用时,直接require("unilua")即可,注意要unilua.dll必须在系统目录或者其
 	他能找到的目录.
 	

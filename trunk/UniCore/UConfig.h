@@ -25,6 +25,9 @@ namespace uni
     string account = config.get("通用配置/账号/%d",index);
     //account中为"flower"。
     \endcode
+
+    \todo Add a method: UConfig::setArray
+    \todo Add a method: UConfig::getArray
 */
 class UConfig
 {

@@ -63,7 +63,7 @@ UMemoryModel::UMemoryModel(QObject *parent /*= 0*/)
 ,baseAddress_(0)
 ,currentRowCount_(0)
 {
-    L_ = lua_open();
+    L_ = luaL_newstate();
 
     lua_gc(L_,LUA_GCSTOP,0);
     luaL_openlibs(L_);
@@ -93,21 +93,13 @@ int UMemoryModel::columnCount( const QModelIndex &parent /*= QModelIndex()*/ ) c
 }
 
 static int traceback (lua_State *L) {
-    if (!lua_isstring(L, 1))  /* 'message' not a string? */
-        return 1;  /* keep it intact */
-    lua_getfield(L, LUA_GLOBALSINDEX, "debug");
-    if (!lua_istable(L, -1)) {
-        lua_pop(L, 1);
-        return 1;
+    const char *msg = lua_tostring(L, 1);
+    if (msg)
+        luaL_traceback(L, L, msg, 1);
+    else if (!lua_isnoneornil(L, 1)) {  /* is there an error object? */
+        if (!luaL_callmeta(L, 1, "__tostring"))  /* try its 'tostring' metamethod */
+            lua_pushliteral(L, "(no error message)");
     }
-    lua_getfield(L, -1, "traceback");
-    if (!lua_isfunction(L, -1)) {
-        lua_pop(L, 2);
-        return 1;
-    }
-    lua_pushvalue(L, 1);  /* pass error message */
-    lua_pushinteger(L, 2);  /* skip this function and traceback */
-    lua_call(L, 2, 1);  /* call debug.traceback */
     return 1;
 }
 
@@ -161,8 +153,6 @@ QVariant UMemoryModel::data( const QModelIndex &index, int role /*= Qt::DisplayR
                 UTRACE("UMemoryView")<<"Error Error:"<<luaL_checkstring(L_,-1);
                 return QVariant();
             }
-            int a = lua_gettop(L_);
-            const char *str = luaL_checkstring(L_,1);
             return QString::fromLocal8Bit(luaL_checkstring(L_,1));
         }
     }
@@ -208,8 +198,6 @@ QVariant UMemoryModel::data( const QModelIndex &index, int role /*= Qt::DisplayR
                 UTRACE("UMemoryView")<<"Error Error:"<<luaL_checkstring(L_,-1);
                 return QVariant();
             }
-            int a = lua_gettop(L_);
-            const char *str = luaL_checkstring(L_,1);
             return QColor(QString::fromLocal8Bit(luaL_checkstring(L_,1)));
         }
     }
@@ -238,7 +226,8 @@ bool UMemoryModel::canFetchMore( const QModelIndex &parent ) const
 void UMemoryModel::setAddress( int address )
 {
     baseAddress_ = address;
-    reset();
+    beginResetModel();
+    endResetModel();
 }
 
 void UMemoryModel::addColumnInfo(ColumnInfo columnInfo)

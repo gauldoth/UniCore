@@ -17,8 +17,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UniCoreTest", "UniCoreTest\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UniLua", "UniLua\UniLua.vcxproj", "{83474014-62C5-40FC-8AF8-C612FAB4A506}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UniTTest", "UniTTest\UniTTest.vcxproj", "{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79ED0C2D-5609-461B-ADF5-C1EAFED770DB}"
 	ProjectSection(SolutionItems) = preProject
 		Local.testsettings = Local.testsettings
@@ -123,18 +121,6 @@ Global
 		{83474014-62C5-40FC-8AF8-C612FAB4A506}.MTd|Win32.Build.0 = MTd|Win32
 		{83474014-62C5-40FC-8AF8-C612FAB4A506}.Release|Win32.ActiveCfg = MD|Win32
 		{83474014-62C5-40FC-8AF8-C612FAB4A506}.Release|Win32.Build.0 = MD|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.Debug|Win32.Build.0 = Debug|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MD|Win32.ActiveCfg = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MD|Win32.Build.0 = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MDd|Win32.ActiveCfg = MDd|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MDd|Win32.Build.0 = MDd|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MT|Win32.ActiveCfg = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MT|Win32.Build.0 = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MTd|Win32.ActiveCfg = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.MTd|Win32.Build.0 = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.Release|Win32.ActiveCfg = Release|Win32
-		{A691D13E-B2ED-480C-AC6A-4F371EA4C01E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QtGui>
 #include "ULuaInterpreter_Dev.h"
 
 #include "../UniUI/ULuaInterpreter.h"

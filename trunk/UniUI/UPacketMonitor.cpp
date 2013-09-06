@@ -22,8 +22,8 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     //setWordWrap(false);
     //setSortingEnabled(true);
     QFontMetrics fontMetrics(font());
-    horizontalHeader()->setResizeMode(QHeaderView::Fixed);
-    verticalHeader()->setResizeMode(QHeaderView::Fixed);
+    horizontalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     verticalHeader()->setDefaultSectionSize(fontMetrics.height()+3);
     setContextMenuPolicy(Qt::ActionsContextMenu);
 
@@ -31,7 +31,7 @@ UPacketMonitor::UPacketMonitor( QWidget *parent /*= 0*/ )
     addAction(copyAction_);
 
     horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
-    horizontalHeader()->setMovable(true);
+    horizontalHeader()->setSectionsMovable(true);
 
     connect(copyAction_,SIGNAL(triggered()),this,SLOT(copySelected()));
     connect(this,SIGNAL(activated(const QModelIndex &)),this,SLOT(showPacket(const QModelIndex &)));

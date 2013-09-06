@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QtGui>
 #include "UMemoryView_Dev.h"
 
 #include "..//UniCore//UDebug.h"
