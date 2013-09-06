@@ -1,6 +1,7 @@
 ﻿#include <QtGui>
 
 #include "UFlowLayout.h"
+#include <QtWidgets>
 
 namespace uni
 {

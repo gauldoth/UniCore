@@ -50,8 +50,10 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\gtest;$(IncludePath)</IncludePath>
-    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    </CustomBuildAfterTargets>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Run</CustomBuildAfterTargets>
+    <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
+    <CustomBuildBeforeTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    </CustomBuildBeforeTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -76,17 +78,16 @@
       <OptimizeReferences>false</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>"$(VSInstallDir)\Team Tools\Performance Tools\vsinstr" $(TargetPath) @$(SolutionDir)InstCommand.rsp
-"$(VSInstallDir)\Team Tools\Performance Tools\VSPerfCmd.exe" /Start:COVERAGE /Output:$(TargetDir)$(TargetName)
-$(TargetPath)
-"$(VSInstallDir)\Team Tools\Performance Tools\VSPerfCmd.exe" /SHUTDOWN
-$(TargetDir)$(TargetName).coverage</Command>
-    </PostBuildEvent>
-    <CustomBuildStep>
       <Command>
       </Command>
-      <Outputs>
-      </Outputs>
+    </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>"$(VSInstallDir)Team Tools\Performance Tools\vsinstr" $(TargetPath) @$(SolutionDir)InstCommand.rsp
+"$(VSInstallDir)Team Tools\Performance Tools\VSPerfCmd.exe" /Start:COVERAGE /Output:$(TargetDir)$(TargetName)
+$(TargetPath)
+"$(VSInstallDir)Team Tools\Performance Tools\VSPerfCmd.exe" /SHUTDOWN
+$(TargetDir)$(TargetName).coverage</Command>
+      <Outputs>$(TargetDir)$(TargetName).coveragerepeat</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -125,6 +126,7 @@ $(TargetDir)$(TargetName).coverage</Command>
     <ClCompile Include="ULiteTest.cpp" />
     <ClCompile Include="ULogTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
+    <ClCompile Include="USharedMemoryTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

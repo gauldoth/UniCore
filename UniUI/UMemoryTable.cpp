@@ -4,6 +4,7 @@
 
 #include <QHeaderView>
 #include <QtGui>
+#include <QtWidgets>
 
 #include "../UniCore/ULog.h"
 

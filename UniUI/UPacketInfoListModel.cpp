@@ -75,7 +75,7 @@ QVariant UPacketInfoListModel::data( const QModelIndex &index, int role /*= Qt::
     {
         if(packetInfos_->at(index.row()).outOfDate)
         {
-            return Qt::red;
+            return QColor(Qt::red);
         }
     }
     else if(role == Qt::CheckStateRole)

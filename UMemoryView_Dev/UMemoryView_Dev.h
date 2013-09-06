@@ -1,7 +1,7 @@
 #ifndef UMEMORYVIEW_DEV_H
 #define UMEMORYVIEW_DEV_H
 
-#include <QtGui/QMainWindow>
+#include <QtGui>
 #include "ui_UMemoryView_Dev.h"
 
 namespace uni
@@ -14,7 +14,7 @@ class UMemoryView_Dev : public QMainWindow
     Q_OBJECT
 
 public:
-    UMemoryView_Dev(QWidget *parent = 0, Qt::WFlags flags = 0);
+    UMemoryView_Dev(QWidget *parent = 0, Qt::WindowFlags flags = 0);
     ~UMemoryView_Dev();
 
 private:

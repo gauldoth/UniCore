@@ -4,7 +4,7 @@
 
 using namespace uni;
 
-UMemoryView_Dev::UMemoryView_Dev(QWidget *parent, Qt::WFlags flags)
+UMemoryView_Dev::UMemoryView_Dev(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
 {
     ui.setupUi(this);

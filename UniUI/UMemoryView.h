@@ -8,7 +8,7 @@
 #ifndef UNIUI_UMEMORY_VIEW_H
 #define UNIUI_UMEMORY_VIEW_H
 
-#include <QWidget>
+#include <QtWidgets>
 
 extern "C"
 {

@@ -123,12 +123,18 @@ void ULog::swap(ULog &log)
     std::swap(message_,log.message_);
 }
 
-void ULog::setAppender(const std::string &name,const std::string &appenderList)
+void ULog::setAppenders(const std::string &name,const std::string &appenderList)
 {
     vector<string> appenderNames = split(appenderList);
 
     scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
     appendersForName_[name] = appenderNames;
+}
+
+vector<std::string> ULog::getAppenders( const std::string &name )
+{
+    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    return appendersForName_[name];
 }
 
 void ULog::registerAppender( const std::string &appenderName,Appender *appender )
@@ -142,6 +148,13 @@ void ULog::unregisterAppender( const std::string &appenderName )
 {
     scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
     appenders_.erase(appenderName);
+}
+
+void ULog::unregisterAllAppenders()
+{
+    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    map<std::string,std::tr1::shared_ptr<Appender> >::const_iterator it;
+    appenders_.erase(appenders_.begin(),appenders_.end());
 }
 
 bool ULog::isOutputEnabled( Type type )
@@ -171,6 +184,26 @@ void ULog::enableOutput( const std::string &name,bool enable )
 _locale_t ULog::locale()
 {
     return loc_;
+}
+
+void ULog::restoreDefaultSettings()
+{
+    {
+        scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+        appenders_.erase(appenders_.begin(),appenders_.end());
+        appendersForName_.erase(appendersForName_.begin(),appendersForName_.end());
+    }
+    {
+        scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+        typeFilter_.erase(typeFilter_.begin(),typeFilter_.end());
+        nameFilter_.erase(nameFilter_.begin(),nameFilter_.end());
+    }
+    {
+        scoped_lock<interprocess_mutex> lock(mutexForNames_);
+        names_.erase(names_.begin(),names_.end());
+    }
+    loc_ = _create_locale(LC_ALL,"");    
+    projectName_ = "";
 }
 
 ULog &ULog::operator<<(std::ostream &(*ostreamManipulator)(std::ostream &))
@@ -219,6 +252,11 @@ ULog &ULog::operator<<(const wchar_t *t)
     assert(ptr >= 0x10000 && ptr < 0x80000000 || !"向ULog输入的宽字符指针为空。");
     message_->stm_<<ws2s(t,loc_);
     return mayHasDelim();
+}
+
+std::string ULog::message()
+{
+    return message_->stm_.str();
 }
 
 ULog &lasterr(ULog &log)
@@ -318,21 +356,22 @@ void ULogDumpMemory( ULog &log,const char *address,int len )
             dumpMessage<<" |";
         }
         int charValue = GetAt<unsigned char>(beginAddress,i);
-        dumpInfo<<" "<<hex<<noshowbase<<setw(2)<<setfill('0')<<charValue;
+        dumpInfo<<" "<<hex<<noshowbase<<uppercase
+            <<setw(2)<<setfill('0')<<charValue;
 
         char word = GetAt<char>(beginAddress,i);
         if(word == '\0')
         {
             //dumpMessage<<"0"<<setw(2)<<"\\0";
-            dumpMessage<<setw(3)<<setfill(' ')<<"."<<setw(0);
+            dumpMessage<<setw(3)<<setfill(' ')<<"\\0"<<setw(0);
         }
         else if(word == '\r')
         {
-            dumpMessage<<setw(3)<<setfill(' ')<<"\r"<<setw(0);
+            dumpMessage<<setw(3)<<setfill(' ')<<"\\r"<<setw(0);
         }
         else if(word == '\n')
         {
-            dumpMessage<<setw(3)<<setfill(' ')<<"\n"<<setw(0);
+            dumpMessage<<setw(3)<<setfill(' ')<<"\\n"<<setw(0);
         }
         else if(word < 0)
         {

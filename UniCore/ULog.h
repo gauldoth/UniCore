@@ -10,6 +10,7 @@
 #define AUTO_LINK_LIB_NAME "UniCore"
 #include "AutoLink.h"
 
+#define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 
@@ -135,7 +136,7 @@ namespace uni
           \endcode
 
     \section ulog_appender_sec 添加和设置输出源
-    ULog可以输出到调试器，文件，控制台等不同的输出源。你也可以自定义输出源输出到任意媒介.
+    ULog可以输出到调试器，文件，控制台等不同的输出源. 你也可以自定义输出源输出到任意媒介.
         - 首先,你需要使用静态函数ULog::registerAppender注册输出源.
           \code
           //注册了一个文件输出源,名字为"errorlog",该输出源会输出到error.txt.
@@ -151,11 +152,11 @@ namespace uni
         - 然后,使用setAppender设置指定分组的日志所要使用的输出源.
           \code
           //"初始化"日志仅输出到名字为"console"的输出源.
-          ULog::setAppender("初始化","console");
+          ULog::setAppenders("初始化","console");
           //"流程"日志会输出到"debugger","console","errorlog"这几个输出源.
           //注意这里必须用空格分隔输出源的名字,如果格式错误,则不会输出或者输出
           //到错误的输出源.
-          ULog::setAppender("流程","debugger console errorlog");
+          ULog::setAppenders("流程","debugger console errorlog");
           \endcode
           如果某分组的日志没有输出源,则使用无分组日志的输出源.\n
           若无分组日志也没有输出源,则为其初始化一个名为"default"的调试器输出源.
@@ -367,7 +368,7 @@ public:
     //! 将当前对象和log对象互换。
     void swap(ULog &log);
 
-    //! 设置输出源.
+    //! 配置指定名字的日志所使用的输出源.
     /*!
         \param name 日志分组名
         \param appenderList 输出源名字列表,以空格分隔的输出源名字.
@@ -378,18 +379,25 @@ public:
         \code
         //所有名字为"安装"的日志将输出到名字为"setup","console",
         //"debugger"这3个输出源.
-        setAppender("安装","setup console debugger");
+        setAppenders("安装","setup console debugger");
         //名字为"错误"的日志将输出到名字为"error"的输出源.
-        setAppender("错误","error");
+        setAppenders("错误","error");
         \endcode
     */
-    static void setAppender(const std::string &name,
+    static void setAppenders(const std::string &name,
         const std::string &appenderList);
+
+    //! 获取指定名字的日志所使用的输出源.
+    /*!
+        \param name 日志分组名.
+        \return 输出源名字列表.
+    */
+    static std::vector<std::string> getAppenders(const std::string &name);
     
     //! 注册一个输出源到日志系统.
     /*!
         \param appenderName 输出源的名字,名字由字母数字下划线组成,不能包含空格.
-        \param appender 输出源指针.
+        \param appender 输出源指针,必须是new出来的对象,删除由ULog负责.
     */
     static void registerAppender(const std::string &appenderName,Appender *appender);
 
@@ -398,6 +406,12 @@ public:
         \param appenderName 输出源的名字,名字由字母数字下划线组成,不能包含空格.
     */
     static void unregisterAppender(const std::string &appenderName);
+
+    //! 卸载所有的输出源.
+    /*!
+        
+    */
+    static void unregisterAllAppenders();
 
     //! 判断指定类型的日志是否输出.
     /*!
@@ -435,6 +449,9 @@ public:
 
     //! 返回当前ULog使用的locale，默认情况是使用本机区域设置。
     static _locale_t locale();
+
+    //! 还原回默认的设置.所有static状态将被恢复到初始值.
+    static void restoreDefaultSettings();
 
     //! 接受ostream的操纵符。
     /*!
@@ -553,6 +570,9 @@ public:
         return (*this);
     }
 
+    //! 返回保存的日志主体信息.
+    std::string message();
+
     friend void ULogSetName(ULog &log,const char *name);
 
     friend ULog &lasterr(ULog &log);
@@ -588,6 +608,9 @@ ULog::SManipulator<const char *> ULogSetName(const char *name);
 ULog::SManipulator<const char *> delim(const char *delim);
 
 //! 将address开始len长度的数据输出。
+/*!
+    \param address dump内存的起始地址,内存必须要可读.
+*/
 inline ULog::BinaryManipulator<const char *,int> dumpmem(const char *address,int len)
 {
     return ULog::BinaryManipulator<const char *,int>(&ULogDumpMemory,address,len);

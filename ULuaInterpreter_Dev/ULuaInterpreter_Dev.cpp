@@ -1,6 +1,6 @@
 #include "ULuaInterpreter_Dev.h"
 
-ULuaInterpreter_Dev::ULuaInterpreter_Dev(QWidget *parent, Qt::WFlags flags)
+ULuaInterpreter_Dev::ULuaInterpreter_Dev(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags)
 {
     ui.setupUi(this);
