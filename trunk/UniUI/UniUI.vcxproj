@@ -1,0 +1,921 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="MDd|Win32">
+      <Configuration>MDd</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MD|Win32">
+      <Configuration>MD</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MTd|Win32">
+      <Configuration>MTd</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MT|Win32">
+      <Configuration>MT</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Template|Win32">
+      <Configuration>Template</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D319ABBE-B018-49D8-A0CE-0F95A7905D0C}</ProjectGuid>
+    <RootNamespace>UniUI</RootNamespace>
+    <Keyword>Qt4VSv1.0</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MT|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MD|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='MT|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='MD|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='MD|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='MD|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='MT|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='MT|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Template|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-DPSAPI_VERSION=1 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(Configuration);.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_THREAD_SUPPORT;QT_CORE_LIB;QT_GUI_LIB;UNIUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)lib\$(ProjectName)MDd.lib</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-DPSAPI_VERSION=1 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(Configuration);.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_THREAD_SUPPORT;QT_CORE_LIB;QT_GUI_LIB;UNIUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)lib\$(ProjectName)MTd.lib</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-DPSAPI_VERSION=1 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(Configuration);.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_THREAD_SUPPORT;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;UNIUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)lib\$(ProjectName)MD.lib</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-DPSAPI_VERSION=1 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(Configuration);.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_THREAD_SUPPORT;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;UNIUI_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(SolutionDir)lib\$(ProjectName)MT.lib</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Template|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;$(QTDIR)\include;.\GeneratedFiles\$(Configuration);.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="Resources\test.png">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\MDd\moc_ULogConfigPanel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_ULogConfigPanel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_ULogConfigPanel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_ULogConfigPanel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_ULuaEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_ULuaEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_ULuaEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_ULuaEdit.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_ULuaInterpreter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_ULuaInterpreter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_ULuaInterpreter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_ULuaInterpreter.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UMemoryModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UMemoryModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UMemoryModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UMemoryModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UMemoryTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UMemoryTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UMemoryTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UMemoryTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UMemoryView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UMemoryView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UMemoryView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UMemoryView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketContentView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketContentView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketContentView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketContentView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketDisplayList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketDisplayList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketDisplayList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketDisplayList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketInfoList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketInfoList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketInfoList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketInfoList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketInfoListModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketInfoListModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketInfoListModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketInfoListModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketMonitor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketMonitor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketMonitor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketMonitor.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketMonitorModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketMonitorModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketMonitorModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketMonitorModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketMonitorProxyModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketMonitorProxyModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketMonitorProxyModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketMonitorProxyModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UProcessModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UProcessModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UProcessModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UProcessModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UProcessView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UProcessView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UProcessView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UProcessView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UStopwatchView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UStopwatchView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UStopwatchView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UStopwatchView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="UPacketMonitorModel.cpp" />
+    <ClCompile Include="UProcessModel.cpp" />
+    <ClCompile Include="UProcessView.cpp" />
+    <ClCompile Include="UMemoryModel.cpp" />
+    <ClCompile Include="UMemoryTable.cpp" />
+    <ClCompile Include="UMemoryView.cpp" />
+    <ClCompile Include="UModuleView.cpp" />
+    <ClCompile Include="ULogConfigPanel.cpp" />
+    <ClCompile Include="UPacketContentView.cpp" />
+    <ClCompile Include="UPacketDisplayList.cpp" />
+    <ClCompile Include="UPacketInfoList.cpp" />
+    <ClCompile Include="UPacketInfoListModel.cpp" />
+    <ClCompile Include="UPacketMonitor.cpp" />
+    <ClCompile Include="UPacketMonitorProxyModel.cpp" />
+    <ClCompile Include="UPacketView.cpp" />
+    <ClCompile Include="ULuaEdit.cpp" />
+    <ClCompile Include="ULuaInterpreter.cpp" />
+    <ClCompile Include="UFlowLayout.cpp" />
+    <ClCompile Include="UStopwatchView.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="UProcessModel.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UProcessModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UProcessModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UProcessModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UProcessModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessModel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UProcessView.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UProcessView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UProcessView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UProcessView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UProcessView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UProcessView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UProcessView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UProcessView.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UMemoryModel.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UMemoryModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UMemoryModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UMemoryModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UMemoryModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryModel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UMemoryTable.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UMemoryTable.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryTable.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryTable.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UMemoryTable.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryTable.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryTable.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UMemoryTable.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryTable.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryTable.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UMemoryTable.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryTable.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryTable.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryTable.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UMemoryView.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UMemoryView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UMemoryView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UMemoryView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UMemoryView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UMemoryView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UMemoryView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UMemoryView.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="UModuleView.h" />
+    <CustomBuild Include="ULogConfigPanel.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing ULogConfigPanel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULogConfigPanel.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\ULogConfigPanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing ULogConfigPanel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULogConfigPanel.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\ULogConfigPanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing ULogConfigPanel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULogConfigPanel.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\ULogConfigPanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing ULogConfigPanel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULogConfigPanel.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\ULogConfigPanel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULogConfigPanel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketContentView.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketContentView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketContentView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketContentView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketContentView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketContentView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketContentView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketContentView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketContentView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketContentView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketContentView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketContentView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketContentView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketContentView.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketDisplayList.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketDisplayList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketDisplayList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketDisplayList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketDisplayList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketDisplayList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketDisplayList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketDisplayList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketDisplayList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketDisplayList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketDisplayList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketDisplayList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketDisplayList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketDisplayList.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketInfoList.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketInfoList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketInfoList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketInfoList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketInfoList.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoList.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoList.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoList.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketInfoListModel.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketInfoListModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoListModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoListModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketInfoListModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoListModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoListModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketInfoListModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoListModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoListModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketInfoListModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketInfoListModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketInfoListModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketInfoListModel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketMonitor.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketMonitor.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitor.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitor.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketMonitor.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitor.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitor.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketMonitor.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitor.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitor.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketMonitor.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitor.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitor.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitor.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketMonitorModel.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketMonitorModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketMonitorModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketMonitorModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketMonitorModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorModel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketMonitorProxyModel.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketMonitorProxyModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorProxyModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorProxyModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketMonitorProxyModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorProxyModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorProxyModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketMonitorProxyModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorProxyModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorProxyModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketMonitorProxyModel.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketMonitorProxyModel.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketMonitorProxyModel.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketMonitorProxyModel.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="UPacketView.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UPacketView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UPacketView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UPacketView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UPacketView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UPacketView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UPacketView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UPacketView.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="ULuaEdit.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing ULuaEdit.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaEdit.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaEdit.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing ULuaEdit.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaEdit.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaEdit.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing ULuaEdit.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaEdit.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaEdit.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing ULuaEdit.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaEdit.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaEdit.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaEdit.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="ULuaInterpreter.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing ULuaInterpreter.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaInterpreter.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaInterpreter.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing ULuaInterpreter.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaInterpreter.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaInterpreter.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing ULuaInterpreter.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaInterpreter.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaInterpreter.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing ULuaInterpreter.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\ULuaInterpreter.h" -o ".\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\ULuaInterpreter.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_ULuaInterpreter.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+    <ClInclude Include="UFlowLayout.h" />
+    <CustomBuild Include="UStopwatchView.h">
+      <Message Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">Moc%27ing UStopwatchView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UStopwatchView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">$(QTDIR)\bin\moc.exe;.\UStopwatchView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MDd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">Moc%27ing UStopwatchView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UStopwatchView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">$(QTDIR)\bin\moc.exe;.\UStopwatchView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MD|Win32'">.\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">Moc%27ing UStopwatchView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UStopwatchView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">$(QTDIR)\bin\moc.exe;.\UStopwatchView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MTd|Win32'">.\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">Moc%27ing UStopwatchView.h...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">"$(QTDIR)\bin\moc.exe"  -DUNICODE -DWIN32 -DQT_THREAD_SUPPORT -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DUNIUI_LIB -I".\GeneratedFiles\." -I"$(QTDIR)\include\." -I".\GeneratedFiles\$(Configuration)\." -I".\." -I"$(QTDIR)\include\QtCore\." -I"$(QTDIR)\include\QtGui\." ".\UStopwatchView.h" -o ".\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp"
+</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">$(QTDIR)\bin\moc.exe;.\UStopwatchView.h;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MT|Win32'">.\GeneratedFiles\$(Configuration)\moc_UStopwatchView.cpp;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UniCore\UniCore.vcxproj">
+      <Project>{db29d200-f23c-47d5-a1d1-b1b645f5f138}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" QtVersion="4.6.3_static_linked" RccDir=".\GeneratedFiles" UicDir=".\GeneratedFiles" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

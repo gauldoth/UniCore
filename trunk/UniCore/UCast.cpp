@@ -18,14 +18,15 @@ namespace uni
 string ws2s(const wstring &ws,const char *locale /*= ""*/)
 {
     string result;
-    const size_t len = ws.size()*4+1;
-    char *dest = new char[len];
-    size_t numOfCharConverted = 0;
     _locale_t loc = _create_locale(LC_CTYPE,locale);
     if(!loc)
     {
-        loc = _create_locale(LC_CTYPE,"");
+        return result;
     }
+    const size_t len = ws.size()*4+1;
+    char *dest = new char[len];
+    size_t numOfCharConverted = 0;
+
     errno_t err = _wcstombs_s_l(&numOfCharConverted,dest,len,ws.c_str(),_TRUNCATE,loc);
     _free_locale(loc);
     if(err == 0)
@@ -39,7 +40,6 @@ string ws2s(const wstring &ws,const char *locale /*= ""*/)
     }
     else
     {
-        assert(!"UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
         OutputDebugStringA("UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
     }
     delete []dest;
@@ -49,6 +49,12 @@ string ws2s(const wstring &ws,const char *locale /*= ""*/)
 string ws2s(const wstring &ws,_locale_t locale)
 {
     string result;
+
+    if(!locale)
+    {
+        return result;
+    }
+
     const size_t len = ws.size()*4+1;
     char *dest = new char[len];
     size_t numOfCharConverted = 0; 
@@ -65,7 +71,6 @@ string ws2s(const wstring &ws,_locale_t locale)
     }
     else
     {
-        assert(!"UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
         OutputDebugStringA("UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
     }
     delete []dest;
@@ -74,11 +79,16 @@ string ws2s(const wstring &ws,_locale_t locale)
 
 void ws2s(char *dest,int len,const wchar_t *source,const char *locale )
 {
+    if(!dest || !len || !source || !locale)
+    {
+        return;
+    }
     size_t numOfCharConverted = 0;
     _locale_t loc = _create_locale(LC_CTYPE,locale);
     if(!loc)
     {
-        loc = _create_locale(LC_CTYPE,"");
+        dest[0] = '\0';
+        return;
     }
     errno_t err = _wcstombs_s_l(&numOfCharConverted,dest,len,source,_TRUNCATE,loc);
     _free_locale(loc);
@@ -92,7 +102,6 @@ void ws2s(char *dest,int len,const wchar_t *source,const char *locale )
     }
     else
     {
-        assert(!"UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
         OutputDebugStringA("UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
     }
 }
@@ -100,7 +109,10 @@ void ws2s(char *dest,int len,const wchar_t *source,const char *locale )
 std::string ws2s( const std::wstring &ws,int codepage )
 {
     string result;
-
+    if(ws.empty())
+    {
+        return result;
+    }
     int requiredSize = WideCharToMultiByte(codepage,0,ws.c_str(),ws.size(),0,0,0,0);
     if(requiredSize == 0)
     {
@@ -131,8 +143,7 @@ wstring s2ws(const string &s,const char *locale /*= ""*/)
     _locale_t loc = _create_locale(LC_CTYPE,locale);  //使用指定的locale。
     if(!loc)
     {
-        //指定的locale创建失败，使用实现指定的本地环境。
-        loc = _create_locale(LC_CTYPE,"");
+        return result;
     }
     errno_t err = _mbstowcs_s_l(&numOfCharConverted,dest,len,s.c_str(),_TRUNCATE,loc);
     _free_locale(loc);
@@ -147,7 +158,6 @@ wstring s2ws(const string &s,const char *locale /*= ""*/)
     }
     else
     {
-        assert(!"UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
         OutputDebugStringA("UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
     }
     delete []dest;
@@ -157,6 +167,10 @@ wstring s2ws(const string &s,const char *locale /*= ""*/)
 wstring s2ws(const string &s,_locale_t locale)
 {
     wstring result;
+    if(!locale)
+    {
+        return result;
+    }
     const size_t len = s.size()+1;
     wchar_t *dest = new wchar_t[len];
     size_t numOfCharConverted = 0;
@@ -174,7 +188,6 @@ wstring s2ws(const string &s,_locale_t locale)
     }
     else
     {
-        assert(!"UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
         OutputDebugStringA("UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
     }
     delete []dest;
@@ -208,12 +221,16 @@ std::wstring s2ws( const std::string &s,int codepage )
 
 void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
 {
+    if(!dest || !len || !source || !locale)
+    {
+        return;
+    }
     size_t numOfCharConverted = 0;
     _locale_t loc = _create_locale(LC_CTYPE,locale);  //使用指定的locale。
     if(!loc)
     {
         //指定的locale创建失败，使用实现指定的本地环境。
-        loc = _create_locale(LC_CTYPE,"");
+        return;
     }
     errno_t err = _mbstowcs_s_l(&numOfCharConverted,dest,len,source,_TRUNCATE,loc);
     _free_locale(loc);
@@ -226,7 +243,6 @@ void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
     }
     else
     {
-        assert(!"UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
         OutputDebugStringA("UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
     }
 }
@@ -236,6 +252,11 @@ std::string i2s( int i )
     char buf[100] = "";
     _itoa_s(i,buf,10);
     return buf;
+}
+
+std::string operator+(const std::string &s,int i )
+{
+    return s + i2s(i);
 }
 
 }//namespace uni

@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="UProcessView">
+      <UniqueIdentifier>{21a3121f-2278-4e54-afe8-0bdaaa20b67e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UMemoryView">
+      <UniqueIdentifier>{ad47fd1d-649b-4d9d-8d95-18f5bfce6070}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UModuleView">
+      <UniqueIdentifier>{22277db0-adf7-4767-93fc-115bfb4518db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ULogConfigPanel">
+      <UniqueIdentifier>{3450d206-c480-4f0c-ac7f-ffe6c760287f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UPacketView">
+      <UniqueIdentifier>{5cddca33-3a1e-42b0-8360-2a26d5783582}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ULuaInterpreter">
+      <UniqueIdentifier>{d7539a66-247f-4c5b-89bb-bdfcc59c3b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UFlowLayout">
+      <UniqueIdentifier>{3d28f792-071d-492d-b6cc-c24513f173aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UStopwatchView">
+      <UniqueIdentifier>{92a09975-5d7e-4975-8b29-7b46a96c249c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\MDd\moc_ULogConfigPanel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_ULogConfigPanel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_ULogConfigPanel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_ULogConfigPanel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_ULuaEdit.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_ULuaEdit.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_ULuaEdit.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_ULuaEdit.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_ULuaInterpreter.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_ULuaInterpreter.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_ULuaInterpreter.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_ULuaInterpreter.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UMemoryModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UMemoryModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UMemoryModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UMemoryModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UMemoryTable.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UMemoryTable.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UMemoryTable.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UMemoryTable.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UMemoryView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UMemoryView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UMemoryView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UMemoryView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketContentView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketContentView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketContentView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketContentView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketDisplayList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketDisplayList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketDisplayList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketDisplayList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketInfoList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketInfoList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketInfoList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketInfoList.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketInfoListModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketInfoListModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketInfoListModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketInfoListModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketMonitor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketMonitor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketMonitor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketMonitor.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketMonitorModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketMonitorModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketMonitorModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketMonitorModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketMonitorProxyModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketMonitorProxyModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketMonitorProxyModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketMonitorProxyModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UPacketView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UPacketView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UPacketView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UPacketView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UProcessModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UProcessModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UProcessModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UProcessModel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UProcessView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UProcessView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UProcessView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UProcessView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MTd\moc_UStopwatchView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MT\moc_UStopwatchView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MDd\moc_UStopwatchView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\MD\moc_UStopwatchView.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UProcessModel.cpp">
+      <Filter>UProcessView</Filter>
+    </ClCompile>
+    <ClCompile Include="UProcessView.cpp">
+      <Filter>UProcessView</Filter>
+    </ClCompile>
+    <ClCompile Include="UMemoryModel.cpp">
+      <Filter>UMemoryView</Filter>
+    </ClCompile>
+    <ClCompile Include="UMemoryTable.cpp">
+      <Filter>UMemoryView</Filter>
+    </ClCompile>
+    <ClCompile Include="UMemoryView.cpp">
+      <Filter>UMemoryView</Filter>
+    </ClCompile>
+    <ClCompile Include="UModuleView.cpp">
+      <Filter>UModuleView</Filter>
+    </ClCompile>
+    <ClCompile Include="ULogConfigPanel.cpp">
+      <Filter>ULogConfigPanel</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketContentView.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketDisplayList.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketInfoList.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketInfoListModel.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketMonitor.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketMonitorProxyModel.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketView.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+    <ClCompile Include="ULuaEdit.cpp">
+      <Filter>ULuaInterpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="ULuaInterpreter.cpp">
+      <Filter>ULuaInterpreter</Filter>
+    </ClCompile>
+    <ClCompile Include="UFlowLayout.cpp">
+      <Filter>UFlowLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="UStopwatchView.cpp">
+      <Filter>UStopwatchView</Filter>
+    </ClCompile>
+    <ClCompile Include="UPacketMonitorModel.cpp">
+      <Filter>UPacketView</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UModuleView.h">
+      <Filter>UModuleView</Filter>
+    </ClInclude>
+    <ClInclude Include="UFlowLayout.h">
+      <Filter>UFlowLayout</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="Resources\test.png">
+      <Filter>Resource Files</Filter>
+    </CustomBuildStep>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="UProcessModel.h">
+      <Filter>UProcessView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UProcessView.h">
+      <Filter>UProcessView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UMemoryModel.h">
+      <Filter>UMemoryView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UMemoryTable.h">
+      <Filter>UMemoryView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UMemoryView.h">
+      <Filter>UMemoryView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ULogConfigPanel.h">
+      <Filter>ULogConfigPanel</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketContentView.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketDisplayList.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketInfoList.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketInfoListModel.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketMonitor.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketMonitorModel.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketMonitorProxyModel.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UPacketView.h">
+      <Filter>UPacketView</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ULuaEdit.h">
+      <Filter>ULuaInterpreter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ULuaInterpreter.h">
+      <Filter>ULuaInterpreter</Filter>
+    </CustomBuild>
+    <CustomBuild Include="UStopwatchView.h">
+      <Filter>UStopwatchView</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

@@ -16,37 +16,6 @@ using namespace uni;
 using namespace std;
 
 
-TEST(UStringTest,trim_EmptyString_ReturnsEmptyString)
-{
-    string result = trim("");
-    ASSERT_EQ("",result);
-}
-
-TEST(UStringTest,trim_StringWithSpace_ReturnsStringTrimmed)
-{
-    string result = trim(" asd s   ");
-    ASSERT_EQ("asd s",result);
-}
-
-TEST(UStringTest,trim_StringWithSpaceAndTab_ReturnsStringTrimmed)
-{
-    string result = trim("  asd\t "," \t");
-    ASSERT_EQ("asd",result);
-}
-
-TEST(UStringTest,trim_AllCharsInStringIsInTrimChars_ReturnsEmptyString)
-{
-    string result = trim("asd","asd");
-    ASSERT_TRUE(result.empty());
-}
-
-TEST(UStringTest,trim_TrimCharsIsEmpty_ReturnsOriginString)
-{
-    string result = trim("asd","");
-    ASSERT_EQ("asd",result);
-}
-
-
 TEST(UMemoryTest,GetAt_BaseAndOffsetAreZero_ThrowsException)
 {
     ASSERT_ANY_THROW(GetAt<int>(0,0)= 0);

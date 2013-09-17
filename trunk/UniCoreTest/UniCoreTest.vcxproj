@@ -50,7 +50,7 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\gtest;$(IncludePath)</IncludePath>
-    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Run</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build</CustomBuildAfterTargets>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
     <CustomBuildBeforeTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     </CustomBuildBeforeTargets>
@@ -66,7 +66,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ExceptionHandling>Async</ExceptionHandling>
     </ClCompile>
@@ -86,7 +86,7 @@
 "$(VSInstallDir)Team Tools\Performance Tools\VSPerfCmd.exe" /Start:COVERAGE /Output:$(TargetDir)$(TargetName)
 $(TargetPath)
 "$(VSInstallDir)Team Tools\Performance Tools\VSPerfCmd.exe" /SHUTDOWN
-$(TargetDir)$(TargetName).coverage</Command>
+::$(TargetDir)$(TargetName).coverage</Command>
       <Outputs>$(TargetDir)$(TargetName).coveragerepeat</Outputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
@@ -123,10 +123,12 @@ $(TargetDir)$(TargetName).coverage</Command>
     <ClCompile Include="IntegrationTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UBufferTest.cpp" />
+    <ClCompile Include="UCastTest.cpp" />
     <ClCompile Include="ULiteTest.cpp" />
     <ClCompile Include="ULogTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
     <ClCompile Include="USharedMemoryTest.cpp" />
+    <ClCompile Include="UStringTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -137,6 +139,10 @@ $(TargetDir)$(TargetName).coverage</Command>
     <ProjectReference Include="..\UniCore\UniCore.vcxproj">
       <Project>{db29d200-f23c-47d5-a1d1-b1b645f5f138}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <Private>true</Private>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

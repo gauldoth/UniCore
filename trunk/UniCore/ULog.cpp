@@ -139,9 +139,41 @@ vector<std::string> ULog::getAppenders( const std::string &name )
 
 void ULog::registerAppender( const std::string &appenderName,Appender *appender )
 {
+    if(!isAppenderNameValid(appenderName))
+    {
+        return;
+    }
     scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
     std::tr1::shared_ptr<Appender> p(appender);
     appenders_[appenderName] = p;
+}
+
+bool ULog::isAppenderNameValid(const std::string &appenderName)
+{
+    if(appenderName.empty())
+    {
+        return false;
+    }
+    for(int i = 0; i < appenderName.size(); i++)
+    {
+        if(!isalnum(appenderName[i]) && appenderName[i] != '_')
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+vector<string> ULog::getRegisteredAppenderNames()
+{
+    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    vector<string> result;
+    map<string,tr1::shared_ptr<Appender> >::const_iterator it;
+    for(it = appenders_.begin(); it != appenders_.end(); ++it)
+    {
+        result.push_back(it->first);
+    }
+    return result;
 }
 
 void ULog::unregisterAppender( const std::string &appenderName )
@@ -230,6 +262,7 @@ ULog &ULog::operator<<(const std::_Fillobj<char>& _Manip)
     return *this;
 }
 
+#if _NATIVE_WCHAR_T_DEFINED
 ULog &ULog::operator<<(wchar_t t)
 {
     wchar_t temp[2] = L"";
@@ -238,6 +271,7 @@ ULog &ULog::operator<<(wchar_t t)
     message_->stm_<<ws2s(temp,loc_);
     return mayHasDelim();
 }
+#endif
 
 ULog &ULog::operator<<(const std::wstring &t) 
 {
@@ -245,6 +279,7 @@ ULog &ULog::operator<<(const std::wstring &t)
     return mayHasDelim();
 }
 
+#if _NATIVE_WCHAR_T_DEFINED
 ULog &ULog::operator<<(const wchar_t *t)
 {
     int ptr = reinterpret_cast<int>(t);
@@ -253,6 +288,7 @@ ULog &ULog::operator<<(const wchar_t *t)
     message_->stm_<<ws2s(t,loc_);
     return mayHasDelim();
 }
+#endif
 
 std::string ULog::message()
 {

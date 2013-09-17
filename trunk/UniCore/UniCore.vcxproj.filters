@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="TypeConversion">
+      <UniqueIdentifier>{ff24b299-bc04-469b-af87-e7bd8a55703c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{2463f01f-60bf-4082-ae50-b7ff5e8bde44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Miscellany">
+      <UniqueIdentifier>{e8a13b6f-9cd1-40d4-9e26-8e892993579f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{21294ecf-db34-406b-bfdd-8223983101d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{bbe0764d-f090-4779-9668-77c44dc15ce2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="UCast.cpp">
+      <Filter>TypeConversion</Filter>
+    </ClCompile>
+    <ClCompile Include="UBuffer.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="UMemory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="UCommon.cpp">
+      <Filter>Miscellany</Filter>
+    </ClCompile>
+    <ClCompile Include="UConfig.cpp">
+      <Filter>Miscellany</Filter>
+    </ClCompile>
+    <ClCompile Include="UDebug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="ULog.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="UProcess.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="ULock.cpp">
+      <Filter>Miscellany</Filter>
+    </ClCompile>
+    <ClCompile Include="USharedMemory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UCast.h">
+      <Filter>TypeConversion</Filter>
+    </ClInclude>
+    <ClInclude Include="UBuffer.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="UMemory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoLink.h">
+      <Filter>Miscellany</Filter>
+    </ClInclude>
+    <ClInclude Include="UCommon.h">
+      <Filter>Miscellany</Filter>
+    </ClInclude>
+    <ClInclude Include="UConfig.h">
+      <Filter>Miscellany</Filter>
+    </ClInclude>
+    <ClInclude Include="UDebug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="ULog.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="UProcess.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="ULite.h">
+      <Filter>Miscellany</Filter>
+    </ClInclude>
+    <ClInclude Include="ULock.h">
+      <Filter>Miscellany</Filter>
+    </ClInclude>
+    <ClInclude Include="USharedMemory.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\工程说明.txt" />
+    <None Include="日志函数设计.txt" />
+    <None Include="Memo.txt" />
+  </ItemGroup>
+</Project>
