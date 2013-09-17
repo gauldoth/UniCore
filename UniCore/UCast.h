@@ -6,6 +6,9 @@
 #ifndef UNICORE_UCAST_H
 #define UNICORE_UCAST_H
 
+#define AUTO_LINK_LIB_NAME "UniCore"
+#include "AutoLink.h"
+
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
 #include <string>
@@ -122,6 +125,9 @@ void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
     \return 字符串表示的数字。
 */
 std::string i2s(int i);
+
+//! 在string右边添加整型值.
+std::string operator+ (const std::string &s,int i);
 
 
 }//namespace uni

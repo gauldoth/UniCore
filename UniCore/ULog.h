@@ -393,13 +393,32 @@ public:
         \return 输出源名字列表.
     */
     static std::vector<std::string> getAppenders(const std::string &name);
+
+    //! 判断输出源的名字是否有效.
+    /*!
+        \param name 输出源名字.
+        \return 该输出源名字是否有效(是否允许被注册).
+
+        名字只能由字母,数字和下划线组成,不能包含空格,也不能为空字符串.
+    */
+    static bool isAppenderNameValid(const std::string &appenderName);
     
     //! 注册一个输出源到日志系统.
     /*!
-        \param appenderName 输出源的名字,名字由字母数字下划线组成,不能包含空格.
-        \param appender 输出源指针,必须是new出来的对象,删除由ULog负责.
+        \param appenderName 输出源的名字,名字只能由字母数字下划线组成,不能包含空格.
+            假如传入空字符串,则注册失败.
+        \param appender 输出源指针,必须是new出来的对象,删除由ULog负责,
+            假如appender为0,或者是一个错误的指针,则行为未定义.
+
+        若指定名字的输出源已经存在, 则替换掉存在的输出源.
     */
     static void registerAppender(const std::string &appenderName,Appender *appender);
+
+    //! 获得当前注册的所有输出源的名字.
+    /*!
+        \return 返回的数组中包含了所有输出源的名字.
+    */
+    static std::vector<std::string> getRegisteredAppenderNames();
 
     //! 从日志系统删除一个输出源.
     /*!
@@ -409,7 +428,7 @@ public:
 
     //! 卸载所有的输出源.
     /*!
-        
+        该函数清除所有在日志系统中注册过的输出源.
     */
     static void unregisterAllAppenders();
 
@@ -524,6 +543,10 @@ public:
         return mayHasDelim();
     }
     
+    //! 输入C格式字符串.
+    /*!
+        假如t为0,则输出(null).
+    */
     ULog &operator<<(const char *t) 
     {
         if(!t) 
@@ -538,10 +561,14 @@ public:
     }
 
     //! 写入一个宽字符。
+#if _NATIVE_WCHAR_T_DEFINED
     ULog &operator<<(wchar_t t);
+#endif
 
     //! 写入宽字符字串。
+#if _NATIVE_WCHAR_T_DEFINED
     ULog &operator<<(const wchar_t *t);
+#endif
 
     ULog &operator<<(const std::string &t) {message_->stm_<<t; return mayHasDelim();}
 
