@@ -99,9 +99,9 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
         //源字符串为空或者分隔符为空都无法进行分割.
         return results;
     }
-    if(s.size() <= delim.size())
+    if(s.size() < delim.size())
     {
-		//源字符串长度小于等于分隔符时也无法分割.
+		//源字符串长度小于分隔符长度时也无法分割.
         return results;
     }
     string::size_type currentPos = 0;
@@ -119,17 +119,12 @@ vector<string> split( const string &s,const string &delim /*= " "*/ )
         {
             //找到分隔符
             assert(delimPos >= currentPos);
-            if(delimPos > currentPos)
+            if(delimPos >= currentPos)
             {
-                //分隔符位置如果等于当前位置,则子字符串为空.
+                //分隔符位置如果等于当前位置,则保存一个空字符串.
                 results.push_back(s.substr(currentPos,delimPos-currentPos));
             }
             currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
-            if(currentPos >= s.length())
-            {
-                //currentPos已经超出字符串范围.
-                break;
-            }
         }
 
     }
@@ -145,9 +140,9 @@ std::vector<std::wstring> split( const std::wstring &s,const std::wstring &delim
 		//源字符串为空或者分隔符为空都无法进行分割.
 		return results;
 	}
-	if(s.size() <= delim.size())
+	if(s.size() < delim.size())
 	{
-		//源字符串长度小于等于分隔符时也无法分割.
+		//源字符串长度小于分隔符长度时也无法分割.
 		return results;
 	}
 	wstring::size_type currentPos = 0;
@@ -165,17 +160,12 @@ std::vector<std::wstring> split( const std::wstring &s,const std::wstring &delim
 		{
 			//找到分隔符
 			assert(delimPos >= currentPos);
-			if(delimPos > currentPos)
+			if(delimPos >= currentPos)
 			{
-				//分隔符位置如果等于当前位置,则子字符串为空.
+                //分隔符位置如果等于当前位置,则保存一个空字符串.
 				results.push_back(s.substr(currentPos,delimPos-currentPos));
 			}
 			currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
-			if(currentPos >= s.length())
-			{
-				//currentPos已经超出字符串范围.
-				break;
-			}
 		}
 
 	}
@@ -238,6 +228,34 @@ std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*
         else
         {
             break;
+        }
+    }
+    return result;
+}
+
+std::string join( const std::vector<std::string> &stringsToJoin,const std::string &delim )
+{
+    std::string result;
+    for(int i = 0; i < stringsToJoin.size(); i++)
+    {
+        result += stringsToJoin[i];
+        if(i != stringsToJoin.size() - 1)
+        {
+            result += delim;
+        }
+    }
+    return result;
+}
+
+std::wstring join( const std::vector<std::wstring> &stringsToJoin,const std::wstring &delim )
+{
+    std::wstring result;
+    for(int i = 0; i < stringsToJoin.size(); i++)
+    {
+        result += stringsToJoin[i];
+        if(i != stringsToJoin.size() - 1)
+        {
+            result += delim;
         }
     }
     return result;

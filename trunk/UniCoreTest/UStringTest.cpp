@@ -22,12 +22,13 @@ TEST(UStringTest,split_NormalString_ReturnsOneResult)
     EXPECT_EQ("apple",result[0]);
 }
 
-TEST(UStringTest,split_NormalStringWithTwoSpace_ReturnsTwoString)
+TEST(UStringTest,split_NormalStringWithTwoSpace_ReturnsThreeString)
 {
     vector<string> result = split("apple  banana");
-    ASSERT_EQ(2,result.size());
+    ASSERT_EQ(3,result.size());
     EXPECT_EQ("apple",result[0]);
-    EXPECT_EQ("banana",result[1]);
+    EXPECT_EQ("",result[1]);
+    EXPECT_EQ("banana",result[2]);
 }
 
 TEST(UStringTest,split_SourceStringAndDelimAreEmptyString_ReturnsNothing)
@@ -45,18 +46,30 @@ TEST(UStringTest,split_DelimSizeGreatThanSource_ReturnsNothing)
 TEST(UStringTest,split_DelimAtBeginAndEnd_ReturnsValidResult)
 {
     vector<string> result = split(";cup inside;next;;",";");
+    ASSERT_EQ(5,result.size());
+    EXPECT_EQ("",result[0]);
+    EXPECT_EQ("cup inside",result[1]);
+    EXPECT_EQ("next",result[2]);
+    EXPECT_EQ("",result[3]);
+    EXPECT_EQ("",result[4]);
+}
+
+TEST(UStringTest,split_OnlyOneDelim_ReturnsTwoEmptyString)
+{
+    vector<string> result = split(";",";");
     ASSERT_EQ(2,result.size());
-    EXPECT_EQ("cup inside",result[0]);
-    EXPECT_EQ("next",result[1]);
+    EXPECT_EQ("",result[0]);
+    EXPECT_EQ("",result[1]);
 }
 
 TEST(UStringTest,split_DelimSizeGreaterThanTwo_SplitSuccess)
 {
     vector<string> result = split("**cup inside***next;***;*","**");
-    ASSERT_EQ(3,result.size());
-    EXPECT_EQ("cup inside",result[0]);
-    EXPECT_EQ("*next;",result[1]);
-    EXPECT_EQ("*;*",result[2]);
+    ASSERT_EQ(4,result.size());
+    EXPECT_EQ("",result[0]);
+    EXPECT_EQ("cup inside",result[1]);
+    EXPECT_EQ("*next;",result[2]);
+    EXPECT_EQ("*;*",result[3]);
 }
 
 TEST(UStringTest,split_w_EmptyString_ReturnsZeroResult)
@@ -72,12 +85,13 @@ TEST(UStringTest,split_w_NormalString_ReturnsOneResult)
     EXPECT_EQ(L"apple",result[0]);
 }
 
-TEST(UStringTest,split_w_NormalStringWithTwoSpace_ReturnsTwoString)
+TEST(UStringTest,split_w_NormalStringWithTwoSpace_ReturnsThreeString)
 {
     vector<wstring> result = split(L"apple  banana");
-    ASSERT_EQ(2,result.size());
+    ASSERT_EQ(3,result.size());
     EXPECT_EQ(L"apple",result[0]);
-    EXPECT_EQ(L"banana",result[1]);
+    EXPECT_EQ(L"",result[1]);
+    EXPECT_EQ(L"banana",result[2]);
 }
 
 TEST(UStringTest,split_w_SourceStringAndDelimAreEmptyString_ReturnsNothing)
@@ -95,18 +109,30 @@ TEST(UStringTest,split_w_DelimSizeGreatThanSource_ReturnsNothing)
 TEST(UStringTest,split_w_DelimAtBeginAndEnd_ReturnsValidResult)
 {
     vector<wstring> result = split(L";cup inside;next;;",L";");
+    ASSERT_EQ(5,result.size());
+    EXPECT_EQ(L"",result[0]);
+    EXPECT_EQ(L"cup inside",result[1]);
+    EXPECT_EQ(L"next",result[2]);
+    EXPECT_EQ(L"",result[3]);
+    EXPECT_EQ(L"",result[4]);
+}
+
+TEST(UStringTest,split_w_OnlyOneDelim_ReturnsTwoEmptyString)
+{
+    vector<wstring> result = split(L";",L";");
     ASSERT_EQ(2,result.size());
-    EXPECT_EQ(L"cup inside",result[0]);
-    EXPECT_EQ(L"next",result[1]);
+    EXPECT_EQ(L"",result[0]);
+    EXPECT_EQ(L"",result[1]);
 }
 
 TEST(UStringTest,split_w_DelimSizeGreaterThanTwo_SplitSuccess)
 {
     vector<wstring> result = split(L"**cup inside***next;***;*",L"**");
-    ASSERT_EQ(3,result.size());
-    EXPECT_EQ(L"cup inside",result[0]);
-    EXPECT_EQ(L"*next;",result[1]);
-    EXPECT_EQ(L"*;*",result[2]);
+    ASSERT_EQ(4,result.size());
+    EXPECT_EQ(L"",result[0]);
+    EXPECT_EQ(L"cup inside",result[1]);
+    EXPECT_EQ(L"*next;",result[2]);
+    EXPECT_EQ(L"*;*",result[3]);
 }
 
 TEST(UStringTest,trim_EmptyString_ReturnsEmptyString)
@@ -139,32 +165,75 @@ TEST(UStringTest,trim_NoTrimChars_ReturnInputString)
     ASSERT_EQ(" \tcoffee\tall\t  ",trimmed);
 }
 
-TEST(UwstringTest,trim_w_Emptywstring_ReturnsEmptywstring)
+TEST(UStringTest,trim_w_Emptywstring_ReturnsEmptywstring)
 {
     wstring trimmed = trim(L"");
     ASSERT_EQ(L"",trimmed);
 }
 
-TEST(UwstringTest,trim_w_Normalwstring_ReturnsNormalwstring)
+TEST(UStringTest,trim_w_Normalwstring_ReturnsNormalwstring)
 {
     wstring trimmed = trim(L"vodoo");
     ASSERT_EQ(L"vodoo",trimmed);
 }
 
-TEST(UwstringTest,trim_w_NormalwstringWithPaddingSpace_TrimSuccess)
+TEST(UStringTest,trim_w_NormalwstringWithPaddingSpace_TrimSuccess)
 {
     wstring trimmed = trim(L"  glamorous sky ");
     ASSERT_EQ(L"glamorous sky",trimmed);
 }
 
-TEST(UwstringTest,trim_w_TwoTrimChars_TrimSuccess)
+TEST(UStringTest,trim_w_TwoTrimChars_TrimSuccess)
 {
     wstring trimmed = trim(L" \tcoffee\tall\t  ",L" \t");
     ASSERT_EQ(L"coffee\tall",trimmed);
 }
 
-TEST(UwstringTest,trim_w_NoTrimChars_ReturnInputwstring)
+TEST(UStringTest,trim_w_NoTrimChars_ReturnInputwstring)
 {
     wstring trimmed = trim(L" \tcoffee\tall\t  ",L"");
     ASSERT_EQ(L" \tcoffee\tall\t  ",trimmed);
+}
+
+TEST(UStringTest,join_Empty_ReturnEmptyString)
+{
+    vector<string> ss;
+    
+    ASSERT_TRUE(join(ss,"l").empty());
+}
+
+TEST(UStringTest,join_w_Empty_ReturnsEmptyString)
+{
+    vector<wstring> ss;
+    ASSERT_TRUE(join(ss,L";").empty());
+}
+
+TEST(UStringTest,join_OneString_JoinSuccess)
+{
+    vector<string> ss;
+    ss.push_back("asd");
+    ASSERT_EQ("asd",join(ss,","));
+}
+
+TEST(UStringTest,join_w_OneString_JoinSuccess)
+{
+    vector<wstring> ss;
+    ss.push_back(L"asd");
+    ASSERT_EQ(L"asd",join(ss,L","));
+}
+
+TEST(UStringTest,join_TwoStrings_JoinSuccess)
+{
+    vector<string> ss;
+    ss.push_back("asd");
+    ss.push_back("ko");
+    ASSERT_EQ("asd,ko",join(ss,","));
+}
+
+TEST(UStringTest,join_w_TwoStrings_JoinSuccess)
+{
+    vector<wstring> ss;
+    ss.push_back(L"asd");
+    ss.push_back(L"ko");
+    ASSERT_EQ(L"asd ko",join(ss,L" "));
 }

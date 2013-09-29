@@ -27,6 +27,16 @@ TEST(UMemoryTest,GetAt_BaseAndOffset1AndOffset2AreZero_ThrowsException)
     ASSERT_ANY_THROW(GetAt<int>(0,0,0));
 }
 
+long WINAPI RecordExceptionInfo(PEXCEPTION_POINTERS pExceptPtrs)
+{
+    pExceptPtrs;
+    pExceptPtrs;
+    printf("address:%08lx",pExceptPtrs->ExceptionRecord->ExceptionAddress);
+    printf("code:%08lx",pExceptPtrs->ExceptionRecord->ExceptionCode);
+    printf("info:%08lx",pExceptPtrs->ExceptionRecord->ExceptionInformation[0]);
+    return 0;
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
     testing::InitGoogleTest(&argc,argv);
