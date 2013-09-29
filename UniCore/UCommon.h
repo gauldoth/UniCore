@@ -67,7 +67,7 @@ std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,
 	\return 分割后的子字符串组成的数组.
 
     分割字符串s.每遇到一次分隔符就生成一个子字符串并保存到结果数组中,
-	空的子字符串会被跳过.
+	空的子字符串也会被保存.
 
     \code
     std::string s = "Acc Psw Credit";
@@ -84,7 +84,7 @@ std::vector<std::string> split(const std::string &s,const std::string &delim = "
 	\return 分割后的子字符串组成的数组.
 
     分割字符串s.每遇到一次分隔符就生成一个子字符串并保存到结果数组中,
-	空的子字符串会被跳过.
+	空的子字符串也会被保存.
 
     \code
     std::wstring s = L"Acc Psw Credit";
@@ -94,6 +94,21 @@ std::vector<std::string> split(const std::string &s,const std::string &delim = "
 */
 std::vector<std::wstring> split(const std::wstring &s,const std::wstring &delim = L" ");
 
+//! 拼接字符串.
+/*!
+    \param stringsToJoin 要拼接的字符串数组.
+    \param delim 拼接使用的分隔符.
+    \return 拼接好的字符串.
+*/
+std::string join(const std::vector<std::string> &stringsToJoin,const std::string &delim);
+
+//! 拼接字符串.
+/*!
+    \param stringsToJoin 要拼接的字符串数组.
+    \param delim 拼接使用的分隔符.
+    \return 拼接好的字符串.
+*/
+std::wstring join(const std::vector<std::wstring> &stringsToJoin,const std::wstring &delim);
 
 //! 从字符串的首尾剔除指定字符.
 /*!

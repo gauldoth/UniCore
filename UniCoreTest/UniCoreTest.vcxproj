@@ -76,6 +76,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <Profile>true</Profile>
       <OptimizeReferences>false</OptimizeReferences>
+      <DataExecutionPrevention>false</DataExecutionPrevention>
     </Link>
     <PostBuildEvent>
       <Command>
