@@ -86,6 +86,9 @@
     <ClInclude Include="USharedMemory.h">
       <Filter>Memory</Filter>
     </ClInclude>
+    <ClInclude Include="UEnum.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\工程说明.txt" />

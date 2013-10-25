@@ -51,6 +51,9 @@
     <ClCompile Include="UStringTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UEnumTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
