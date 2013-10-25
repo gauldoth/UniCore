@@ -172,6 +172,7 @@
   <ItemGroup>
     <ClInclude Include="UCast.h" />
     <ClInclude Include="UBuffer.h" />
+    <ClInclude Include="UEnum.h" />
     <ClInclude Include="ULite.h" />
     <ClInclude Include="ULock.h" />
     <ClInclude Include="UMemory.h" />

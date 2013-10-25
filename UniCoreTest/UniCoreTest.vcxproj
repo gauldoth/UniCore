@@ -50,7 +50,7 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\gtest;$(IncludePath)</IncludePath>
-    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Run</CustomBuildAfterTargets>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
     <CustomBuildBeforeTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     </CustomBuildBeforeTargets>
@@ -125,6 +125,7 @@ $(TargetPath)
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UBufferTest.cpp" />
     <ClCompile Include="UCastTest.cpp" />
+    <ClCompile Include="UEnumTest.cpp" />
     <ClCompile Include="ULiteTest.cpp" />
     <ClCompile Include="ULogTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
