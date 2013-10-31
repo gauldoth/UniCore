@@ -1,5 +1,5 @@
-﻿/*! \file UDebug.h
-    \brief 提供了调试常用的一些函数。
+﻿/*! \file UEnum.h
+    \brief 提供枚举值到字符串的映射。
 
     \author     uni
     \date       2013-10-25
