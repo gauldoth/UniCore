@@ -125,6 +125,7 @@ $(TargetPath)
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="UBufferTest.cpp" />
     <ClCompile Include="UCastTest.cpp" />
+    <ClCompile Include="UConfigTest.cpp" />
     <ClCompile Include="UEnumTest.cpp" />
     <ClCompile Include="ULiteTest.cpp" />
     <ClCompile Include="ULogTest.cpp" />

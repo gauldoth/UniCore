@@ -1,5 +1,5 @@
 ﻿/*! \file UDebug.h
-    \brief 提供了调试常用的一些函数。
+    \brief 提供了调试常用的一些函数.
 
     \author     uni
     \date       2011-7-4
