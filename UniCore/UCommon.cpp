@@ -6,6 +6,8 @@
 #include <sstream>
 #include <time.h>
 #include <cassert>
+#include <algorithm>
+#include <locale>
 
 using namespace std;
 
@@ -260,5 +262,65 @@ std::wstring join( const std::vector<std::wstring> &stringsToJoin,const std::wst
     }
     return result;
 }
+
+bool contains( const std::wstring &src, const std::wstring &pattern, CaseSensitivity caseSensitivity /*= CaseSensitive*/ )
+{
+    if(caseSensitivity == CaseSensitive)
+    {
+        return src.find(pattern) != std::wstring::npos;
+    }
+    std::wstring srcLowerCase = src;
+    std::transform(src.begin(), src.end(), srcLowerCase.begin(),tolower);
+    std::wstring patternLowerCase = pattern;
+    std::transform(pattern.begin(),pattern.end(),patternLowerCase.begin(),tolower);
+
+    return srcLowerCase.find(patternLowerCase) != std::wstring::npos;
+}
+
+bool contains( const std::string &src, const std::string &pattern, CaseSensitivity caseSensitivity /*= CaseSensitive*/ )
+{
+    if(caseSensitivity == CaseSensitive)
+    {
+        return src.find(pattern) != std::string::npos;
+    }
+    std::string srcLowerCase = src;
+    std::transform(src.begin(), src.end(), srcLowerCase.begin(), tolower);
+    std::string patternLowerCase = pattern;
+    std::transform(pattern.begin(),pattern.end(),patternLowerCase.begin(),tolower);
+
+    return srcLowerCase.find(patternLowerCase) != std::string::npos;
+}
+
+bool starts_with( const std::wstring &src, const std::wstring &pattern, CaseSensitivity caseSensitivity /*= CaseSensitive*/ )
+{
+    if(caseSensitivity == CaseSensitive)
+    {
+        return src.find(pattern) == 0;
+    }
+    
+    std::wstring srcLowerCase = src;
+    std::transform(src.begin(), src.end(), srcLowerCase.begin(),tolower);
+    std::wstring patternLowerCase = pattern;
+    std::transform(pattern.begin(),pattern.end(),patternLowerCase.begin(),tolower);
+
+    return srcLowerCase.find(patternLowerCase) == 0;
+}
+
+bool starts_with( const std::string &src, const std::string &pattern, CaseSensitivity caseSensitivity /*= CaseSensitive*/ )
+{
+    if(caseSensitivity == CaseSensitive)
+    {
+        return src.find(pattern) == 0;
+    }
+
+    std::string srcLowerCase = src;
+    std::transform(src.begin(), src.end(), srcLowerCase.begin(), tolower);
+    std::string patternLowerCase = pattern;
+    std::transform(pattern.begin(),pattern.end(),patternLowerCase.begin(),tolower);
+
+    return srcLowerCase.find(patternLowerCase) == 0;
+}
+
+
 
 }//namespace uni

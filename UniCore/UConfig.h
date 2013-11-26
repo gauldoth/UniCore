@@ -138,6 +138,7 @@ private:
     UIniConfig(const UIniConfig &);
     UIniConfig &operator = (const UIniConfig &);
     std::wstring get(std::wstring key,va_list ap);
+    void set(std::wstring key,std::wstring value,va_list ap);
     bool splitSectionAndKey( std::wstring &formattedKey, std::wstring &sectionName, std::wstring &keyName );
     std::wstring formatKey( std::wstring &key, va_list ap);
 

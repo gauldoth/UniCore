@@ -35,6 +35,22 @@ std::wstring UIniConfig::get(std::wstring key,va_list ap)
     return result;
 }
 
+void UIniConfig::set(std::wstring key,std::wstring value,va_list ap)
+{
+    std::wstring formattedKey = formatKey(key,ap);
+    wstring sectionName;  //写配置档时的section name。 
+    wstring keyName;
+    if(!splitSectionAndKey(formattedKey, sectionName, keyName))
+    {
+        return;
+    }
+
+    if(!WritePrivateProfileStringW(sectionName.c_str(),keyName.c_str(),value.c_str(),iniPath_.c_str()))
+    {
+        assert(!"WritePrivateProfileStringW失败。");
+    }
+}
+
 bool UIniConfig::splitSectionAndKey( std::wstring &formattedKey, wstring &sectionName, wstring &keyName )
 {
     size_t slashIndex = formattedKey.find('/');
@@ -79,21 +95,8 @@ void UIniConfig::set( std::wstring key, std::wstring value, ... )
 {
     va_list ap;
     va_start(ap,value);
-    wstring formattedKey = formatKey(key,ap);
+    set(key,value,ap);
     va_end(ap);
-
-    wstring sectionName;  //写配置档时的section name。 
-    wstring keyName;
-    if(!splitSectionAndKey(formattedKey,sectionName,keyName))
-    {
-        return;
-    }
-
-    if(!WritePrivateProfileStringW(sectionName.c_str(),keyName.c_str(),value.c_str(),iniPath_.c_str()))
-    {
-        assert(!"WritePrivateProfileStringW失败。");
-    }
-
 }
 
 std::vector<std::wstring> UIniConfig::getArray( std::wstring key, ... )
@@ -109,7 +112,12 @@ void UIniConfig::setArray( std::wstring key, std::vector<std::wstring> value, ..
 
 void UIniConfig::setInt( std::wstring key, int value, ... )
 {
-    throw std::exception("The method or operation is not implemented.");
+    va_list ap;
+    va_start(ap,value);
+    wchar_t buf[255] = L"";
+    _itow_s(value,buf,10);
+    set(key,buf,ap);
+    va_end(ap);
 }
 
 int UIniConfig::getInt( std::wstring key, ... )

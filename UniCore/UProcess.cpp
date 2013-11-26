@@ -146,5 +146,85 @@ std::wstring GetCurrentProcessDirectory()
     return result;
 }
 
+bool DeleteDirectory(const std::wstring &path)
+{
+    if(path.empty())
+    {
+        return false;
+    }
+    else
+    {
+        if(path[path.size()-1] != L'\\')
+        {
+            return false;
+        }
+    }
+    WIN32_FIND_DATA ffd = {0};
+    HANDLE hFind = INVALID_HANDLE_VALUE;
+
+    std::wstring filesToFind = path + L"*";
+    hFind = FindFirstFile(filesToFind.c_str(), &ffd);
+
+    if (INVALID_HANDLE_VALUE == hFind) 
+    {
+        return false;
+    } 
+
+    do
+    {
+        if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+        {
+            if(wcscmp(ffd.cFileName,L".") == 0
+                || wcscmp(ffd.cFileName,L"..") == 0)
+            {
+                continue;
+            }
+            if(!DeleteDirectory((path + ffd.cFileName + L"\\").c_str()))
+            {
+                return false;
+            }
+        }
+        else
+        {
+            DeleteFileW((path + ffd.cFileName).c_str());
+        }
+    }
+    while (FindNextFile(hFind, &ffd) != 0);
+
+    FindClose(hFind);
+
+    return RemoveDirectoryW(path.c_str());
+}
+
+std::wstring LCIDToRFC1766( LCID lcid )
+{
+    //HKEY_LOCAL_MACHINE\SOFTWARE\Classes\MIME\Database\Rfc1766
+    std::wstring result;
+    HKEY hKeyRFC1766 = NULL;
+    LONG ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE,L"SOFTWARE\\Classes\\MIME\\Database\\Rfc1766",
+        0,KEY_READ,&hKeyRFC1766);
+
+    if(ret != ERROR_SUCCESS)
+    {
+        assert(!"LCIDToRFC1766 failed, could not open HKLM\\SOFTWARE\\Classes\\MIME\\Database\\Rfc1766.");
+        return result;
+    }
+    wchar_t buf[255] = L"";
+    swprintf_s(buf,255,L"%04X",lcid);
+    wchar_t valueBuf[MAX_PATH] = L"";
+    DWORD bufSize = sizeof(valueBuf);
+    ret = RegQueryValueEx(hKeyRFC1766,buf,0,NULL,(LPBYTE)valueBuf,&bufSize);
+    if(ret != ERROR_SUCCESS)
+    {
+        //assert(!"LCIDToRFC1766 failed, could not query value in HKLM\\SOFTWARE\\Classes\\MIME\\Database\\Rfc1766.");
+        RegCloseKey(hKeyRFC1766);
+        return result;
+    }
+
+    result.assign(valueBuf,2);
+
+    RegCloseKey(hKeyRFC1766);
+    return result;
+}
 
 }//namespace uni
