@@ -237,3 +237,39 @@ TEST(UStringTest,join_w_TwoStrings_JoinSuccess)
     ss.push_back(L"ko");
     ASSERT_EQ(L"asd ko",join(ss,L" "));
 }
+
+TEST(UStringTest,starts_with_NormalUsage)
+{
+    EXPECT_TRUE(starts_with(L"hello world!",L"hello"));
+    EXPECT_TRUE(starts_with("hello world!","hello "));
+
+    EXPECT_FALSE(starts_with(L"hello world!",L"ello"));
+    EXPECT_FALSE(starts_with("hello world!","h8ello "));
+}
+
+TEST(UStringTest,starts_with_CaseInsensitive_Works)
+{
+    EXPECT_TRUE(starts_with(L"hello world!",L"Hello",CaseInsensitive));
+    EXPECT_TRUE(starts_with("hello world!","heLLo W",CaseInsensitive));
+
+    EXPECT_FALSE(starts_with(L"hello world!",L"Ello",CaseInsensitive));
+    EXPECT_FALSE(starts_with("hello world!","h8Ello ",CaseInsensitive));
+}
+
+TEST(UStringTest,contains_CaseSensitive_Works)
+{
+    EXPECT_TRUE(contains(L"hello world!",L"world"));
+    EXPECT_TRUE(contains("hello world!"," "));
+
+    EXPECT_FALSE(contains(L"hello world!",L"ellao"));
+    EXPECT_FALSE(contains("hello world!","  orld"));
+}
+
+TEST(UStringTest,constains_CaseInsensitive_Works)
+{
+    EXPECT_TRUE(contains(L"hello world!",L"wORld",CaseInsensitive));
+    EXPECT_TRUE(contains("hello world!","HELLO",CaseInsensitive));
+
+    EXPECT_FALSE(contains(L"hello world!",L"EllAo",CaseInsensitive));
+    EXPECT_FALSE(contains("hello world!","  orLd",CaseInsensitive));
+}

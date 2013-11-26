@@ -138,6 +138,65 @@ std::string trim(const std::string &s,const std::string &trimChars = " ");
 */
 std::wstring trim(const std::wstring &s,const std::wstring &trimChars = L" ");
 
+enum CaseSensitivity
+{
+    CaseInsensitive = 0,
+    CaseSensitive = 1,
+};
+
+//! 查看字符串中是否包含pattern.
+/*!
+    \param src 源字符串.
+    \param pattern 要查找的字符串.
+    \param case 是否大小写敏感.
+    \return 是否包含pattern.
+*/
+bool contains(const std::wstring &src, const std::wstring &pattern, CaseSensitivity caseSensitivity = CaseSensitive);
+
+//! 查看字符串中是否包含pattern.
+/*!
+    \param src 源字符串.
+    \param pattern 要查找的字符串.
+    \param case 是否大小写敏感.
+    \return 是否包含pattern.
+*/
+bool contains(const std::string &src, const std::string &pattern, CaseSensitivity caseSensitivity = CaseSensitive);
+
+//! 字符串是否以pattern开始.
+/*!
+    \param src 源字符串.
+    \param pattern 是否以pattern开始.
+    \param caseSensitivity 是否大小写敏感, 默认大小写敏感.
+    \return 是否以字符串pattern开始.
+
+    \code
+    std::wstring src = L"hello world!";
+    if(starts_with(src,L"hello"))
+    {
+        printf("\"hello world!\"  starts with \"hello\"");
+    }
+    \endcode
+*/
+bool starts_with(const std::wstring &src, const std::wstring &pattern, CaseSensitivity caseSensitivity = CaseSensitive);
+
+//! 字符串是否以pattern开始.
+/*!
+    \param src 源字符串.
+    \param pattern 是否以pattern开始.
+    \param caseSensitivity 是否大小写敏感, 默认大小写敏感.
+    \return 是否以字符串pattern开始.
+
+    \code
+    std::string src = "hello world!";
+    if(starts_with(src,"hello"))
+    {
+        printf("\"hello world!\"  starts with \"hello\"");
+    }
+    \endcode
+*/
+bool starts_with(const std::string &src, const std::string &pattern, CaseSensitivity caseSensitivity = CaseSensitive);
+
+
 }//namespace uni
 
 #endif//UNICORE_UCOMMON_H

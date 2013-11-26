@@ -46,9 +46,25 @@ void DebugMessage(const wchar_t *format,...);
 //! 格式化输出调试信息到调试器，使用方法和printf类似。
 /*!
     \param format 待格式化的字符串，这里不传引用，因为有用到可变参。
-    \param ...用于格式化的参数。
+    \param ...  用于格式化的参数。
 */
 void DebugMessage(std::wstring format,...);
+
+//! 格式化字符串并返回.
+/*!
+  \param format 待格式化的字符串.
+  \param ... 用于格式化的参数.
+  \return 格式化后的字符串.
+*/
+std::wstring FormatMessage(std::wstring format, ...);
+
+//! 格式化字符串并返回.
+/*!
+  \param format 待格式化的字符串.
+  \param ... 用于格式化的参数.
+  \return 格式化后的字符串.
+*/
+std::string FormatMessage(std::string format, ...);
 
 //! 用于计时的秒表。
 /*!

@@ -12,6 +12,9 @@
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
 
+#define AUTO_LINK_LIB_NAME "UniCore"
+#include "AutoLink.h"
+
 namespace uni
 {
 
@@ -37,6 +40,7 @@ bool FileExists(const std::wstring &fileName);
 */
 std::wstring GetCurrentProcessDirectory();
 
+
 //! 获得进程名。
 /*!
     \param pid 进程id。
@@ -52,6 +56,22 @@ std::wstring GetProcessName(unsigned int pid);
     \return 是否设置成功。
 */
 bool SetTokenPrivilege(HANDLE hToken,wchar_t *privilege,bool enabled);
+
+//! 删除文件夹及所有包含内容.
+/*!
+    \param 文件夹全路径.
+    \return 是否删除成功.
+*/
+bool DeleteDirectory(const std::wstring &path);
+
+//! 将LocaleID转换成RFC1766字符串.
+/*!
+    \param lcid LocaleID, 通过GetSystemDefaultLCID之类的函数获得.
+    \return 成功则返回lcid对应的RFC1766字符串, 例如"en","zh","tw"之类的语言缩写.
+                 失败则返回空字符串.
+    该函数只是尝试进行转换, 失败的可能性较大.
+*/
+std::wstring LCIDToRFC1766(LCID lcid);
 
 
 }//namespace uni
