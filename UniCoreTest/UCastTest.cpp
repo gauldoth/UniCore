@@ -193,7 +193,7 @@ TEST(UCastTest,s2ws_AsciiString_ConvertSuccessfully)
 
 TEST(UCastTest,s2ws_NonAsciiString_ConvertSuccessfully)
 {
-    std::wstring ws = s2ws("\xCE\xD2\xC3\xC7");
+    std::wstring ws = s2ws("\xCE\xD2\xC3\xC7",".936");
     ASSERT_EQ(L"我们",ws);
 }
 
@@ -267,7 +267,7 @@ TEST(UCastTest,s2ws_CStyle_AsciiString_ConvertSuccessfully)
 TEST(UCastTest,s2ws_CStyle_NonAsciiString_ConvertSuccessfully)
 {
     wchar_t buf[1024] = L"";
-    s2ws(buf,1024,"\xCE\xD2\xC3\xC7","");
+    s2ws(buf,1024,"\xCE\xD2\xC3\xC7",".936");
     ASSERT_STREQ(L"我们",buf);
 }
 

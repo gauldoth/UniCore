@@ -64,6 +64,20 @@ bool SetTokenPrivilege(HANDLE hToken,wchar_t *privilege,bool enabled);
 */
 bool DeleteDirectory(const std::wstring &path);
 
+//! Checks whether a specified directory exists.
+/*!
+  \param directory Directory to check.
+  \return Whether the specified directory exists.
+*/
+bool DirectoryExists(const std::wstring &directory);
+
+//! Create directories.
+/*!
+  \param path For example,"D:\temp","D:\tools\msihack\",...
+  \return Whether all directories are created successfully.
+*/
+bool CreateDirectories(const std::wstring &path);
+
 //! 将LocaleID转换成RFC1766字符串.
 /*!
     \param lcid LocaleID, 通过GetSystemDefaultLCID之类的函数获得.
@@ -72,6 +86,8 @@ bool DeleteDirectory(const std::wstring &path);
     该函数只是尝试进行转换, 失败的可能性较大.
 */
 std::wstring LCIDToRFC1766(LCID lcid);
+
+
 
 
 }//namespace uni
