@@ -5,6 +5,8 @@
 #include "psapi.h"
 
 #include "ULog.h"
+#include "UCommon.h"
+#include <regex>
 
 #pragma comment(lib,"psapi.lib")
 
@@ -198,6 +200,10 @@ bool DeleteDirectory(const std::wstring &path)
 
 std::wstring LCIDToRFC1766( LCID lcid )
 {
+    if(lcid == 0x540a || lcid == 0x580a)
+    {
+      return L"es";
+    }
     //HKEY_LOCAL_MACHINE\SOFTWARE\Classes\MIME\Database\Rfc1766
     std::wstring result;
     HKEY hKeyRFC1766 = NULL;
@@ -225,6 +231,82 @@ std::wstring LCIDToRFC1766( LCID lcid )
 
     RegCloseKey(hKeyRFC1766);
     return result;
+}
+
+bool CreateDirectories( const std::wstring &path )
+{
+  //支持LFS(Local File System)和UNC(Universal Naming Convention).
+  //"\\192.168.0.2\Home\【Share】\xiaodong_li"
+  //"C:\Program Files\Foxit Software\Foxit PhantomPDF"
+  std::wstring uncName;
+  std::wstring volumeName;
+  std::wstring remaining;
+  //"\\.*?\.*?\",由于c++和regex都用到转义,因此一个'\'变成了四个.
+  wregex reUncName(L"\\\\\\\\.*?\\\\.*?\\\\");
+  wsmatch result;
+  if(regex_search(path,result,reUncName))
+  {
+    uncName = result[0];
+    remaining = result.suffix();
+  }
+  wregex reVolumeName(L"\\w+?:\\\\");
+  if(regex_search(path,result,reVolumeName))
+  {
+    volumeName = result[0];
+    remaining = result.suffix();
+  }
+  std::vector<std::wstring> pathFragments = split(remaining,L"\\");
+
+  std::wstring directoryToCreate;
+  if(!uncName.empty())
+  {
+    directoryToCreate = uncName;
+  }
+  else if(!volumeName.empty())
+  {
+    directoryToCreate = volumeName;
+  }
+  else
+  {
+    //directoryToCreate remains empty.
+  }
+  
+  for(int i = 0; i < pathFragments.size(); i++)
+  {
+    if(!pathFragments[i].empty())
+    {
+      directoryToCreate += pathFragments[i];
+      if(directoryToCreate.back() != L'\\')
+      {
+        directoryToCreate.push_back(L'\\');
+      }
+      if(!DirectoryExists(directoryToCreate.c_str()))
+      {
+        if(!CreateDirectoryW(directoryToCreate.c_str(),NULL))
+        {
+          return false;
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+bool DirectoryExists( const std::wstring &directory )
+{
+  DWORD attribute = GetFileAttributesW(directory.c_str());
+  if (attribute == INVALID_FILE_ATTRIBUTES)
+  {
+    return false;
+  }
+
+  if (attribute & FILE_ATTRIBUTE_DIRECTORY)
+  {
+    return true;
+  }
+
+  return false;
 }
 
 }//namespace uni

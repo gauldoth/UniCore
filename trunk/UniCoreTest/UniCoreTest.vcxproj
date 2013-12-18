@@ -50,7 +50,7 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\gtest;$(IncludePath)</IncludePath>
-    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Run</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Build</CustomBuildAfterTargets>
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
     <CustomBuildBeforeTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     </CustomBuildBeforeTargets>
@@ -131,6 +131,7 @@ $(TargetPath)
     <ClCompile Include="ULogTest.cpp" />
     <ClCompile Include="UMiscTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
+    <ClCompile Include="UProcessTest.cpp" />
     <ClCompile Include="USharedMemoryTest.cpp" />
     <ClCompile Include="UStringTest.cpp" />
   </ItemGroup>
