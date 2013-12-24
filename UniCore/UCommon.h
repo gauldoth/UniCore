@@ -60,6 +60,13 @@ namespace uni
 */
 std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,int randomSuffixCount = 0);
 
+//! 获得一个随机的由字符串和数字组成的名字.
+/*!
+  \param length 生成的名字的长度.
+  \return 生成的名字.
+*/
+std::wstring GetRandomAlnumName(int length);
+
 //! 分割字符串.
 /*!
     \param s 源字符串,被分割的字符串.
