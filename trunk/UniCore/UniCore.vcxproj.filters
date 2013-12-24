@@ -48,6 +48,9 @@
     <ClCompile Include="USharedMemory.cpp">
       <Filter>Memory</Filter>
     </ClCompile>
+    <ClCompile Include="USystem.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UCast.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="UEnum.h">
       <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="USystem.h">
+      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
