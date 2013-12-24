@@ -321,6 +321,32 @@ bool starts_with( const std::string &src, const std::string &pattern, CaseSensit
     return srcLowerCase.find(patternLowerCase) == 0;
 }
 
+std::wstring GetRandomAlnumName( int length )
+{
+  std::wstring result;
+  static bool init = false;
+  if(!init)
+  {
+    srand((unsigned)time(0));
+    init = true;
+  }
+  for(int i = 0; i < length; i++)
+  {
+    int u = (double)rand()/(RAND_MAX + 1)*36;
+    if(u >= 0 && u < 10)
+    {
+      u += '0';
+    }
+    else if(u >= 10 && u < 36)
+    {
+      u -= 10;
+      u += 'a';
+    }
+    result.push_back(u);
+  }
+  return result;
+}
+
 
 
 }//namespace uni

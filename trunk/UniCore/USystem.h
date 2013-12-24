@@ -11,6 +11,16 @@
 
 #include <string>
 
+//! Get temp path.
+/*!
+  The same as WinAPI GetTempPathW.
+*/
 std::wstring GetTempPathW();
+
+//! Create a temp directory under temp directory.
+/*!
+  \return Returns empty string if failed.
+*/
+std::wstring CreateTempDirectory();
 
 #endif//UNICORE_USYSTEM_H
