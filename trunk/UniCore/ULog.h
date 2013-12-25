@@ -24,11 +24,10 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <sstream>
-
-#define BOOST_DATE_TIME_NO_LIB
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
+#include <vector>
 
 #include "UDebug.h"
+#include "ULock.h"
 
 namespace uni
 {
@@ -615,12 +614,12 @@ private:
     Message *message_;
     static std::map<std::string,std::tr1::shared_ptr<Appender> > appenders_;
     static std::map<std::string,std::vector<std::string> > appendersForName_;
-    static boost::interprocess::interprocess_mutex mutexForAppenders_;
+    static uni::ULock mutexForAppenders_;
     static std::map<Type,bool> typeFilter_;  //!< true则代表指定类型的日志将被过滤.
     static std::map<std::string,bool> nameFilter_;  //!< true则指定分组的日志将被过滤.
-    static boost::interprocess::interprocess_mutex mutexForFilters_;
+    static uni::ULock mutexForFilters_;
     static std::set<std::string> names_;  //!< 保存了输出过的日志的名字。
-    static boost::interprocess::interprocess_mutex mutexForNames_;
+    static uni::ULock mutexForNames_;
     static _locale_t loc_;
     static std::string projectName_;
 };

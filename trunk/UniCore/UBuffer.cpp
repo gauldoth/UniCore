@@ -1,12 +1,9 @@
 ﻿#include "UBuffer.h"
 
 #include "assert.h"
-#include <boost/lexical_cast.hpp>
 
 #include "UCast.h"
 #include "ULog.h"
-
-using namespace boost;
 
 namespace uni
 {
