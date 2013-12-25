@@ -1,8 +1,5 @@
 ﻿#include "ULog.h"
 
-#define BOOST_DATE_TIME_NO_LIB
-#include <boost/interprocess/sync/scoped_lock.hpp>
-#include <boost/interprocess/sync/interprocess_mutex.hpp>
 #include <map>
 #include <string>
 
@@ -13,21 +10,20 @@
 
 using namespace std;
 using namespace std::tr1;
-using namespace boost::interprocess;
 
 namespace uni
 {
 
 std::map<std::string,std::tr1::shared_ptr<ULog::Appender> > ULog::appenders_;
 std::map<std::string,std::vector<std::string> > ULog::appendersForName_;
-boost::interprocess::interprocess_mutex ULog::mutexForAppenders_;
+ULock ULog::mutexForAppenders_;
 
 std::map<ULog::Type,bool> ULog::typeFilter_;
 std::map<std::string,bool> ULog::nameFilter_;
-boost::interprocess::interprocess_mutex ULog::mutexForFilters_;
+ULock ULog::mutexForFilters_;
 
 std::set<std::string> ULog::names_;
-boost::interprocess::interprocess_mutex ULog::mutexForNames_;
+ULock ULog::mutexForNames_;
 
 _locale_t ULog::loc_ = _create_locale(LC_ALL,"");
 
@@ -68,7 +64,7 @@ ULog::~ULog()
     {
         bool filtered = false;
         {
-            scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+            UScopedLock lock(mutexForFilters_);
             filtered = typeFilter_[message_->type_] || nameFilter_[message_->name_];
         }
         if(!filtered)
@@ -87,7 +83,7 @@ ULog::~ULog()
                     message_->stm_.str(message);
                 }
             }
-            scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+            UScopedLock lock(mutexForAppenders_);
             vector<string> appenderNames = appendersForName_[message_->name_];
             if(appenderNames.empty())
             {
@@ -127,13 +123,13 @@ void ULog::setAppenders(const std::string &name,const std::string &appenderList)
 {
     vector<string> appenderNames = split(appenderList);
 
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    UScopedLock lock(mutexForAppenders_);
     appendersForName_[name] = appenderNames;
 }
 
 vector<std::string> ULog::getAppenders( const std::string &name )
 {
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    UScopedLock lock(mutexForAppenders_);
     return appendersForName_[name];
 }
 
@@ -143,7 +139,7 @@ void ULog::registerAppender( const std::string &appenderName,Appender *appender 
     {
         return;
     }
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    UScopedLock lock(mutexForAppenders_);
     std::tr1::shared_ptr<Appender> p(appender);
     appenders_[appenderName] = p;
 }
@@ -166,7 +162,7 @@ bool ULog::isAppenderNameValid(const std::string &appenderName)
 
 vector<string> ULog::getRegisteredAppenderNames()
 {
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    UScopedLock lock(mutexForAppenders_);
     vector<string> result;
     map<string,tr1::shared_ptr<Appender> >::const_iterator it;
     for(it = appenders_.begin(); it != appenders_.end(); ++it)
@@ -178,38 +174,38 @@ vector<string> ULog::getRegisteredAppenderNames()
 
 void ULog::unregisterAppender( const std::string &appenderName )
 {
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    UScopedLock lock(mutexForAppenders_);
     appenders_.erase(appenderName);
 }
 
 void ULog::unregisterAllAppenders()
 {
-    scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+    UScopedLock lock(mutexForAppenders_);
     map<std::string,std::tr1::shared_ptr<Appender> >::const_iterator it;
     appenders_.erase(appenders_.begin(),appenders_.end());
 }
 
 bool ULog::isOutputEnabled( Type type )
 {
-    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    UScopedLock lock(mutexForFilters_);
     return !typeFilter_[type];
 }
 
 void ULog::enableOutput( Type type,bool enable )
 {
-    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    UScopedLock lock(mutexForFilters_);
     typeFilter_[type] = !enable;
 }
 
 bool ULog::isOutputEnabled( const std::string &name )
 {
-    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    UScopedLock lock(mutexForFilters_);
     return !nameFilter_[name];
 }
 
 void ULog::enableOutput( const std::string &name,bool enable )
 {
-    scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+    UScopedLock lock(mutexForFilters_);
     nameFilter_[name] = !enable;
 }
 
@@ -221,17 +217,17 @@ _locale_t ULog::locale()
 void ULog::restoreDefaultSettings()
 {
     {
-        scoped_lock<interprocess_mutex> lock(mutexForAppenders_);
+        UScopedLock lock(mutexForAppenders_);
         appenders_.erase(appenders_.begin(),appenders_.end());
         appendersForName_.erase(appendersForName_.begin(),appendersForName_.end());
     }
     {
-        scoped_lock<interprocess_mutex> lock(mutexForFilters_);
+        UScopedLock lock(mutexForFilters_);
         typeFilter_.erase(typeFilter_.begin(),typeFilter_.end());
         nameFilter_.erase(nameFilter_.begin(),nameFilter_.end());
     }
     {
-        scoped_lock<interprocess_mutex> lock(mutexForNames_);
+        UScopedLock lock(mutexForNames_);
         names_.erase(names_.begin(),names_.end());
     }
     loc_ = _create_locale(LC_ALL,"");    
@@ -358,7 +354,7 @@ ULog::SManipulator<const char *> delim(const char *delim)
 void ULogSetName(ULog &log,const char *name)
 {
     log.message_->name_ = name;
-    scoped_lock<interprocess_mutex> lock(ULog::mutexForNames_);
+    UScopedLock lock(ULog::mutexForNames_);
     if(!log.names_.count(name))
     {
         log.names_.insert(name);
