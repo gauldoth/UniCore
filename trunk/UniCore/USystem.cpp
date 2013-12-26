@@ -49,3 +49,14 @@ std::wstring CreateTempDirectory()
   return L"";
 }
 
+std::wstring GetDirectoryPart( const std::wstring &fullPath )
+{
+    size_t pos = fullPath.rfind(L'\\');
+    if(pos == wstring::npos)
+    {
+        return L"";
+    }
+
+    return fullPath.substr(0,pos);
+}
+
