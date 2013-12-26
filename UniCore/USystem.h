@@ -23,4 +23,16 @@ std::wstring GetTempPathW();
 */
 std::wstring CreateTempDirectory();
 
+//! Get directory part from a full path.
+/*!
+    \param fullPath Path to analyze.
+    \return Directory part of fullPath.
+    \code
+    std::wstring fullPath = L"D:\\temp\\a.txt";
+    std::wstring dirPart = GetDirectoryPart(fullPath);
+    //dirPart equals L"D:\\temp".
+    \endcode
+*/
+std::wstring GetDirectoryPart(const std::wstring &fullPath);
+
 #endif//UNICORE_USYSTEM_H
