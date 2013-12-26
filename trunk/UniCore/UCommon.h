@@ -145,6 +145,24 @@ std::string trim(const std::string &s,const std::string &trimChars = " ");
 */
 std::wstring trim(const std::wstring &s,const std::wstring &trimChars = L" ");
 
+std::wstring rtrim(const std::wstring &s,const std::wstring &trimChars = L" ");
+
+//! 在字符串首尾添加padString(假如首尾不是padString)
+/*!
+  \param s 要修补的字符串.
+  \param padString 用于修补的字符串.
+  \return 修补后的字符串.
+
+  \code
+  std::wstring s = L"C:\\temp";
+  std::wstring sAfterPadding = pad(s,L"'");
+  //sAfterPadding equals to L"'C:\\temp'";
+  \endcode
+*/
+std::wstring pad(const std::wstring &s,const std::wstring &padString);
+
+std::wstring rpad(const std::wstring &s,const std::wstring &padString);
+
 enum CaseSensitivity
 {
     CaseInsensitive = 0,

@@ -52,11 +52,23 @@ std::wstring CreateTempDirectory()
 std::wstring GetDirectoryPart( const std::wstring &fullPath )
 {
     size_t pos = fullPath.rfind(L'\\');
-    if(pos == wstring::npos)
+    if(pos == std::wstring::npos)
     {
         return L"";
     }
 
-    return fullPath.substr(0,pos);
+    return fullPath.substr(0,pos+1);
 }
+
+std::wstring GetFilePart( const std::wstring &fullPath )
+{
+  size_t pos = fullPath.rfind(L'\\');
+  if(pos == std::wstring::npos)
+  {
+    return L"";
+  }
+
+  return fullPath.substr(pos+1);
+}
+
 
