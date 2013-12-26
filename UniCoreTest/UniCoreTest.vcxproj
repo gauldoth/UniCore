@@ -134,6 +134,7 @@ $(TargetPath)
     <ClCompile Include="UProcessTest.cpp" />
     <ClCompile Include="USharedMemoryTest.cpp" />
     <ClCompile Include="UStringTest.cpp" />
+    <ClCompile Include="USystemTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

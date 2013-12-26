@@ -235,6 +235,45 @@ std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*
     return result;
 }
 
+std::wstring rtrim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
+{
+  std::wstring result = s;
+  // Remove char at the end.
+  while(!result.empty())
+  {
+    if(trimChars.find(result.back()) != wstring::npos)
+    {
+      result.pop_back();
+    }
+    else
+    {
+      break;
+    }
+  }
+  return result;
+}
+
+std::wstring pad( const std::wstring &s,const std::wstring &padString )
+{
+  assert(!"not implemented.");
+  return L"";
+}
+
+std::wstring rpad( const std::wstring &s,const std::wstring &padString )
+{
+  size_t pos = s.rfind(padString);
+  if(pos != std::wstring::npos
+    && pos + padString.size() == s.size())
+  {
+    // not found or not ends with.
+    return s;
+  }
+  else
+  {
+    return s+padString;
+  }
+}
+
 std::string join( const std::vector<std::string> &stringsToJoin,const std::string &delim )
 {
     std::string result;
@@ -346,6 +385,7 @@ std::wstring GetRandomAlnumName( int length )
   }
   return result;
 }
+
 
 
 
