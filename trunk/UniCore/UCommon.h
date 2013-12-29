@@ -120,37 +120,60 @@ std::wstring join(const std::vector<std::wstring> &stringsToJoin,const std::wstr
 //! 从字符串的首尾剔除指定字符.
 /*!
     \param s 处理的字符串.
-    \paran trim 要剔除的字符集合,默认为空格.
-    该函数从s的首尾剔除字符,任何出现在字符串两端的trimChars中包含的字符都会被剔除.
-    s为空字符串时也将返回空字符串.
+    \paran t 要剔除的字符串,默认为空格.
+    该函数从s的左右不断剔除字符串t,直到s的最左边或最右边都不是t.
     \code
     std::string s = "    this is a string with space.    ";
-    std::string trimed = trim(s);  //trimed: "this is a string with space."
-    trimed = trim(s,". ");  //trimed: "this is a string with space"  这里空格和'.'都被剔除了.
+    std::string trimmed = trim(s);  //trimed: "this is a string with space."
     \endcode
 */
-std::string trim(const std::string &s,const std::string &trimChars = " ");
+std::string trim(const std::string &s,const std::string &t = " ");
 
 //! 从字符串的首尾剔除指定字符.
 /*!
     \param s 处理的字符串.
-    \paran trim 要剔除的字符集合,默认为空格.
-    该函数从s的首尾剔除字符,任何出现在字符串两端的trimChars中包含的字符都会被剔除.
-    s为空字符串时也将返回空字符串.
+    \paran t 要剔除的字符串,默认为空格.
+    该函数从s的左右不断剔除字符串t,直到s的最左边或最右边都不是t.
+    会先从左边开始剔除.
     \code
     std::wstring s = L"    this is a string with space.    ";
-    std::wstring trimed = trim(s);  //trimed: L"this is a string with space."
-    trimed = trim(s,L". ");  //trimed: L"this is a string with space"  这里空格和'.'都被剔除了.
+    std::wstring trimmed = trim(s);  //trimed: L"this is a string with space."
     \endcode
 */
-std::wstring trim(const std::wstring &s,const std::wstring &trimChars = L" ");
+std::wstring trim(const std::wstring &s,const std::wstring &t = L" ");
 
-std::wstring rtrim(const std::wstring &s,const std::wstring &trimChars = L" ");
+//! 从字符串的右侧剔除指定字符串(假如存在).
+/*!
+  \param s 处理的字符串.
+  \param t 要剔除的字符串,默认为空格.
+  该函数从s的右侧不断剔除字符串t,直到s的最右边不是t.
+  \code
+  std::wstring s = L"D:\\temp\\";
+  std::wstring trimmed = rtrim(s,L"\\");
+  //trimmed equals to L"D:\\temp";
+  \endcode
+*/
+std::wstring rtrim(const std::wstring &s,const std::wstring &t = L" ");
+
+//! 从字符串的右侧剔除指定字符串(假如存在).
+/*!
+  \param s 处理的字符串.
+  \param t 要剔除的字符串,默认为空格.
+  该函数从s的左侧不断剔除字符串t,直到s的最左边不是t.
+  \code
+  std::wstring s = L"D:\\temp\\";
+  std::wstring trimmed = ltrim(s,L"D:\\");
+  //trimmed equals to L"temp\\";
+  \endcode
+*/
+std::wstring ltrim(const std::wstring &s,const std::wstring &t);
+
+
 
 //! 在字符串首尾添加padString(假如首尾不是padString)
 /*!
   \param s 要修补的字符串.
-  \param padString 用于修补的字符串.
+  \param p 用于修补的字符串.
   \return 修补后的字符串.
 
   \code
@@ -159,9 +182,36 @@ std::wstring rtrim(const std::wstring &s,const std::wstring &trimChars = L" ");
   //sAfterPadding equals to L"'C:\\temp'";
   \endcode
 */
-std::wstring pad(const std::wstring &s,const std::wstring &padString);
+std::wstring pad(const std::wstring &s,const std::wstring &p);
 
-std::wstring rpad(const std::wstring &s,const std::wstring &padString);
+//! 在字符串s右侧添加字符串p,确保字符串s以字符串p结束.
+/*!
+  \param s 要修补的字符串.
+  \param p 用于修补的字符串.
+  \return 修补后的字符串.
+
+  \code
+  std::wstring s = L"D:\\temp";
+  std::wstring padded = rpad(s,L"\\");
+  \\padded equals to L"D:\\temp\\".
+  s = L"D:\\temp\\";
+  padded = rpad(s,L"\\");
+  \\padded still equals to L"D:\\temp\\".
+  \endcode
+*/
+std::wstring rpad(const std::wstring &s,const std::wstring &p);
+
+//! 在字符串s左侧添加字符串p,确保字符串s以字符串p开始.
+/*!
+  \param s 源字符串.
+  \param p 用于修补的字符串.
+  \code
+  std::wstring s = L"wstring";
+  std::wstring padded = lpad(s,L"std::");
+  //padded equals to L"std::wstring".
+  \endcode
+*/
+std::wstring lpad(const std::wstring &s,const std::wstring &p);
 
 enum CaseSensitivity
 {

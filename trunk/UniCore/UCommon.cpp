@@ -175,75 +175,100 @@ std::vector<std::wstring> split( const std::wstring &s,const std::wstring &delim
 
 }
 
-std::string trim(const std::string &s,const std::string &trimChars /*= " "*/)
+std::string trim(const std::string &s,const std::string &t /*= " "*/)
 {
     std::string result = s;
-    // Remove char at the end.
-    while(!result.empty())
+    if(t.empty())
     {
-        if(trimChars.find(result.back()) != string::npos)
-        {
-            result.pop_back();
-        }
-        else
-        {
-            break;
-        }
+      return s;
     }
-    // Remove char at the beginning.
-    while(!result.empty())
+    // Remove from the beginning.
+    while(true)
     {
-        if(trimChars.find(result.front()) != string::npos)
-        {
-            result.erase(result.begin());
-        }
-        else
-        {
-            break;
-        }
+      size_t pos = result.find(t);
+      if(pos != std::string::npos 
+        && pos == 0)
+      {
+        result.erase(0,t.size());
+      }
+      else
+      {
+        break;
+      }
     }
+
+    // Remove from the end.
+    while(true)
+    {
+      size_t pos = result.rfind(t);
+      if(pos != std::string::npos
+        && pos + t.size() == result.size())
+      {
+        result.erase(pos,t.size());
+      }
+      else
+      {
+        break;
+      }
+    }
+
     return result;
 }
 
-std::wstring trim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
+std::wstring trim( const std::wstring &s,const std::wstring &t /*= L" "*/ )
 {
     std::wstring result = s;
-    // Remove char at the end.
-    while(!result.empty())
+    if(t.empty())
     {
-        if(trimChars.find(result.back()) != wstring::npos)
-        {
-            result.pop_back();
-        }
-        else
-        {
-            break;
-        }
+      return s;
     }
-    // Remove char at the beginning.
-    while(!result.empty())
+    // Remove from the beginning.
+    while(true)
     {
-        if(trimChars.find(result.front()) != wstring::npos)
-        {
-            result.erase(result.begin());
-        }
-        else
-        {
-            break;
-        }
+      size_t pos = result.find(t);
+      if(pos != std::wstring::npos 
+        && pos == 0)
+      {
+        result.erase(0,t.size());
+      }
+      else
+      {
+        break;
+      }
+    }
+
+    // Remove from the end.
+    while(true)
+    {
+      size_t pos = result.rfind(t);
+      if(pos != std::wstring::npos
+        && pos + t.size() == result.size())
+      {
+        result.erase(pos,t.size());
+      }
+      else
+      {
+        break;
+      }
     }
     return result;
 }
 
-std::wstring rtrim( const std::wstring &s,const std::wstring &trimChars /*= L" "*/ )
+std::wstring ltrim( const std::wstring &s,const std::wstring &t /*= L" "*/ )
 {
   std::wstring result = s;
-  // Remove char at the end.
-  while(!result.empty())
+  if(t.empty())
   {
-    if(trimChars.find(result.back()) != wstring::npos)
+    return s;
+  }
+  // Remove from the beginning.
+  while(true)
+  {
+    size_t pos = result.find(t);
+    if(pos != std::wstring::npos 
+      && pos == 0)
     {
-      result.pop_back();
+      result.erase(0,t.size());
     }
     else
     {
@@ -253,25 +278,71 @@ std::wstring rtrim( const std::wstring &s,const std::wstring &trimChars /*= L" "
   return result;
 }
 
-std::wstring pad( const std::wstring &s,const std::wstring &padString )
+std::wstring rtrim( const std::wstring &s,const std::wstring &t /*= L" "*/ )
 {
-  assert(!"not implemented.");
-  return L"";
-}
-
-std::wstring rpad( const std::wstring &s,const std::wstring &padString )
-{
-  size_t pos = s.rfind(padString);
-  if(pos != std::wstring::npos
-    && pos + padString.size() == s.size())
+  std::wstring result = s;
+  if(t.empty())
   {
-    // not found or not ends with.
     return s;
   }
-  else
+  // Remove from the end.
+  while(true)
   {
-    return s+padString;
+    size_t pos = result.rfind(t);
+    if(pos != std::wstring::npos
+      && pos + t.size() == result.size())
+    {
+      result.erase(pos,t.size());
+    }
+    else
+    {
+      break;
+    }
   }
+  return result;
+}
+
+std::wstring pad( const std::wstring &s,const std::wstring &p )
+{
+  std::wstring result = s;
+  size_t pos = result.find(p);
+  if(pos == std::wstring::npos 
+    || pos != 0)
+  {
+    result = p + result;
+  }
+
+  pos = result.rfind(p);
+  if(pos == std::wstring::npos
+    || pos + p.size() != result.size())
+  {
+    result = result + p;
+  }
+  return result;
+}
+
+std::wstring lpad(const std::wstring &s, const std::wstring &p)
+{
+  std::wstring result = s;
+  size_t pos = result.find(p);
+  if(pos == std::wstring::npos 
+    || pos != 0)
+  {
+    result = p + result;
+  }
+  return result;
+}
+
+std::wstring rpad( const std::wstring &s,const std::wstring &p )
+{
+  std::wstring result = s;
+  size_t pos = result.rfind(p);
+  if(pos == std::wstring::npos
+    || pos + p.size() != result.size())
+  {
+    result = result + p;
+  }
+  return result;
 }
 
 std::string join( const std::vector<std::string> &stringsToJoin,const std::string &delim )
