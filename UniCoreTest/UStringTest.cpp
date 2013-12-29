@@ -147,22 +147,39 @@ TEST(UStringTest,trim_NormalString_ReturnsNormalString)
     ASSERT_EQ("vodoo",trimmed);
 }
 
+TEST(UStringTest,trim_CheckTrimLeftFirst)
+{
+  string trimmed = trim("appappa","appa");
+  ASSERT_EQ("ppa",trimmed);
+}
+
 TEST(UStringTest,trim_NormalStringWithPaddingSpace_TrimSuccess)
 {
     string trimmed = trim("  glamorous sky ");
     ASSERT_EQ("glamorous sky",trimmed);
 }
 
-TEST(UStringTest,trim_TwoTrimChars_TrimSuccess)
-{
-    string trimmed = trim(" \tcoffee\tall\t  "," \t");
-    ASSERT_EQ("coffee\tall",trimmed);
-}
-
 TEST(UStringTest,trim_NoTrimChars_ReturnInputString)
 {
     string trimmed = trim(" \tcoffee\tall\t  ","");
     ASSERT_EQ(" \tcoffee\tall\t  ",trimmed);
+}
+
+TEST(UStringTest,trim_tIsNormalString_TrimSuccess)
+{
+  string trimmed = trim("{quote}hunter{quote}","{quote}");
+  ASSERT_EQ("hunter",trimmed);
+}
+
+TEST(UStringTest,trim_tIsLongerThanS_NotTrimmed)
+{
+  string trimmed = trim("apple","sixnum");
+  ASSERT_EQ("apple",trimmed);
+}
+
+TEST(UStringTest,trim_sIsEmpty_tIsNotEmpty_ReturnsEmptyString)
+{
+  ASSERT_EQ("",trim("","Wispering Forest"));
 }
 
 TEST(UStringTest,trim_w_Emptywstring_ReturnsEmptywstring)
@@ -183,16 +200,28 @@ TEST(UStringTest,trim_w_NormalwstringWithPaddingSpace_TrimSuccess)
     ASSERT_EQ(L"glamorous sky",trimmed);
 }
 
-TEST(UStringTest,trim_w_TwoTrimChars_TrimSuccess)
-{
-    wstring trimmed = trim(L" \tcoffee\tall\t  ",L" \t");
-    ASSERT_EQ(L"coffee\tall",trimmed);
-}
-
 TEST(UStringTest,trim_w_NoTrimChars_ReturnInputwstring)
 {
     wstring trimmed = trim(L" \tcoffee\tall\t  ",L"");
     ASSERT_EQ(L" \tcoffee\tall\t  ",trimmed);
+}
+
+TEST(UStringTest,trim_w_tIsNormalString_TrimSuccess)
+{
+  wstring trimmed = trim(L"{quote}hunter{quote}",L"{quote}");
+  ASSERT_EQ(L"hunter",trimmed);
+}
+
+TEST(UStringTest,trim_w_CheckTrimLeftFirst)
+{
+  wstring trimmed = trim(L"appappa",L"appa");
+  ASSERT_EQ(L"ppa",trimmed);
+}
+
+TEST(UStringTest,trim_w_tIsLongerThanS_NotTrimmed)
+{
+  wstring trimmed = trim(L"apple",L"sixnum");
+  ASSERT_EQ(L"apple",trimmed);
 }
 
 TEST(UStringTest,join_Empty_ReturnEmptyString)
@@ -207,6 +236,12 @@ TEST(UStringTest,join_w_Empty_ReturnsEmptyString)
     vector<wstring> ss;
     ASSERT_TRUE(join(ss,L";").empty());
 }
+
+TEST(UStringTest,trim_w_sIsEmpty_tIsNotEmpty_ReturnsEmptyString)
+{
+  ASSERT_EQ(L"",trim(L"",L"Wispering Forest"));
+}
+
 
 TEST(UStringTest,join_OneString_JoinSuccess)
 {
