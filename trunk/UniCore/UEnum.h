@@ -17,7 +17,7 @@ inline void populate_enum_strings()
 
 }
 
-#define UENUM_BEGIN(enum_name) \
+#define UENUM(enum_name) \
     template<>\
     inline void populate_enum_strings<enum_name>() \
     { \
@@ -35,7 +35,7 @@ inline void populate_enum_strings()
     g_enum_string_datas[name][entry] = L#value;
 
 #define UENUM_END \
-    }
+    };
 
 template<typename enum_name>
 inline const std::wstring e2s(enum_name e)
