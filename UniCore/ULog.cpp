@@ -280,8 +280,16 @@ ULog &ULog::operator<<(const wchar_t *t)
 {
     int ptr = reinterpret_cast<int>(t);
     ptr;
-    assert(ptr >= 0x10000 && ptr < 0x80000000 || !"向ULog输入的宽字符指针为空。");
-    message_->stm_<<ws2s(t,loc_);
+    //assert(ptr >= 0x10000 && ptr < 0x80000000 || !"向ULog输入的宽字符指针为空。");
+    if(ptr < 0x10000 || ptr > 0x80000000)
+    {
+        message_->stm_<<"(invalid pointer "<<"0x"<<(void *)ptr<<")";
+        return mayHasDelim();
+    }
+    else
+    {
+        message_->stm_<<ws2s(t,loc_);
+    }
     return mayHasDelim();
 }
 #endif
