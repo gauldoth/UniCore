@@ -4,6 +4,7 @@
 #include "Windows.h"
 #include "UProcess.h"
 #include "UCommon.h"
+#include <fstream>
 
 using namespace uni;
 
@@ -69,6 +70,12 @@ std::wstring GetFilePart( const std::wstring &fullPath )
   }
 
   return fullPath.substr(pos+1);
+}
+
+long long int GetFileSize( const std::wstring &fullPath )
+{
+  std::ifstream file(fullPath, std::ios::binary | std::ios::ate);
+  return file.tellg();
 }
 
 

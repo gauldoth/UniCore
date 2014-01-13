@@ -47,4 +47,7 @@ std::wstring GetDirectoryPart(const std::wstring &fullPath);
 */
 std::wstring GetFilePart(const std::wstring &fullPath);
 
+//! Get file size.
+long long int GetFileSize(const std::wstring &fullPath);
+
 #endif//UNICORE_USYSTEM_H
