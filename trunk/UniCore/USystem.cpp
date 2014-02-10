@@ -72,6 +72,19 @@ std::wstring GetFilePart( const std::wstring &fullPath )
   return fullPath.substr(pos+1);
 }
 
+std::wstring GetFilePart_WithoutExt( const std::wstring &fullPath )
+{
+    std::wstring filePart = GetFilePart(fullPath);
+    size_t pos = filePart.rfind(L'.');
+    if(pos != std::wstring::npos)
+    {
+        filePart = filePart.substr(0,pos);
+    }
+
+    return filePart;
+}
+
+
 long long int GetFileSize( const std::wstring &fullPath )
 {
   std::ifstream file(fullPath, std::ios::binary | std::ios::ate);
