@@ -11,7 +11,7 @@ enum RWBY
     Blake,
 };
 
-UENUM_BEGIN(RWBY)
+UENUM(RWBY)
     UENUM_ENTRY(Ross)
     UENUM_ENTRY(Weiss)
     UENUM_ENTRY(Yang)
@@ -24,7 +24,7 @@ enum Fruit
     Banana,
 };
 
-UENUM_BEGIN(Fruit)
+UENUM(Fruit)
     UENUM_ENTRY(Apple)
     UENUM_ENTRY(Banana)
 UENUM_END

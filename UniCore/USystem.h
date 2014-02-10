@@ -47,6 +47,18 @@ std::wstring GetDirectoryPart(const std::wstring &fullPath);
 */
 std::wstring GetFilePart(const std::wstring &fullPath);
 
+//! Get file part from a full path, without file extension.
+/*!
+  \param fullPath Path to analyze.
+  \return File part of fullPath, without file extension.
+  \code
+  std::wstring fullPath = L"D:\\temp\\a.txt";
+  std::wstring filePart = GetFilePart_WithoutExt(fullPath);
+  //filePart equals L"a".
+  \endcode
+*/
+std::wstring GetFilePart_WithoutExt(const std::wstring &fullPath);
+
 //! Get file size.
 long long int GetFileSize(const std::wstring &fullPath);
 
