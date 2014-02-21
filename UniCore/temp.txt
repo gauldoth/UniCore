@@ -1,0 +1,521 @@
+﻿#pragma once
+
+#define WIN32_LEAN_AND_MEAN
+#include "Windows.h"
+#include <cassert>
+#include <string>
+#include <vector>
+#include <map>
+
+//! 为内存中的第一块数据.
+/*!
+    包含了锁,用于同步.
+    第一个事件的起始偏移.
+    第一个键值对的起始偏移.
+*/
+struct Commu
+{
+    __int32 lock;
+    __int32 eventOffset;
+    __int32 pairOffset;
+};
+
+//! 内存管理器.
+class UMemoryManager
+{
+public:
+    virtual ~UMemoryManager() {}
+    virtual __int64 allocMemory(__int64 size) = 0;
+    virtual bool freeMemory(__int64 address) = 0;
+    //! 返回预先分配的固定内存的地址.
+    virtual __int64 fixedMemory() = 0;
+    //! 返回预先分配的固定内存的大小.
+    virtual __int64 fixedMemorySize() = 0;
+    //! 判断该共享内存是否有效.
+    virtual bool isValid() = 0;
+};
+
+//! 一块内存.
+struct Block
+{
+    __int32 size;  // available buf size, not including the "size" and "free" field.
+    __int32 free;
+    char buf[1];
+    static Block *fromAddress(__int64 address)
+    {
+        Block *block = 
+            reinterpret_cast<Block *>(address-offsetof(Block,buf));
+        return block;
+    }
+};
+
+//! 该内存管理器从共享内存中分配内存.
+/*!
+    内存会有耗尽的是否,这个时候allocMemory会返回0.
+*/
+class USharedMemoryManager : public UMemoryManager
+{
+public:
+    friend class USharedMemoryManagerTest_initFromAndAttachToExisting_Works_Test;
+
+    // Init from a new file mapping object.
+    // Caller should close the handle.
+    static USharedMemoryManager *USharedMemoryManager::initFrom(HANDLE hFileMapping,int size)
+    {
+        USharedMemoryManager *memoryManager =  new USharedMemoryManager;
+        memoryManager->baseAddress_ = (__int64)MapViewOfFile(hFileMapping,FILE_MAP_WRITE,0,0,size);
+        memoryManager->size_ = size;
+        assert(memoryManager->baseAddress_ != NULL);
+        assert(((__int32 *)memoryManager->baseAddress_)[0] == 0);
+        assert(((__int32 *)memoryManager->baseAddress_)[1] == 0);
+        assert(((__int32 *)memoryManager->baseAddress_)[2] == 0);
+        memoryManager->initMemoryBlock();
+        return memoryManager;
+    }
+
+    //! 初始化第一个内存块.
+    void initMemoryBlock() 
+    {
+        Block *firstBlock = reinterpret_cast<Block *>(baseAddress_ + sizeof(Commu));
+        firstBlock->size = size_ - sizeof(Commu);
+        firstBlock->free = true;
+    }
+    //! 附加到一个创建好的文件映射.
+    /*!
+        Caller should close the handle.该函数的调用者负责关闭句柄.
+    */
+    static USharedMemoryManager *USharedMemoryManager::attachToExisting(HANDLE hFileMapping,int size)
+    {
+        USharedMemoryManager *memoryManager =  new USharedMemoryManager;
+        memoryManager->baseAddress_ = (__int64)MapViewOfFile(hFileMapping,FILE_MAP_WRITE,0,0,size);
+        memoryManager->size_ = size;
+        assert(memoryManager->baseAddress_ != NULL);
+        return memoryManager;
+    }
+    virtual ~USharedMemoryManager()
+    {
+        UnmapViewOfFile((LPVOID)baseAddress_);
+        baseAddress_ = 0;
+        size_ = 0;
+    }
+
+    //! 从共享内存中分配内存.
+    virtual __int64 allocMemory(__int64 size)
+    {
+        if(size <= 0)
+        {
+            assert(!"size should bigger than 0.");
+            return 0;
+        }
+        Block *block = getFreeBlock(size);
+        if(block)
+        {
+            Block *allocBlock = splitBlock(block,size);
+            if(allocBlock)
+            {
+                allocBlock->free = false;
+                return (__int64)&allocBlock->buf[0];
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    virtual bool freeMemory(__int64 address)
+    {
+        Block *blockToFree = Block::fromAddress(address);
+        Block *block = getFirstBlock();
+        Block *prevBlock = 0;
+        Block *nextBlock = 0;
+        while(block)
+        {
+            if(block == blockToFree)
+            {
+                nextBlock = getNextBlock(block);
+                break;
+            }
+            prevBlock = block;
+            block = getNextBlock(block);
+        }
+        if(!block)
+        {
+            return false;
+        }
+        if(prevBlock && prevBlock->free)
+        {
+            prevBlock->size += block->size + sizeof(__int32)*2;
+            block = prevBlock;
+        }
+
+        if(nextBlock && nextBlock->free)
+        {
+            block->size += nextBlock->size + sizeof(__int32)*2;
+        }
+
+        block->free = true;
+        return true;
+    }
+    virtual __int64 fixedMemory()
+    {
+        return baseAddress_;
+    }
+    virtual __int64 fixedMemorySize()
+    {
+        return sizeof(Commu);
+    }
+    virtual bool isValid()
+    {
+        return baseAddress_ != NULL;
+    }
+protected:
+    USharedMemoryManager()
+        :baseAddress_(0)
+    {
+    }
+    
+private:
+    USharedMemoryManager(const USharedMemoryManager &);
+    USharedMemoryManager &operator = (const USharedMemoryManager &);
+    Block *getFreeBlock(__int64 minimumSize)
+    {
+        Block *block = getFirstBlock();
+        while(block && (block->size < minimumSize || !block->free))
+        {
+            block = getNextBlock(block);
+        }
+        if(block)
+        {
+            return block;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    Block *getNextBlock(Block *block)
+    {
+        if(block)
+        {
+            __int64 nextBlockAddress = (__int64)&(block->buf[0]) + block->size;
+            if(nextBlockAddress >= (__int64)baseAddress_+size_)
+            {
+                return 0;
+            }
+            else
+            {
+                return reinterpret_cast<Block *>(nextBlockAddress);
+            }
+        }
+        return 0;
+    }
+    Block *getFirstBlock()
+    {
+        return reinterpret_cast<Block *>((__int64)baseAddress_ + sizeof(Commu));
+    }
+    Block *splitBlock(Block *block,__int64 size)
+    {
+        __int32 remainBlockSize = block->size - size-sizeof(__int32)*2;
+        if(remainBlockSize > 0)
+        {
+            block->size = size;
+            Block *remainBlock = (Block *)((__int64)&(block->buf[0]) + block->size);
+            remainBlock->size = remainBlockSize;
+            remainBlock->free = true;
+        }
+        return block;
+    }
+
+    __int64 baseAddress_;
+    __int64 size_;
+};
+
+
+
+struct Pair
+{
+    __int32 keyOffset;
+    __int32 dataOffset;
+    __int32 nextOffset;
+};
+
+struct Event
+{
+    __int32 keyOffset;
+    __int32 event;
+    __int32 nextOffset;
+};
+
+class USharedMemory
+{
+public:
+    class ScopedLock
+    {
+    public:
+        ScopedLock(volatile long *atomic)
+            :atomic_(atomic)
+        {
+            do 
+            {
+                long prev = InterlockedCompareExchange(atomic_,1,0);
+                if(*atomic_ == 1 && prev == 0)
+                {
+                    break;
+                }
+                if(!SwitchToThread())
+                {
+                    Sleep(1);
+                }
+            } while (true);
+        }
+        ~ScopedLock()
+        {
+            InterlockedCompareExchange(atomic_,0,1);
+        }
+        volatile long *atomic_;
+    };
+    USharedMemory(UMemoryManager *memoryManager)
+        :memoryManager_(memoryManager)
+    {
+        commu_ = reinterpret_cast<Commu *>(memoryManager->fixedMemory());
+    }
+    void setData(const std::wstring &key, const std::wstring &data) 
+    {
+        ScopedLock lock((long *)&commu_->lock);
+        Pair * pair = findPair(key);
+        if(pair)
+        {
+            setPair(pair,data);
+        }
+        else
+        {
+            addPair(key,data);
+        }
+    }
+    void setIntData(const std::wstring &key, int data) 
+    {
+        wchar_t buf[255] = L"";
+        _itow_s(data,buf,10);
+        setData(key,buf);
+    }
+    std::wstring data(const std::wstring &key) 
+    {
+        ScopedLock lock((long *)&commu_->lock);
+        Pair *pair = findPair(key);
+        if(pair)
+        {
+            return getStringByAddress(((__int64)pair)+pair->dataOffset);
+        }
+        return std::wstring();
+    }
+    int intData(const std::wstring &key) 
+    {  
+        return _wtoi(data(key).c_str());
+    }
+    void setArrayData(const std::wstring &key,std::vector<std::wstring> array)
+    {
+        setIntData(key+L"/count",array.size());
+        for(int i = 0; i < array.size(); i++)
+        {
+            wchar_t buf[255] = L"";
+            _itow_s(i,buf,10);
+            setData(key+L"/"+buf,array[i]);
+        }
+    }
+    std::vector<std::wstring> arrayData(const std::wstring &key)
+    {
+        std::vector<std::wstring> result;
+        int count = intData(key+L"/count");
+        for(int i = 0; i < count; i++)
+        {
+            wchar_t buf[255] = L"";
+            _itow_s(i,buf,10);
+            result.push_back(data(key+L"/"+buf));
+        }
+        return result;
+    }
+    void WaitEvent(const std::wstring &event) 
+    {
+        volatile __int32 *eventAtom = getEvent(event);
+        do 
+        {
+            long prev = InterlockedCompareExchange((long *)eventAtom,0,1);
+            if(*eventAtom == 0 && prev == 1)
+            {
+                break;
+            }
+            if(!SwitchToThread())
+            {
+                Sleep(1);
+            }
+        } while (true);
+    }
+
+    void NotifyEvent(const std::wstring &event) 
+    {
+        volatile __int32 *eventAtom = getEvent(event);  //lock g unlock g
+        InterlockedCompareExchange((long *)eventAtom,1,0);
+    }
+    bool WaitEvent(const std::wstring &event, int waitTime)
+    {
+        volatile __int32 *eventAtom = getEvent(event);
+        int startTime = GetTickCount();
+        do
+        {
+            long prev = InterlockedCompareExchange((long *)eventAtom,0,1);
+            if(*eventAtom == 0 && prev == 1)
+            {
+                return true;
+            }
+            if(GetTickCount() - startTime >= waitTime)
+            {
+                return false;
+            }
+            if(!SwitchToThread())
+            {
+                Sleep(1);
+            }
+        } while (true);
+        return false;
+    }
+
+    bool WaitEvent(const std::wstring &event, bool(*canExit)()) 
+    {
+        volatile __int32 *eventAtom = getEvent(event);
+        int startTime = GetTickCount();
+        do 
+        {
+            long prev = InterlockedCompareExchange((long *)eventAtom,0,1);
+            if(*eventAtom == 0 && prev == 1)
+            {
+                return true;
+            }
+            if(canExit())
+            {
+                return false;
+            }
+            if(!SwitchToThread())
+            {
+                Sleep(1);
+            }
+        } while (true);
+        return false;
+    }
+
+    volatile __int32 *getEvent(const std::wstring &key)
+    {
+        ScopedLock lock((long *)&commu_->lock);
+        volatile __int32 *event = findEvent(key);
+        if(!event)
+        {
+            event = createNewEvent(key);
+        }
+
+        return event;
+    }
+
+    volatile __int32 * findEvent( const std::wstring & key ) 
+    {
+        __int64 currentAddress = (__int64)&commu_->eventOffset;
+        __int32 nextOffset = commu_->eventOffset;
+        while(nextOffset)
+        {
+            currentAddress = currentAddress + nextOffset;
+            if(getStringByAddress(currentAddress + ((Event *)currentAddress)->keyOffset)
+                == key)
+            {
+                return &(((Event *)currentAddress)->event);
+            }
+            nextOffset = ((Event*)currentAddress)->nextOffset;
+        }
+        return 0;
+    }
+
+    volatile __int32 * createNewEvent( const std::wstring & key) 
+    {
+
+        __int64 currentAddress = (__int64)&commu_->eventOffset;
+        __int32 nextOffset = commu_->eventOffset;
+        while(nextOffset)
+        {
+            currentAddress = currentAddress + nextOffset;
+            nextOffset = ((Event*)currentAddress)->nextOffset;
+        }
+
+        __int64 address = memoryManager_->allocMemory(sizeof(Event));
+        int keyAddress = newString(key);
+        ((Event *)address)->keyOffset = keyAddress - address;
+        ((Event *)address)->event = 0;
+        ((Event *)address)->nextOffset = 0;
+        if(currentAddress == (__int64)&commu_->eventOffset)
+        {
+            commu_->eventOffset = address - currentAddress;
+        }
+        else
+        {
+            ((Event *)currentAddress)->nextOffset = address - currentAddress;
+        }
+
+        return &((Event *)address)->event;
+    }
+
+    __int64 newString(const std::wstring &key) 
+    {
+        int allocSize = key.length()*sizeof(wchar_t)+sizeof(__int32);
+        __int64 address = memoryManager_->allocMemory(allocSize);
+        *(__int32 *)address = key.length();
+        memcpy_s(reinterpret_cast<void *>(address+sizeof(__int32)),allocSize-sizeof(__int32),key.c_str(),key.length()*sizeof(wchar_t));
+        return address;
+    }
+    std::wstring getStringByAddress(__int64 address)
+    {
+        __int32 size = *(__int32 *)address;
+        std::wstring result;
+        result.assign((const wchar_t *)(address+sizeof(__int32)),size);
+        return result;
+    }
+    Pair *findPair(const std::wstring &key)
+    {
+        __int64 currentAddress = (__int64)&commu_->pairOffset;
+        __int32 nextOffset = commu_->pairOffset;
+        while(nextOffset)
+        {
+            currentAddress = currentAddress + nextOffset;
+            if(getStringByAddress(currentAddress + ((Pair *)currentAddress)->keyOffset)
+                == key)
+            {
+                return (Pair *)currentAddress;
+            }
+            nextOffset = ((Pair*)currentAddress)->nextOffset;
+        }
+
+        return 0;
+    }
+    void addPair(const std::wstring &key, const std::wstring &data)
+    {
+        __int64 currentAddress = (__int64)&commu_->pairOffset;
+        __int64 newPair = memoryManager_->allocMemory(sizeof(Pair));
+        ((Pair *)newPair)->keyOffset = newString(key) - newPair;
+        ((Pair *)newPair)->dataOffset = newString(data) - newPair;
+        ((Pair *)newPair)->nextOffset = 0;
+        if(commu_->pairOffset)
+        {
+            ((Pair *)newPair)->nextOffset = currentAddress +commu_->pairOffset-newPair;
+        }
+        commu_->pairOffset = newPair - currentAddress;
+    }
+    void setPair(Pair *pair,const std::wstring &data)
+    {
+        memoryManager_->freeMemory((__int64)pair+pair->dataOffset);
+        pair->dataOffset = newString(data) - (__int64)pair;
+    }
+    Commu *commu_;
+    UMemoryManager *memoryManager_;
+private:
+    USharedMemory(const USharedMemory &);
+    USharedMemory &operator = (const USharedMemory &);
+};
