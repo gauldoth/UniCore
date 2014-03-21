@@ -182,6 +182,7 @@
     <ClInclude Include="UConfig.h" />
     <ClInclude Include="UDebug.h" />
     <ClInclude Include="ULog.h" />
+    <ClInclude Include="UMiniLog.h" />
     <ClInclude Include="UProcess.h" />
     <ClInclude Include="USharedMemory.h" />
     <ClInclude Include="USystem.h" />

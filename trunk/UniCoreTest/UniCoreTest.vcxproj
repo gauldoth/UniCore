@@ -129,6 +129,7 @@ $(TargetPath)
     <ClCompile Include="UEnumTest.cpp" />
     <ClCompile Include="ULiteTest.cpp" />
     <ClCompile Include="ULogTest.cpp" />
+    <ClCompile Include="UMiniLogTest.cpp" />
     <ClCompile Include="UMiscTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
     <ClCompile Include="UProcessTest.cpp" />
