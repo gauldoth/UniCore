@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "../UniCore/ULog.h"
+#include "../UniCore/UMiniLog.h"
 
 using namespace std;
 using namespace uni;

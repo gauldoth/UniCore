@@ -95,6 +95,9 @@
     <ClInclude Include="USystem.h">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="UMiniLog.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\工程说明.txt" />
