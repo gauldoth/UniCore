@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "../UniCore/UProcess.h"
+#include "../UniCore/UCommon.h"
 
 using namespace uni;
 
@@ -32,4 +33,17 @@ TEST(UMiscTest,LCIDToRFC1766_LCID_es)
         EXPECT_EQ(L"es",LCIDToRFC1766(lcids[i]))<<buf;
         i++;
     }
+}
+
+TEST(UMiscTest,GenerateUUID_NotEmpty)
+{
+    std::wstring guid = GenerateUUID();
+    ASSERT_TRUE(!guid.empty());
+}
+
+TEST(UMiscTest,GenerateUUID_NotRepeat)
+{
+    std::wstring uuidA = GenerateUUID();
+    std::wstring uuidB = GenerateUUID();
+    ASSERT_NE(uuidA,uuidB);
 }

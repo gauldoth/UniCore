@@ -8,6 +8,9 @@
 #include <cassert>
 #include <algorithm>
 #include <locale>
+#include <objbase.h>
+
+#pragma comment(lib,"rpcrt4.lib")
 
 using namespace std;
 
@@ -457,6 +460,28 @@ std::wstring GetRandomAlnumName( int length )
   return result;
 }
 
+std::wstring GenerateUUID()
+{
+    GUID guid;
+
+    if(CoCreateGuid(&guid) != S_OK)
+    {
+        return L"";
+    }
+
+    // Convert the GUID to a string
+    wchar_t *guidString = 0;
+    if(UuidToString(&guid,(RPC_WSTR*)&guidString) != RPC_S_OK)
+    {
+        return L"";
+    }
+
+    std::wstring result = guidString;
+
+    RpcStringFree((RPC_WSTR*)&guidString);
+
+    return result;
+}
 
 
 

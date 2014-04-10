@@ -74,6 +74,7 @@ bool DirectoryExists(const std::wstring &directory);
 //! Create directories.
 /*!
   \param path For example,"D:\temp","D:\tools\msihack\",...
+         参数必须为绝对路径.
   \return Whether all directories are created successfully.
 */
 bool CreateDirectories(const std::wstring &path);
