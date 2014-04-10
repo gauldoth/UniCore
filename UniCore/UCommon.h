@@ -67,6 +67,12 @@ std::string GetRandomRoleName(int minSize = 0,int maxSize = 0,int wordCount = 1,
 */
 std::wstring GetRandomAlnumName(int length);
 
+//! 获得一个字符串格式的GUID.
+/*!
+    \return 成功则返回可用的GUID字符串,失败则返回空字符串.
+*/
+std::wstring GenerateUUID();
+
 //! 分割字符串.
 /*!
     \param s 源字符串,被分割的字符串.
