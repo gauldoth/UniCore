@@ -31,12 +31,16 @@
 //基础路径,子路径,日志名.
 
 //生成日志的基础文件名.
-#define MINILOG_BASENAME L"log"
 #ifndef MINILOG_BASENAME
-#define MINILOG_BASENAME L"log"
+#define MINILOG_BASENAME L"minilog"
 #endif
 
-static const wchar_t * const MINILOG_SUBDIR = L"mylog";  //创建日志时创建的子目录.
+//日志生成目录,需要定义为UMiniLog::LogPath中的其中一个.
+#ifndef MINILOG_PATH
+#define MINILOG_PATH UMiniLog::CurrentDir
+#endif
+
+static const wchar_t * const MINILOG_SUBDIR = L"";  //创建日志时创建的子目录.
 
 static bool DirectoryExists( const std::wstring &directory )
 {
@@ -263,7 +267,6 @@ public:
                 }
 #else
 
-
                 static std::ofstream logFile;
                 if(!logFile.is_open())
                 {
@@ -305,9 +308,9 @@ public:
                     localtime_s(&timeStruct,&t);
                     wcsftime(currentTime,MAX_PATH,L"%Y_%m_%d",&timeStruct);
 
-                    logFileName += L"_";
-                    logFileName += currentTime;
-                    logFileName += L".txt";
+                    //logFileName += L"_";
+                    //logFileName += currentTime;
+                    logFileName += L".log";
 
                     //获得日志的中间目录.
                     std::wstring logSubDir = MINILOG_SUBDIR;
@@ -343,7 +346,7 @@ public:
                         logFullPath += logFileName;
                     }
 
-                    logFile.open(logFullPath.c_str(),std::ofstream::out|std::ofstream::app);
+                    logFile.open(logFullPath.c_str(),std::ofstream::out|std::ofstream::trunc);
                 }
 
                 if(logFile.is_open())
@@ -538,7 +541,6 @@ public:
 
 private:
     Message *message_;
-    static const UMiniLog::LogPath MINILOG_PATH = UMiniLog::CurrentDir;  //日志所在的根目录
 };
 
 
