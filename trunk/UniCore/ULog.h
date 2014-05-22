@@ -13,6 +13,7 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 #include "Windows.h"
+#include "windowsx.h"
 
 #include <assert.h>
 #include <errno.h>
@@ -28,6 +29,7 @@
 
 #include "UDebug.h"
 #include "ULock.h"
+#include "UCast.h"
 
 namespace uni
 {
@@ -317,6 +319,33 @@ public:
     private:
         ConsoleAppender(const ConsoleAppender &);
         ConsoleAppender &operator=(const ConsoleAppender &);
+    };
+
+    //! 输出到Edit控件的输出源.
+    /*!
+        每次输出都会显示在Edit控件的尾部.
+    */
+    class EditCtrlAppender : public Appender
+    {
+    public:
+        EditCtrlAppender(HWND hWnd)
+            :hWnd_(hWnd)
+        {
+
+        }
+        virtual void append(ULog::Message *message)
+        {
+            std::string s = message->stm_.str();
+            s += "\r\n";
+
+            int nLen = Edit_GetTextLength(hWnd_);
+            Edit_SetSel(hWnd_, nLen, -1);
+            Edit_ReplaceSel(hWnd_, uni::s2ws(s).c_str());
+        }
+    private:
+        EditCtrlAppender(const EditCtrlAppender &);
+        EditCtrlAppender &operator=(const EditCtrlAppender &);
+        HWND hWnd_;
     };
 
     //! 无参数的操纵符。
