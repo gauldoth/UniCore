@@ -2,6 +2,7 @@
     \brief 包含了一些系统API的简单封装.
 
     \date 2013-12-24
+    \author unigauldoth@gmail.com
 */
 #ifndef UNICORE_USYSTEM_H
 #define UNICORE_USYSTEM_H
