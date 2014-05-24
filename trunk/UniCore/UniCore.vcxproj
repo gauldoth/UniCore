@@ -167,6 +167,7 @@
     <ClCompile Include="UDebug.cpp" />
     <ClCompile Include="ULog.cpp" />
     <ClCompile Include="UProcess.cpp" />
+    <ClCompile Include="UProcessMemory.cpp" />
     <ClCompile Include="USharedMemory.cpp" />
     <ClCompile Include="USystem.cpp" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="ULog.h" />
     <ClInclude Include="UMiniLog.h" />
     <ClInclude Include="UProcess.h" />
+    <ClInclude Include="UProcessMemory.h" />
     <ClInclude Include="USharedMemory.h" />
     <ClInclude Include="USystem.h" />
   </ItemGroup>
@@ -191,6 +193,7 @@
     <None Include="..\工程说明.txt" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Memo.txt" />
+    <None Include="UProcessMemory设计.txt" />
     <None Include="日志函数设计.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

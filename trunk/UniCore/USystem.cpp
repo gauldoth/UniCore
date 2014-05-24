@@ -6,6 +6,9 @@
 #include "UCommon.h"
 #include <fstream>
 
+#define AUTO_LINK_LIB_NAME "UniCore"
+#include "AutoLink.h"
+
 using namespace uni;
 
 std::wstring GetTempPathW()
@@ -91,4 +94,21 @@ long long int GetFileSize( const std::wstring &fullPath )
   return file.tellg();
 }
 
+std::wstring GetCurrentDir()
+{
+    std::wstring result;
+    DWORD bufSize = GetCurrentDirectoryW(0, NULL);
+    wchar_t *buf = new wchar_t(bufSize);
+    DWORD ret = GetCurrentDirectoryW(bufSize, buf);
+    if(ret == 0)
+    {
+        result = L"";
+    }
+    else
+    {
+        result = buf;
+    }
+    delete [] buf;
+    return result;
+}
 
