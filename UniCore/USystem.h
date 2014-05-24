@@ -63,4 +63,9 @@ std::wstring GetFilePart_WithoutExt(const std::wstring &fullPath);
 //! Get file size.
 long long int GetFileSize(const std::wstring &fullPath);
 
+//! Get the current directory.
+/*!
+*/
+std::wstring GetCurrentDir();
+
 #endif//UNICORE_USYSTEM_H

@@ -23,3 +23,8 @@ TEST(USystemTest,GetFilePart_EmptyPath_ReturnsEmptyString)
 {
   ASSERT_EQ(L"",GetFilePart(L""));
 }
+
+TEST(USystemTests, GetCurrentDirectory_ReturnsNonEmptyString)
+{
+    ASSERT_TRUE(!GetCurrentDir().empty());
+}
