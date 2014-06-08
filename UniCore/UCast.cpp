@@ -247,10 +247,10 @@ void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
     }
 }
 
-std::string i2s( int i )
+std::string i2s(long long int i )
 {
     char buf[100] = "";
-    _itoa_s(i,buf,10);
+    _i64toa_s(i,buf,100,10);
     return buf;
 }
 
