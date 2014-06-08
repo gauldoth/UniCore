@@ -124,7 +124,7 @@ void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
     \param i 要转换的整形。
     \return 字符串表示的数字。
 */
-std::string i2s(int i);
+std::string i2s(long long int i);
 
 //! 在string右边添加整型值.
 std::string operator+ (const std::string &s,int i);
