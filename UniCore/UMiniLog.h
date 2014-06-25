@@ -3,10 +3,7 @@
 
     使用MINILOG<<"asd",这种类似cout的方式记录日志.
     调试版本,未定义NDEBUG时,日志将会通过OutputDebugStringA输出到调试器.
-    发布版本,定义了NDEBUG,日志将会写入到文件.
-    可以通过定义DISABLE_MINILOG来禁止日志的输出.
-    日志的保存位置可以自行修改代码.
-    
+    发布版本,定义了NDEBUG,日志将不会输出.
 
     \author     unigauldoth@gmail.com
     \date       2014-2-18
@@ -27,138 +24,6 @@
 #include <regex>
 #include <string>
 
-//生成的日志文件的全路径由3部分组成.
-//基础路径,子路径,日志名.
-
-//生成日志的基础文件名.
-#ifndef MINILOG_BASENAME
-#define MINILOG_BASENAME L"minilog"
-#endif
-
-//日志生成目录,需要定义为UMiniLog::LogPath中的其中一个.
-#ifndef MINILOG_PATH
-#define MINILOG_PATH UMiniLog::CurrentDir
-#endif
-
-static const wchar_t * const MINILOG_SUBDIR = L"";  //创建日志时创建的子目录.
-
-static bool DirectoryExists( const std::wstring &directory )
-{
-    DWORD attribute = GetFileAttributesW(directory.c_str());
-    if (attribute == INVALID_FILE_ATTRIBUTES)
-    {
-        return false;
-    }
-
-    if (attribute & FILE_ATTRIBUTE_DIRECTORY)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-static std::vector<std::wstring> split( const std::wstring &s,const std::wstring &delim /*= L" "*/ )
-{
-
-    std::vector<std::wstring> results;
-    if(s.empty() || delim.empty())
-    {
-        //源字符串为空或者分隔符为空都无法进行分割.
-        return results;
-    }
-    if(s.size() < delim.size())
-    {
-        //源字符串长度小于分隔符长度时也无法分割.
-        return results;
-    }
-    std::wstring::size_type currentPos = 0;
-    std::wstring::size_type delimPos = 0;
-    while(true)
-    {
-        delimPos = s.find(delim,currentPos);
-        if(delimPos == std::wstring::npos)
-        {
-            //从当前位置开始找不到分隔符,将剩余的字符串加入结果数组.
-            results.push_back(s.substr(currentPos));
-            break;
-        }
-        else
-        {
-            //找到分隔符
-            assert(delimPos >= currentPos);
-            if(delimPos >= currentPos)
-            {
-                //分隔符位置如果等于当前位置,则保存一个空字符串.
-                results.push_back(s.substr(currentPos,delimPos-currentPos));
-            }
-            currentPos = delimPos+delim.length();  //当前位置指向分隔符后面一个位置.
-        }
-
-    }
-    return results;
-}
-
-
-static bool CreateDirectories( const std::wstring &path )
-{
-    //支持LFS(Local File System)和UNC(Universal Naming Convention).
-    //"\\192.168.0.2\Home\【Share】\xiaodong_li"
-    //"C:\Program Files\Foxit Software\Foxit PhantomPDF"
-    std::wstring uncName;
-    std::wstring volumeName;
-    std::wstring remaining;
-    //"\\.*?\.*?\",由于c++和regex都用到转义,因此一个'\'变成了四个.
-    std::wregex reUncName(L"\\\\\\\\.*?\\\\.*?\\\\");
-    std::wsmatch result;
-    if(regex_search(path,result,reUncName))
-    {
-        uncName = result[0];
-        remaining = result.suffix();
-    }
-    std::wregex reVolumeName(L"\\w+?:\\\\");
-    if(std::regex_search(path,result,reVolumeName))
-    {
-        volumeName = result[0];
-        remaining = result.suffix();
-    }
-    std::vector<std::wstring> pathFragments = split(remaining,L"\\");
-
-    std::wstring directoryToCreate;
-    if(!uncName.empty())
-    {
-        directoryToCreate = uncName;
-    }
-    else if(!volumeName.empty())
-    {
-        directoryToCreate = volumeName;
-    }
-    else
-    {
-        //directoryToCreate remains empty.
-    }
-
-    for(int i = 0; i < pathFragments.size(); i++)
-    {
-        if(!pathFragments[i].empty())
-        {
-            directoryToCreate += pathFragments[i];
-            if(directoryToCreate.back() != L'\\')
-            {
-                directoryToCreate.push_back(L'\\');
-            }
-            if(!DirectoryExists(directoryToCreate.c_str()))
-            {
-                if(!CreateDirectoryW(directoryToCreate.c_str(),NULL))
-                {
-                    return false;
-                }
-            }
-        }
-    }
-
-    return true;
-}
 
 class UMiniLog
 {
@@ -249,121 +114,19 @@ public:
                 static Lock lock;
                 lock.lock();
 
-#ifndef NDEBUG
-                {
-                    std::string message = "[";
-                    message += message_->func_;
-                    message += "]";
+				std::string message = "[";
+				message += message_->func_;
+				message += "]";
 
-                    message += " ";
-                    message += message_->stm_.str();
-                    message += " ";
+				message += " ";
+				message += message_->stm_.str();
+				message += " ";
 
-                    char buf[255] = "";
-                    _itoa_s(message_->line_,buf,10);
-                    message += "<"; message += buf; message += ">";
+				char buf[255] = "";
+				_itoa_s(message_->line_,buf,10);
+				message += "<"; message += buf; message += ">";
 
-                    OutputDebugStringA(message.c_str());
-                }
-#else
-
-                static std::ofstream logFile;
-                if(!logFile.is_open())
-                {
-                    //这里可以根据需要改变日志保存的路径.
-                    
-                    //获得日志所在的根目录.
-                    std::wstring logBasePath;
-                    if(MINILOG_PATH == UMiniLog::CurrentDir)
-                    {
-                        wchar_t buf[MAX_PATH] = L"";
-                        GetCurrentDirectory(MAX_PATH,buf);
-                        logBasePath = buf;
-                    }
-                    else if(MINILOG_PATH == UMiniLog::TempFolder)
-                    {
-                        wchar_t buf[MAX_PATH] = L"";
-                        GetTempPathW(MAX_PATH,buf);
-                        logBasePath = buf;
-                    }
-                    else if(MINILOG_PATH == UMiniLog::LocalAppDataFolder)
-                    {
-                        wchar_t buf[MAX_PATH] = L"";
-                        if(SHGetFolderPath(0,CSIDL_LOCAL_APPDATA,NULL,SHGFP_TYPE_CURRENT,buf) == S_OK)
-                        {
-                            logBasePath = buf;  
-                        }
-                    }
-                    else
-                    {
-                        assert(!"MINILOG_PATH is invalid.");
-                    }
-
-                    //获得日志名.
-                    std::wstring logFileName = MINILOG_BASENAME;
-                    wchar_t currentTime[MAX_PATH] = L"";
-                    time_t t;
-                    tm timeStruct;
-                    time(&t);
-                    localtime_s(&timeStruct,&t);
-                    wcsftime(currentTime,MAX_PATH,L"%Y_%m_%d",&timeStruct);
-
-                    //logFileName += L"_";
-                    //logFileName += currentTime;
-                    logFileName += L".log";
-
-                    //获得日志的中间目录.
-                    std::wstring logSubDir = MINILOG_SUBDIR;
-
-                    //生成日志的全路径.
-                    std::wstring logFullPath;
-                    if(!logBasePath.empty())
-                    {
-                        logFullPath += logBasePath;
-                        if(logFullPath.back() != L'\\')
-                        {
-                            logFullPath += L'\\';
-                        }
-                    }
-
-                    if(!logSubDir.empty())
-                    {
-                        if(logSubDir.front() == L'\\')
-                        {
-                            logSubDir.erase(0,1);
-                        }
-                        logFullPath += logSubDir;
-                        if(logFullPath.back() != L'\\')
-                        {
-                            logFullPath += L'\\';
-                        }
-                    }
-
-                    CreateDirectories(logFullPath);
-
-                    if(!logFileName.empty())
-                    {
-                        logFullPath += logFileName;
-                    }
-
-                    logFile.open(logFullPath.c_str(),std::ofstream::out|std::ofstream::trunc);
-                }
-
-                if(logFile.is_open())
-                {
-                    time_t t;
-                    tm timeStruct;
-                    time(&t);
-                    localtime_s(&timeStruct,&t);
-                    char currentTime[255] = "";
-                    asctime_s(currentTime,&timeStruct);
-
-                    logFile<<currentTime<<" "
-                        <<"["<<message_->func_<<"]"
-                        <<" "<<message_->stm_.str()<<" "
-                        <<"<"<<message_->line_<<">"<<std::endl;
-                }
-#endif
+				OutputDebugStringA(message.c_str());
 
                 lock.unlock();
             }
@@ -543,14 +306,12 @@ private:
     Message *message_;
 };
 
-
-
 inline UMiniLog uMiniLog(const char *file,int line,const char *function)
 {
     return UMiniLog(file,line,function);
 }
 
-#ifndef DISABLE_MINILOG
+#ifndef NDEBUG
 #define MINILOG uMiniLog(__FILE__,__LINE__,__FUNCTION__)
 #else
 #define MINILOG while(false) uMiniLog(__FILE__,__LINE__,__FUNCTION__)

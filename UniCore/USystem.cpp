@@ -98,7 +98,7 @@ std::wstring GetCurrentDir()
 {
     std::wstring result;
     DWORD bufSize = GetCurrentDirectoryW(0, NULL);
-    wchar_t *buf = new wchar_t(bufSize);
+    wchar_t *buf = new wchar_t[bufSize];
     DWORD ret = GetCurrentDirectoryW(bufSize, buf);
     if(ret == 0)
     {
