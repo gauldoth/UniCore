@@ -129,6 +129,13 @@ std::string i2s(long long int i);
 //! 在string右边添加整型值.
 std::string operator+ (const std::string &s,int i);
 
+//! guid转换成std::string
+/*!
+	\param guid 待转换的guid.
+	\return 字符串格式的guid,格式为{00000000-0000-0000-0000-000000000000}.
+*/
+std::string guid2s(GUID guid);
+
 
 }//namespace uni
 

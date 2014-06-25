@@ -1,5 +1,6 @@
 ﻿#include "UCast.h"
 
+#include <array>
 #include <assert.h>
 #include <errno.h>
 #include <sstream>
@@ -257,6 +258,13 @@ std::string i2s(long long int i )
 std::string operator+(const std::string &s,int i )
 {
     return s + i2s(i);
+}
+
+std::string guid2s(GUID guid) 
+{
+	std::array<char,40> output;
+	sprintf_s(output.data(), output.size(), "{%08X-%04hX-%04hX-%02X%02X-%02X%02X%02X%02X%02X%02X}", guid.Data1, guid.Data2, guid.Data3, guid.Data4[0], guid.Data4[1], guid.Data4[2], guid.Data4[3], guid.Data4[4], guid.Data4[5], guid.Data4[6], guid.Data4[7]);
+	return std::string(output.data());
 }
 
 }//namespace uni

@@ -333,3 +333,10 @@ TEST(UCastTest,stringOperatorAddInt_NegativeInt_ConcatenateSuccess)
     int number = -99;
     ASSERT_EQ("asd-99",s+number);
 }
+
+TEST(UCastTest,guid2s_EmptyGUID_ConvertOk)
+{
+	GUID guid = {0};
+	std::string guidString = guid2s(guid);
+	ASSERT_TRUE(guidString == "{00000000-0000-0000-0000-000000000000}");
+}
