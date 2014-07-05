@@ -149,6 +149,8 @@ namespace uni
           - DebuggerAppender 类，用于输出日志信息到调试器。
           - ConsoleAppender 类，用于输出日志信息到控制台。
           - FileAppender 类，用于输出日志信息到文件。
+		  - EditControlAppender 类,用于输出日志到Edit控件.
+		  - StaticControlAppender 类,用于输出日志到Static控件.
           .
         - 然后,使用setAppender设置指定分组的日志所要使用的输出源.
           \code
@@ -324,6 +326,8 @@ public:
     //! 输出到Edit控件的输出源.
     /*!
         每次输出都会显示在Edit控件的尾部.
+
+		\note 必须在ui线程使用该Appender输出.否则可能导致死锁.
     */
     class EditCtrlAppender : public Appender
     {
@@ -345,6 +349,31 @@ public:
     private:
         EditCtrlAppender(const EditCtrlAppender &);
         EditCtrlAppender &operator=(const EditCtrlAppender &);
+        HWND hWnd_;
+    };
+
+	//! 输出到Static控件的输出源.
+    /*!
+        每次输出都会覆盖之前Static控件中的内容.
+
+		\note 必须在ui线程使用该Appender输出.否则可能导致死锁.
+    */
+    class StaticCtrlAppender : public Appender
+    {
+    public:
+        StaticCtrlAppender(HWND hWnd)
+            :hWnd_(hWnd)
+        {
+
+        }
+        virtual void append(ULog::Message *message)
+        {
+            std::string s = message->stm_.str();
+            SetWindowTextA(hWnd_,s.c_str());
+        }
+    private:
+        StaticCtrlAppender(const StaticCtrlAppender &);
+        StaticCtrlAppender &operator=(const StaticCtrlAppender &);
         HWND hWnd_;
     };
 
