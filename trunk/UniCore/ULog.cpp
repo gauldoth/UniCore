@@ -234,13 +234,13 @@ void ULog::restoreDefaultSettings()
     projectName_ = "";
 }
 
-ULog &ULog::operator<<(std::ostream &(*ostreamManipulator)(std::ostream &))
+ULog &ULog::operator<<(std::wostream &(*ostreamManipulator)(std::wostream &))
 {
     message_->stm_<<ostreamManipulator;
     return *this;
 }
 
-ULog &ULog::operator<<(std::basic_ios<char> &(*basicIosManipulator)(std::basic_ios<char> &))
+ULog &ULog::operator<<(std::basic_ios<wchar_t> &(*basicIosManipulator)(std::basic_ios<wchar_t> &))
 {
     message_->stm_<<basicIosManipulator;
     return *this;
@@ -279,6 +279,20 @@ ULog &ULog::operator<<(const std::wstring &t)
 {
     message_->stm_<<t;
     return mayHasDelim();
+}
+
+
+ULog & ULog::operator<<( const char *t )
+{
+	if(!t) 
+	{
+		message_->stm_<<"(null)";
+	}
+	else
+	{
+		message_->stm_<<s2ws(t,loc_); 
+	}
+	return mayHasDelim();
 }
 
 #if _NATIVE_WCHAR_T_DEFINED
@@ -485,7 +499,7 @@ void ULog::DebuggerAppender::append( Message *message )
             assert(!"未知的日志类型。");
         }
     }
-    DebugMessage("(%s){%s}[%s][%s] %s <%d>",projectName_.c_str(),message->name_.c_str(),type.c_str(),message->func_.c_str(),message->stm_.str().c_str(),message->line_);
+    DebugMessage("(%s){%s}[%s][%s] %s <%d>",projectName_.c_str(),message->name_.c_str(),type.c_str(),message->func_.c_str(),ws2s(message->stm_.str(),loc_).c_str(),message->line_);
 }
 
 ULog::LoggerAppender::LoggerAppender()
