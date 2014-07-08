@@ -368,8 +368,11 @@ public:
         }
         virtual void append(ULog::Message *message)
         {
-            std::string s = message->stm_.str();
-            SetWindowTextA(hWnd_,s.c_str());
+            std::wstring s;
+			s = s2ws(message->stm_.str());
+			DWORD_PTR result = 0;
+            SendMessageTimeout(hWnd_,WM_SETTEXT,0,(LPARAM)s.c_str(),
+				SMTO_ERRORONEXIT|SMTO_ABORTIFHUNG|SMTO_NORMAL,500,&result);
         }
     private:
         StaticCtrlAppender(const StaticCtrlAppender &);
