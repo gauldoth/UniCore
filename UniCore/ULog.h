@@ -245,9 +245,9 @@ public:
         std::string file_;  //!< 这条日志输出所在的源文件.
         std::string func_;  //!< 这条日志输出所在的函数.
         int line_;          //!< 这条日志输出位置所在的行号.
-        std::string delim_; //!< 流输出时所使用的分隔符.
+        std::wstring delim_; //!< 流输出时所使用的分隔符.
         bool delimEnabled_; //!< 是否在两次插入间添加分隔符.
-        std::ostringstream stm_;  //!< 保存了日志信息主体的流.
+        std::wostringstream stm_;  //!< 保存了日志信息主体的流.
     };
 
     //! 输出源的基类.
@@ -339,12 +339,12 @@ public:
         }
         virtual void append(ULog::Message *message)
         {
-            std::string s = message->stm_.str();
-            s += "\r\n";
+            std::wstring s = message->stm_.str();
+            s += L"\r\n";
 
             int nLen = Edit_GetTextLength(hWnd_);
             Edit_SetSel(hWnd_, nLen, -1);
-            Edit_ReplaceSel(hWnd_, uni::s2ws(s).c_str());
+            Edit_ReplaceSel(hWnd_, s.c_str());
         }
     private:
         EditCtrlAppender(const EditCtrlAppender &);
@@ -369,7 +369,7 @@ public:
         virtual void append(ULog::Message *message)
         {
             std::wstring s;
-			s = s2ws(message->stm_.str());
+			s = message->stm_.str();
 			DWORD_PTR result = 0;
             SendMessageTimeout(hWnd_,WM_SETTEXT,0,(LPARAM)s.c_str(),
 				SMTO_ERRORONEXIT|SMTO_ABORTIFHUNG|SMTO_NORMAL,500,&result);
@@ -545,7 +545,7 @@ public:
     ULog &operator<<(std::ios_base &(*iosBaseManipulator)(std::ios_base &));
 
     //! 接受setfill操纵符。
-    ULog &operator<<(const std::_Fillobj<char>& _Manip);
+    ULog &operator<<(const std::_Fillobj<wchar_t>& _Manip);
 
     //! 接受一元操纵符，如setw，setprecision之类。
     template<typename _Arg>
@@ -630,9 +630,10 @@ public:
     ULog &operator<<(const wchar_t *t);
 #endif
 
-    ULog &operator<<(const std::string &t) {message_->stm_<<t; return mayHasDelim();}
+	//! 写入std::string.
+    ULog &operator<<(const std::string &t);
 
-    //! 写入wstring。
+    //! 写入std::wstring。
     ULog &operator<<(const std::wstring &t);
 
     //! 接受ULog无参数操纵符。
@@ -658,13 +659,13 @@ public:
     }
 
     //! 返回保存的日志主体信息.
-    std::string message();
+    std::wstring message();
 
     friend void ULogSetName(ULog &log,const char *name);
 
     friend ULog &lasterr(ULog &log);
 
-    friend void ULogSetDelim(ULog &log,const char *delim);
+    friend void ULogSetDelim(ULog &log,const wchar_t *delim);
 
     friend void ULogDumpMemory(ULog &log,const char *address,int len);
 
@@ -692,7 +693,7 @@ inline ULog &ULogSetName(ULog &log)
 
 ULog::SManipulator<const char *> ULogSetName(const char *name);
 
-ULog::SManipulator<const char *> delim(const char *delim);
+ULog::SManipulator<const wchar_t *> delim(const wchar_t *delim);
 
 //! 将address开始len长度的数据输出。
 /*!
@@ -705,7 +706,7 @@ inline ULog::BinaryManipulator<const char *,int> dumpmem(const char *address,int
 
 inline ULog &delim(ULog &log)
 {
-    log<<delim(" ");
+    log<<delim(L" ");
     return log;
 }
 
@@ -717,7 +718,7 @@ inline ULog::SManipulator<int> hexdisp(int number)
 
 inline ULog &decdisp(ULog &log)
 {
-    log<<std::dec<<std::setfill(' ')<<std::setw(0);
+    log<<std::dec<<std::setfill(L' ')<<std::setw(0);
     return log;
 }
 
