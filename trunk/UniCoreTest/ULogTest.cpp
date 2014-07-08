@@ -19,7 +19,7 @@ public:
         message_ = message->stm_.str();
         appendCount_ ++;
     }
-    std::string message_;
+    std::wstring message_;
     int appendCount_;
 };
 
@@ -169,7 +169,7 @@ TEST_F(ULogTest,NormalLogging_NormalString_OutputSuccess)
     ULog::setAppenders("","mock");
     
     UDEBUG<<"abc";
-    ASSERT_EQ("abc",appender->message_);
+    ASSERT_EQ(L"abc",appender->message_);
 }
 
 TEST_F(ULogTest,dumpmem_MemoryDataWithCR_DataValid)
@@ -177,10 +177,10 @@ TEST_F(ULogTest,dumpmem_MemoryDataWithCR_DataValid)
     char data[] = {'\r'};
     ULog log(ULog::InfoType,"",0,"");
     log<<dumpmem(data,sizeof(data));
-    string message = log.message();
+    wstring message = log.message();
 
-    EXPECT_TRUE(message.find("|| 0D") != string::npos);
-    EXPECT_TRUE(message.find("|| \\r") != string::npos);
+    EXPECT_TRUE(message.find(L"|| 0D") != wstring::npos);
+    EXPECT_TRUE(message.find(L"|| \\r") != wstring::npos);
     if(!HasNonfatalFailure())
     {
         SUCCEED();
@@ -196,10 +196,10 @@ TEST_F(ULogTest,dumpmem_MemoryDataWithLF_DataValid)
     char data[] = {'\n'};
     ULog log(ULog::InfoType,"",0,"");
     log<<dumpmem(data,sizeof(data));
-    string message = log.message();
+    wstring message = log.message();
 
-    EXPECT_TRUE(message.find("|| 0A") != string::npos);
-    EXPECT_TRUE(message.find("|| \\n") != string::npos);
+    EXPECT_TRUE(message.find(L"|| 0A") != wstring::npos);
+    EXPECT_TRUE(message.find(L"|| \\n") != wstring::npos);
     if(!HasNonfatalFailure())
     {
         SUCCEED();
@@ -215,10 +215,10 @@ TEST_F(ULogTest,dumpmem_MemoryDataWithZero_DataValid)
     char data[] = {'\0'};
     ULog log(ULog::InfoType,"",0,"");
     log<<dumpmem(data,sizeof(data));
-    string message = log.message();
+    wstring message = log.message();
 
-    EXPECT_TRUE(message.find("|| 00") != string::npos);
-    EXPECT_TRUE(message.find("|| \\0") != string::npos);
+    EXPECT_TRUE(message.find(L"|| 00") != wstring::npos);
+    EXPECT_TRUE(message.find(L"|| \\0") != wstring::npos);
     if(!HasNonfatalFailure())
     {
         SUCCEED();
@@ -241,9 +241,9 @@ TEST_F(ULogTest,dumpmem_SizeEqualsZero_OutputOnlyAddressAndSize)
     char data[] = {'a'};
     ULog log(ULog::InfoType,"",0,"");
     log<<dumpmem(data,0);
-    string message = log.message();
+    wstring message = log.message();
 
-    EXPECT_TRUE(message.find("|") == string::npos);
+    EXPECT_TRUE(message.find(L"|") == wstring::npos);
     if(!HasNonfatalFailure())
     {
         SUCCEED();
@@ -259,9 +259,9 @@ TEST_F(ULogTest,dumpmem_NegativeValue_DataValid)
     char data[] = {-1};
     ULog log(ULog::InfoType,"",0,"");
     log<<dumpmem(data,sizeof(data));
-    string message = log.message();
+    wstring message = log.message();
 
-    EXPECT_TRUE(message.find("  .") != string::npos);
+    EXPECT_TRUE(message.find(L"  .") != wstring::npos);
     if(!HasNonfatalFailure())
     {
         SUCCEED();
@@ -278,7 +278,7 @@ TEST_F(ULogTest,streamInBool_true_DataValid)
     ULog::registerAppender("mock",mockAppender);
     ULog::setAppenders("","mock");
     UINFO<<true;
-    ASSERT_EQ("1",mockAppender->message_);
+    ASSERT_EQ(L"1",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInBool_false_DataValid)
@@ -287,7 +287,7 @@ TEST_F(ULogTest,streamInBool_false_DataValid)
     ULog::registerAppender("mock",mockAppender);
     ULog::setAppenders("","mock");
     UINFO<<false;
-    ASSERT_EQ("0",mockAppender->message_);
+    ASSERT_EQ(L"0",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInShort_NormalShortNumber_DataValid)
@@ -297,7 +297,7 @@ TEST_F(ULogTest,streamInShort_NormalShortNumber_DataValid)
     ULog::setAppenders("","mock");
     short shortNumber = 155;
     UINFO<<shortNumber;
-    ASSERT_EQ("155",mockAppender->message_);
+    ASSERT_EQ(L"155",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInUnsignedShort_NormalNumber_DataValid)
@@ -307,7 +307,7 @@ TEST_F(ULogTest,streamInUnsignedShort_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     unsigned short shortNumber = 65535;
     UINFO<<shortNumber;
-    ASSERT_EQ("65535",mockAppender->message_);
+    ASSERT_EQ(L"65535",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInInt_NormalNumber_DataValid)
@@ -317,7 +317,7 @@ TEST_F(ULogTest,streamInInt_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     int number = 100;
     UINFO<<number;
-    ASSERT_EQ("100",mockAppender->message_);
+    ASSERT_EQ(L"100",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInUnsignedInt_NormalNumber_DataValid)
@@ -327,7 +327,7 @@ TEST_F(ULogTest,streamInUnsignedInt_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     unsigned int number = 100;
     UINFO<<number;
-    ASSERT_EQ("100",mockAppender->message_);
+    ASSERT_EQ(L"100",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInLong_NormalNumber_DataValid)
@@ -337,7 +337,7 @@ TEST_F(ULogTest,streamInLong_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     long number = 100;
     UINFO<<number;
-    ASSERT_EQ("100",mockAppender->message_);
+    ASSERT_EQ(L"100",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInUnsignedLong_NormalNumber_DataValid)
@@ -347,7 +347,7 @@ TEST_F(ULogTest,streamInUnsignedLong_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     unsigned long number = 100;
     UINFO<<number;
-    ASSERT_EQ("100",mockAppender->message_);
+    ASSERT_EQ(L"100",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInLongLong_NormalNumber_DataValid)
@@ -357,7 +357,7 @@ TEST_F(ULogTest,streamInLongLong_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     long long number = 100;
     UINFO<<number;
-    ASSERT_EQ("100",mockAppender->message_);
+    ASSERT_EQ(L"100",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInUnsignedLongLong_NormalNumber_DataValid)
@@ -367,7 +367,7 @@ TEST_F(ULogTest,streamInUnsignedLongLong_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     unsigned long long number = 100;
     UINFO<<number;
-    ASSERT_EQ("100",mockAppender->message_);
+    ASSERT_EQ(L"100",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInFloat_NormalNumber_DataValid)
@@ -377,7 +377,7 @@ TEST_F(ULogTest,streamInFloat_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     float number = 6.02e32f;
     UINFO<<number;
-    ASSERT_EQ("6.02e+032",mockAppender->message_);
+    ASSERT_EQ(L"6.02e+032",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInDouble_NormalNumber_DataValid)
@@ -387,7 +387,7 @@ TEST_F(ULogTest,streamInDouble_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     double number = 6.02e32;
     UINFO<<number;
-    ASSERT_EQ("6.02e+032",mockAppender->message_);
+    ASSERT_EQ(L"6.02e+032",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInVoidPtr_NormalNumber_DataValid)
@@ -397,7 +397,7 @@ TEST_F(ULogTest,streamInVoidPtr_NormalNumber_DataValid)
     ULog::setAppenders("","mock");
     void * number = reinterpret_cast<void *>(0xFAC2);
     UINFO<<number;
-    ASSERT_EQ("0000FAC2",mockAppender->message_);
+    ASSERT_EQ(L"0000FAC2",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInChar_NormalChar_DataValid)
@@ -407,7 +407,7 @@ TEST_F(ULogTest,streamInChar_NormalChar_DataValid)
     ULog::setAppenders("","mock");
     char c = 'x';
     UINFO<<c;
-    ASSERT_EQ("x",mockAppender->message_);
+    ASSERT_EQ(L"x",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInCStr_NormalCStr_DataValid)
@@ -417,7 +417,7 @@ TEST_F(ULogTest,streamInCStr_NormalCStr_DataValid)
     ULog::setAppenders("","mock");
     char * s = "identity";
     UINFO<<s;
-    ASSERT_EQ("identity",mockAppender->message_);
+    ASSERT_EQ(L"identity",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInCStr_Zero_OutputNull)
@@ -427,7 +427,7 @@ TEST_F(ULogTest,streamInCStr_Zero_OutputNull)
     ULog::setAppenders("","mock");
     char * s = 0;
     UINFO<<s;
-    ASSERT_EQ("(null)",mockAppender->message_);
+    ASSERT_EQ(L"(null)",mockAppender->message_);
 }
 
 #if _NATIVE_WCHAR_T_DEFINED
@@ -438,7 +438,7 @@ TEST_F(ULogTest,streamInWChar_NormalWChar_DataValid)
     ULog::setAppenders("","mock");
     wchar_t c = L'x';
     UINFO<<c;
-    ASSERT_EQ("x",mockAppender->message_);
+    ASSERT_EQ(L"x",mockAppender->message_);
 }
 #endif//_NATIVE_WCHAR_T_DEFINED
 
@@ -450,7 +450,7 @@ TEST_F(ULogTest,streamInWCharPtr_NormalString_DataValid)
     ULog::setAppenders("","mock");
     wchar_t *s = L"tal rasha";
     UINFO<<s;
-    ASSERT_EQ("tal rasha",mockAppender->message_);
+    ASSERT_EQ(L"tal rasha",mockAppender->message_);
 }
 #endif
 
@@ -461,7 +461,7 @@ TEST_F(ULogTest,streamInString_NormalString_DataValid)
     ULog::setAppenders("","mock");
     string s = "leoric";
     UINFO<<s;
-    ASSERT_EQ("leoric",mockAppender->message_);
+    ASSERT_EQ(L"leoric",mockAppender->message_);
 }
 
 TEST_F(ULogTest,streamInWString_NormalString_DataValid)
@@ -471,7 +471,7 @@ TEST_F(ULogTest,streamInWString_NormalString_DataValid)
     ULog::setAppenders("","mock");
     wstring s = L"leoric";
     UINFO<<s;
-    ASSERT_EQ("leoric",mockAppender->message_);
+    ASSERT_EQ(L"leoric",mockAppender->message_);
 }
 
 TEST_F(ULogTest,delim_SpaceDelim_ThreeInput_DataValid)
@@ -480,7 +480,7 @@ TEST_F(ULogTest,delim_SpaceDelim_ThreeInput_DataValid)
     ULog::registerAppender("mock",mockAppender);
     ULog::setAppenders("","mock");
     UINFO<<delim<<200<<"abc"<<L'C';
-    ASSERT_EQ("200 abc C",mockAppender->message_);
+    ASSERT_EQ(L"200 abc C",mockAppender->message_);
 }
 
 TEST_F(ULogTest,delim_SemicolonDelim_ZeroInput_DataValid)
@@ -488,8 +488,8 @@ TEST_F(ULogTest,delim_SemicolonDelim_ZeroInput_DataValid)
     MockAppender *mockAppender = new MockAppender;
     ULog::registerAppender("mock",mockAppender);
     ULog::setAppenders("","mock");
-    UINFO<<delim(";");
-    ASSERT_EQ("",mockAppender->message_);
+    UINFO<<delim(L";");
+    ASSERT_EQ(L"",mockAppender->message_);
 }
 
 TEST_F(ULogTest,delim_EmptyStringDelim_TwoInput_DataValid)
@@ -497,6 +497,6 @@ TEST_F(ULogTest,delim_EmptyStringDelim_TwoInput_DataValid)
     MockAppender *mockAppender = new MockAppender;
     ULog::registerAppender("mock",mockAppender);
     ULog::setAppenders("","mock");
-    UINFO<<delim("")<<"butter"<<"fly";
-    ASSERT_EQ("butterfly",mockAppender->message_);
+    UINFO<<delim(L"")<<"butter"<<"fly";
+    ASSERT_EQ(L"butterfly",mockAppender->message_);
 }

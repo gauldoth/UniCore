@@ -71,11 +71,11 @@ ULog::~ULog()
         {
             //允许输出。
             //检查是否有分隔符。
-            std::string message = message_->stm_.str();
+            std::wstring message = message_->stm_.str();
             if(!message_->delim_.empty())
             {
                 //删除尾部多余的分隔符.
-                string::size_type pos = message.rfind(message_->delim_);
+                wstring::size_type pos = message.rfind(message_->delim_);
                 if(pos != string::npos
                     && pos + message_->delim_.size() == message.size())
                 {
@@ -252,7 +252,7 @@ ULog &ULog::operator<<(std::ios_base &(*iosBaseManipulator)(std::ios_base &))
     return *this;
 }
 
-ULog &ULog::operator<<(const std::_Fillobj<char>& _Manip)
+ULog &ULog::operator<<(const std::_Fillobj<wchar_t>& _Manip)
 {
     message_->stm_<<_Manip;
     return *this;
@@ -264,14 +264,20 @@ ULog &ULog::operator<<(wchar_t t)
     wchar_t temp[2] = L"";
     temp[0] = t;
     temp[1] = L'\0';
-    message_->stm_<<ws2s(temp,loc_);
+    message_->stm_<<temp;
     return mayHasDelim();
 }
 #endif
 
+ULog &ULog::operator<<(const std::string &t)
+{
+	message_->stm_<<s2ws(t,loc_);
+	return mayHasDelim();
+}
+
 ULog &ULog::operator<<(const std::wstring &t) 
 {
-    message_->stm_<<ws2s(t,loc_);
+    message_->stm_<<t;
     return mayHasDelim();
 }
 
@@ -288,13 +294,13 @@ ULog &ULog::operator<<(const wchar_t *t)
     }
     else
     {
-        message_->stm_<<ws2s(t,loc_);
+        message_->stm_<<t;
     }
     return mayHasDelim();
 }
 #endif
 
-std::string ULog::message()
+std::wstring ULog::message()
 {
     return message_->stm_.str();
 }
@@ -349,14 +355,14 @@ ULog &lasterr(ULog &log)
     return log.mayHasDelim();
 }
 
-void ULogSetDelim(ULog &log,const char *delim)
+void ULogSetDelim(ULog &log,const wchar_t *delim)
 {
     log.message_->delim_ = delim;
 }
 
-ULog::SManipulator<const char *> delim(const char *delim)
+ULog::SManipulator<const wchar_t *> delim(const wchar_t *delim)
 {
-    return ULog::SManipulator<const char *>(&ULogSetDelim,delim);
+    return ULog::SManipulator<const wchar_t *>(&ULogSetDelim,delim);
 }
 
 void ULogSetName(ULog &log,const char *name)
@@ -561,7 +567,7 @@ void ULog::LoggerAppender::append( Message *message )
             <<"{"<<message->name_<<"}"
             <<"["<<type<<"]"
             <<"["<<message->func_<<"]"
-            <<" "<<message->stm_.str()<<" "
+            <<" "<<ws2s(message->stm_.str())<<" "
             <<"<"<<message->line_<<">"<<endl;
     }
 }
@@ -636,7 +642,7 @@ void ULog::FileAppender::append( Message *message )
             <<"{"<<message->name_<<"}"
             <<"["<<type<<"]"
             <<"["<<message->func_<<"]"
-            <<" "<<message->stm_.str()<<" "
+            <<" "<<ws2s(message->stm_.str())<<" "
             <<"<"<<message->line_<<">"<<endl;
     }
 }
@@ -683,10 +689,10 @@ void ULog::ConsoleAppender::append( Message *message )
         }
     }
 
-    string messageString = message->stm_.str();
+    wstring messageString = message->stm_.str();
     printf("{%s}[%s][%s]%s<%d>\n",
         message->name_.c_str(),type.c_str(),
-        message->func_.c_str(),messageString.c_str(),
+        message->func_.c_str(),ws2s(messageString).c_str(),
         message->line_);
 
 }
