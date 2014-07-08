@@ -536,10 +536,10 @@ public:
     /*!
         \param ostreamManipulator ostream操纵符，例如endl。
     */
-    ULog &operator<<(std::ostream &(*ostreamManipulator)(std::ostream &));
+    ULog &operator<<(std::wostream &(*ostreamManipulator)(std::wostream &));
 
     //! 接受basic_ios操纵符。
-    ULog &operator<<(std::basic_ios<char> &(*basicIosManipulator)(std::basic_ios<char> &));
+    ULog &operator<<(std::basic_ios<wchar_t> &(*basicIosManipulator)(std::basic_ios<wchar_t> &));
 
     //! 接受ios_base操纵符，例如hex，showbase等。
     ULog &operator<<(std::ios_base &(*iosBaseManipulator)(std::ios_base &));
@@ -595,7 +595,7 @@ public:
 
 	ULog &operator<<(const void *t) {message_->stm_<<t; return mayHasDelim();}
 
-    ULog &operator<<(std::basic_streambuf<char> *t) {message_->stm_<<t; return mayHasDelim();}
+    ULog &operator<<(std::basic_streambuf<wchar_t> *t) {message_->stm_<<t; return mayHasDelim();}
 
     ULog &operator<<(char t) 
     {
@@ -607,18 +607,7 @@ public:
     /*!
         假如t为0,则输出(null).
     */
-    ULog &operator<<(const char *t) 
-    {
-        if(!t) 
-        {
-            message_->stm_<<"(null)";
-        }
-        else
-        {
-            message_->stm_<<t; 
-        }
-        return mayHasDelim();
-    }
+    ULog &operator<<(const char *t);
 
     //! 写入一个宽字符。
 #if _NATIVE_WCHAR_T_DEFINED

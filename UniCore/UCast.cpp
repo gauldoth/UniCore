@@ -99,7 +99,7 @@ void ws2s(char *dest,int len,const wchar_t *source,const char *locale )
     }
     else if(err == STRUNCATE)
     {
-        OutputDebugStringA("UniCore ws2w 目标缓冲区不足，字符串被截断。");
+        OutputDebugStringA("UniCore ws2s 目标缓冲区不足，字符串被截断。");
     }
     else
     {
@@ -240,7 +240,7 @@ void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
     }
     else if(err == STRUNCATE)
     {
-        OutputDebugStringA("UniCore ws2w 目标缓冲区不足，字符串被截断。");
+        OutputDebugStringA("UniCore ws2s 目标缓冲区不足，字符串被截断。");
     }
     else
     {
