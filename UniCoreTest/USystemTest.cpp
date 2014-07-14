@@ -28,3 +28,28 @@ TEST(USystemTests, GetCurrentDirectory_ReturnsNonEmptyString)
 {
     ASSERT_TRUE(!GetCurrentDir().empty());
 }
+
+TEST(USystemTest,DirectoryExists_RootDirectory_ReturnsTrue)
+{
+	ASSERT_TRUE(DirectoryExists(L"C:"));
+}
+
+TEST(USystemTest,DirectoryExists_SystemDirectory_ReturnsTrue)
+{
+	ASSERT_TRUE(DirectoryExists(L"C:\\Windows\\System32"));
+}
+
+TEST(USystemTest,DirectoryExists_FictionalDirectory_ReturnsFalse)
+{
+	ASSERT_FALSE(DirectoryExists(L"C:\\Program Files\\Foxit Software\\Foxit PhantomPDF\\sss"));
+}
+
+TEST(USystemTest,DirectoryExists_DirectoryWithBackSlash_ReturnsTrue)
+{
+	ASSERT_TRUE(DirectoryExists(L"C:\\Windows\\System32\\"));
+}
+
+TEST(USystemTest,DirectoryExists_FilePath_ReturnsFalse)
+{
+	ASSERT_FALSE(DirectoryExists(L"C:\\Windows\\System32\\ntdll.dll"));
+}

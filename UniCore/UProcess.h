@@ -57,27 +57,6 @@ std::wstring GetProcessName(unsigned int pid);
 */
 bool SetTokenPrivilege(HANDLE hToken,wchar_t *privilege,bool enabled);
 
-//! 删除文件夹及所有包含内容.
-/*!
-    \param 文件夹全路径.
-    \return 是否删除成功.
-*/
-bool DeleteDirectory(const std::wstring &path);
-
-//! Checks whether a specified directory exists.
-/*!
-  \param directory Directory to check.
-  \return Whether the specified directory exists.
-*/
-bool DirectoryExists(const std::wstring &directory);
-
-//! Create directories.
-/*!
-  \param path For example,"D:\temp","D:\tools\msihack\",...
-         参数必须为绝对路径.
-  \return Whether all directories are created successfully.
-*/
-bool CreateDirectories(const std::wstring &path);
 
 //! 将LocaleID转换成RFC1766字符串.
 /*!
