@@ -68,4 +68,27 @@ long long int GetFileSize(const std::wstring &fullPath);
 */
 std::wstring GetCurrentDir();
 
+//! 删除文件夹及所有包含内容.
+/*!
+    \param 文件夹全路径.
+    \return 是否删除成功.
+*/
+bool DeleteDirectory(const std::wstring &path);
+
+//! Checks whether a specified directory exists.
+/*!
+  \param directory Directory to check.
+  \return Whether the specified directory exists.
+*/
+bool DirectoryExists(const std::wstring &directory);
+
+//! Create directories.
+/*!
+  \param path For example,"D:\temp","D:\tools\msihack\",...
+         参数可以为绝对路径,相对路径.
+  \return Whether all directories are created successfully.
+*/
+bool CreateDirectories(const std::wstring &path);
+
+
 #endif//UNICORE_USYSTEM_H
