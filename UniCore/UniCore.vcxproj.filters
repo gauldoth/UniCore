@@ -51,9 +51,6 @@
     <ClCompile Include="USystem.cpp">
       <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="UProcessMemory.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UCast.h">
@@ -100,9 +97,6 @@
     </ClInclude>
     <ClInclude Include="UMiniLog.h">
       <Filter>Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="UProcessMemory.h">
-      <Filter>System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
