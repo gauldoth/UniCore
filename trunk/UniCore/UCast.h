@@ -126,6 +126,13 @@ void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
 */
 std::string i2s(long long int i);
 
+//! 整形转成宽字符串.
+/*!
+	\param i 要转换的整形.
+	\return 字符串表示的数字.
+*/
+std::wstring i2ws(long long int i);
+
 //! 在string右边添加整型值.
 std::string operator+ (const std::string &s,int i);
 
