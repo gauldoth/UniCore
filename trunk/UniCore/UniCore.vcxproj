@@ -167,7 +167,6 @@
     <ClCompile Include="UDebug.cpp" />
     <ClCompile Include="ULog.cpp" />
     <ClCompile Include="UProcess.cpp" />
-    <ClCompile Include="UProcessMemory.cpp" />
     <ClCompile Include="USharedMemory.cpp" />
     <ClCompile Include="USystem.cpp" />
   </ItemGroup>
@@ -185,7 +184,6 @@
     <ClInclude Include="ULog.h" />
     <ClInclude Include="UMiniLog.h" />
     <ClInclude Include="UProcess.h" />
-    <ClInclude Include="UProcessMemory.h" />
     <ClInclude Include="USharedMemory.h" />
     <ClInclude Include="USystem.h" />
   </ItemGroup>
