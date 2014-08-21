@@ -255,6 +255,13 @@ std::string i2s(long long int i )
     return buf;
 }
 
+std::wstring i2ws( long long int i )
+{
+	wchar_t buf[100] = L"";
+	_i64tow_s(i,buf,100,10);
+	return buf;
+}
+
 std::string operator+(const std::string &s,int i )
 {
     return s + i2s(i);
