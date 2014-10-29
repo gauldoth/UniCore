@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="UCast.cpp" />
     <ClCompile Include="UBuffer.cpp" />
+    <ClCompile Include="UGeometry.cpp" />
     <ClCompile Include="ULock.cpp" />
     <ClCompile Include="UMemory.cpp" />
     <ClCompile Include="UCommon.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="UCast.h" />
     <ClInclude Include="UBuffer.h" />
     <ClInclude Include="UEnum.h" />
+    <ClInclude Include="UGeometry.h" />
     <ClInclude Include="ULite.h" />
     <ClInclude Include="ULock.h" />
     <ClInclude Include="UMemory.h" />
