@@ -39,6 +39,7 @@ long WINAPI RecordExceptionInfo(PEXCEPTION_POINTERS pExceptPtrs)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	system("mode con:cols=100 lines=1000");
     testing::InitGoogleTest(&argc,argv);
     RUN_ALL_TESTS();
     system("pause");
