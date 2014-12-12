@@ -483,6 +483,34 @@ std::wstring GenerateUUID()
     return result;
 }
 
+std::wstring to_lower( const std::wstring &ws )
+{
+	std::wstring result = ws;
+	transform(result.begin(),result.end(),result.begin(),towlower);
+	return result;
+}
+
+std::string to_lower( const std::string &s )
+{
+	std::string result = s;
+	transform(result.begin(),result.end(),result.begin(),tolower);
+	return result;
+}
+
+std::wstring to_upper( const std::wstring &ws )
+{
+	std::wstring result = ws;
+	transform(result.begin(),result.end(),result.begin(),towupper);
+	return result;
+}
+
+std::string to_upper( const std::string &s )
+{
+	std::string result = s;
+	transform(result.begin(),result.end(),result.begin(),toupper);
+	return result;
+}
+
 
 
 }//namespace uni
