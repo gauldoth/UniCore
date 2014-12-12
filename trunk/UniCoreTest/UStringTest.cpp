@@ -308,3 +308,23 @@ TEST(UStringTest,constains_CaseInsensitive_Works)
     EXPECT_FALSE(contains(L"hello world!",L"EllAo",CaseInsensitive));
     EXPECT_FALSE(contains("hello world!","  orLd",CaseInsensitive));
 }
+
+TEST(UStringTest,to_lower_Works)
+{
+	EXPECT_EQ(L"acb",to_lower(L"ACB"));
+	EXPECT_EQ("acb",to_lower("AcB"));
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+TEST(UStringTest,to_upper_Works)
+{
+	EXPECT_EQ(L"ACB",to_upper(L"AcB"));
+	EXPECT_EQ("ACB",to_upper("acB"));
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}

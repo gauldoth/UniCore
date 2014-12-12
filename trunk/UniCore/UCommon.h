@@ -277,6 +277,17 @@ bool starts_with(const std::wstring &src, const std::wstring &pattern, CaseSensi
 */
 bool starts_with(const std::string &src, const std::string &pattern, CaseSensitivity caseSensitivity = CaseSensitive);
 
+//! 将字符串转换成小写.
+std::wstring to_lower(const std::wstring &ws);
+
+//! 将字符串转换成小写.
+std::string to_lower(const std::string &s);
+
+//! 将字符串转换为大写.
+std::wstring to_upper(const std::wstring &ws);
+
+//! 将字符串转换为大写.
+std::string to_upper(const std::string &s);
 
 }//namespace uni
 
