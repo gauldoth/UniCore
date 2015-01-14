@@ -2,8 +2,8 @@
     \brief 日志相关。
 
     使用MINILOG<<"asd",这种类似cout的方式记录日志.
-    调试版本,未定义NDEBUG时,日志将会通过OutputDebugStringA输出到调试器.
-    发布版本,定义了NDEBUG,日志将不会输出.
+    假如定义了DISABLE_MINILOG,则不会有日志产生.
+	假如使用UMiniLog::setLogPath设置了日志路径,则日志将被写到该路径指定的文件中.
 
     \author     unigauldoth@gmail.com
     \date       2014-2-18
@@ -28,13 +28,6 @@
 class UMiniLog
 {
 public:
-
-    enum LogPath
-    {
-        CurrentDir,
-        TempFolder,
-        LocalAppDataFolder,
-    };
     class Lock
     {
     public:
@@ -80,7 +73,25 @@ public:
         int line_;          //!< 这条日志输出位置所在的行号.
         std::ostringstream stm_;  //!< 保存了日志信息主体的流.
     };
+	
+	//! 设置日志路径.
+	/*!
+		返回值为设置前使用的路径.
+		若path为0,则不会修改当前路径.
+	*/
+	static std::wstring setLogPath(const wchar_t *path)
+	{
+		static std::wstring s_path;
 
+		if(!path)
+		{
+			return s_path;
+		}
+
+		std::wstring oldPath = s_path;
+		s_path = path;
+		return oldPath;
+	}
     explicit UMiniLog(const char *file,int line,const char *function)
         :message_(new Message(file,line,function))
     {
@@ -126,7 +137,21 @@ public:
 				_itoa_s(message_->line_,buf,10);
 				message += "<"; message += buf; message += ">";
 
-				OutputDebugStringA(message.c_str());
+				std::wstring path = setLogPath(0);
+				if(path.empty())
+				{
+					OutputDebugStringA(message.c_str());
+				}
+				else
+				{
+					//输出到指定路径.
+					static std::ofstream file;
+					if(!file.is_open())
+					{
+						file.open(path,std::ios_base::out|std::ios_base::trunc);
+					}
+					file<<message<<std::endl;
+				}
 
                 lock.unlock();
             }
@@ -311,7 +336,7 @@ inline UMiniLog uMiniLog(const char *file,int line,const char *function)
     return UMiniLog(file,line,function);
 }
 
-#ifndef NDEBUG
+#ifndef DISABLE_MINILOG
 #define MINILOG uMiniLog(__FILE__,__LINE__,__FUNCTION__)
 #else
 #define MINILOG while(false) uMiniLog(__FILE__,__LINE__,__FUNCTION__)

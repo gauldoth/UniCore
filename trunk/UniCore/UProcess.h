@@ -36,7 +36,7 @@ bool FileExists(const std::wstring &fileName);
 
 //! 获得当前进程所在路径。
 /*!
-    \return 当前进程的可执行文件所在路径，失败则返回空的字符串。
+    \return 当前进程的可执行文件所在路径,失败则返回空的字符串.返回结果始终以L"\\"结尾.
 */
 std::wstring GetCurrentProcessDirectory();
 

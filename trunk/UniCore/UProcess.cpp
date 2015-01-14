@@ -140,6 +140,10 @@ std::wstring GetCurrentProcessDirectory()
     {
         exeFileName[0] = L'\0';
         result = path;
+		if (result.back() != L'\\')
+		{
+			result.push_back(L'\\');
+		}
     }
     else
     {
