@@ -21,6 +21,7 @@ inline bool FloatEqual(float x,float y)
 	return (fabs(x-y) <= FLT_EPSILON * std::max(1.0f, std::max(fabs(x), fabs(y))) );
 }
 
+
 class Rect
 {
 public:
@@ -38,6 +39,10 @@ public:
 class Point
 {
 public:
+	Point()
+		:x(0),y(0)
+	{
+	}
 	Point(float x1, float y1)
 		:x(x1),y(y1)
 	{
@@ -46,6 +51,15 @@ public:
 	float x;
 	float y;
 };
+
+inline Point Lerp(Point a,Point b,float t)
+{
+	float x = a.x + (b.x-a.x)*t;
+	float y = a.y + (b.y-a.y)*t;
+
+	return Point(x,y);
+}
+
 
 //! 计算点a和点b间的,用于比较的距离.
 /*!
@@ -74,6 +88,11 @@ public:
 class StraightLine : public Line
 {
 public:
+	StraightLine()
+	{
+		points.push_back(Point(0,0));
+		points.push_back(Point(0,0));
+	}
 	StraightLine(float x1, float y1, float x2, float y2)
 	{
 		points.push_back(Point(x1,y1));
@@ -162,6 +181,20 @@ public:
 		assert(index < points.size());
 		return points[index];
 	}
+
+	//假如使用Ax + By + C = 0表示该直线,得到对应的a,b,c值.
+	float a()
+	{
+		return points[0].y - points[1].y;
+	}
+	float b()
+	{
+		return points[1].x - points[0].x;
+	}
+	float c()
+	{
+		return points[0].x*points[1].y-points[1].x*points[0].y;
+	}
 };
 
 static float binomials[][5] = 
@@ -173,11 +206,13 @@ static float binomials[][5] =
 };
 
 //! 三次贝塞尔曲线
-class UCubicBezierLine : public Line
+class CubicBezierLine : public Line
 {
 public:
-	UCubicBezierLine(float x1, float y1, float x2, float y2, 
+	CubicBezierLine(float x1, float y1, float x2, float y2, 
 		float x3, float y3, float x4, float y4)
+		:originBeginT(0)
+		,originEndT(1)
 	{
 		points.push_back(Point(x1,y1));
 		points.push_back(Point(x2,y2));
@@ -185,16 +220,293 @@ public:
 		points.push_back(Point(x4,y4));
 
 	}
-	UCubicBezierLine(Point a1, Point a2, Point a3, Point a4)
+	CubicBezierLine(Point a1, Point a2, Point a3, Point a4)
+		:originBeginT(0)
+		,originEndT(1)
 	{
 		points.push_back(a1);
 		points.push_back(a2);
 		points.push_back(a3);
 		points.push_back(a4);
 	}
-	UCubicBezierLine(const std::vector<Point> &points1)
+	CubicBezierLine(const std::vector<Point> &points1)
+		:originBeginT(0)
+		,originEndT(1)
 	{
 		points = points1;
+	}
+
+	CubicBezierLine(Point points1[4])
+		:originBeginT(0)
+		,originEndT(1)
+	{
+		points.assign(&points1[0],&points1[4]);
+	}
+
+	//! 使用de Casteljau's algorithm分割3次贝塞尔曲线.
+	/*!
+		t太小会分割失败.
+	*/
+	std::vector<CubicBezierLine> split(float t)
+	{
+		std::vector<CubicBezierLine> result;
+
+		Point leftSplit[4] = {};
+		Point rightSplit[4] = {};
+		Point span[10] = {};
+		assert(points.size() == 4);
+		span[0] = points[0];
+		span[1] = points[1];
+		span[2] = points[2];
+		span[3] = points[3];
+
+		int l = 0;
+		int r = 3;
+		int next = 4;
+		for(int c = 3; c > 0; c--)
+		{
+			leftSplit[l++] = span[next - c - 1];
+			for(int i = 0; i < c; i++)
+			{
+				Point p1 = span[next-c-1];
+				Point p2 = span[next-c];
+				Point p3 = Lerp(p1,p2,t);
+				span[next++] = p3;
+			}
+			rightSplit[r--] = span[next-c-1];
+		}
+		leftSplit[l] = span[next-1];
+		rightSplit[0] = span[next-1];
+
+		CubicBezierLine leftBezier(leftSplit);
+		leftBezier.originBeginT = originBeginT;
+		leftBezier.originEndT = originBeginT+t*(originEndT-originBeginT);
+
+		assert(leftBezier.originEndT >= leftBezier.originBeginT);
+
+		CubicBezierLine rightBezier(rightSplit);
+		assert(leftBezier.originEndT <= originEndT);
+		rightBezier.originBeginT = leftBezier.originEndT;
+		rightBezier.originEndT = originEndT;
+
+		result.push_back(leftBezier);
+		result.push_back(rightBezier);
+
+		return result;
+	}
+
+	//! 获得originT的范围.
+	float originTRange() 
+	{
+		assert(originEndT >= originBeginT);
+		return originEndT-originBeginT;
+	}
+
+	//! 使用fat line切割line,丢弃fat line之外的部分.
+	std::vector<CubicBezierLine> clipByFatLine(CubicBezierLine lineToClip)
+	{
+		std::vector<CubicBezierLine> result;
+
+		//L为过P0和P3的线段.
+		StraightLine L(points[0],points[3]);
+		//找到过控制点且和L平行的线.
+
+		float a = L.a();
+		float b = L.b();
+		float c = L.c();
+		float c1 = -a*points[1].x-b*points[1].y;
+		float c2 = -a*points[2].x-b*points[2].y;
+		//找到最大和最小的c.
+		float minC = c;
+		float maxC = c;
+		if(minC > c1)
+		{
+			minC = c1;
+		}
+		if(minC > c2)
+		{
+			minC = c2;
+		}
+		if(maxC < c1)
+		{
+			maxC = c1;
+		}
+		if(maxC < c2)
+		{
+			maxC = c2;
+		}
+		float minL[3] = {-a,-b,-minC};
+		float maxL[3] = {a,b,maxC};
+
+
+		Point E[4];
+		float minT = 1.1;
+		float maxT = -0.1;
+		StraightLine LE[3];
+		float vx[3] = {};
+
+		//使用minL切割.
+		bool inMinLine = false;
+		for(int i = 0; i < 4; i++)
+		{
+			E[i].x = i/3.0;
+			E[i].y = minL[0]*lineToClip.points[i].x+minL[1]*lineToClip.points[i].y+minL[2];
+			if(E[i].y > 0.0)
+			{
+				inMinLine = true;
+			}
+		}
+
+		if(!inMinLine)
+		{
+			return result;
+		}
+		
+		if(E[0].y < 0.0)
+		{
+			//得到E0到其他端点连成的线,例如E0-E1,E0-E2,E0-E3...
+			for(int i = 0; i < 3; i++)
+			{
+				LE[i].points[0] = E[0];
+				LE[i].points[1] = E[i];
+				vx[i] = -LE[i].c()/LE[i].a();
+				if(vx[i] > 0.0 && vx[i] < 1.0 && minT > vx[i])
+				{
+					minT = vx[i];
+				}
+			}
+		}
+
+		if(E[3].y < 0.0)
+		{
+			//得到E3到其他端点连成的线,例如E3-E2,E3-E1,E3-E0...
+			for(int i = 2; i >= 0; i--)
+			{
+				LE[i].points[0] = E[3];
+				LE[i].points[1] = E[i];
+				vx[i] = -LE[i].c()/LE[i].a();
+				if(vx[i] > 0.0 && vx[i] < 1.0 && maxT < vx[i])
+				{
+					maxT = vx[i];
+				}
+			}
+		}
+
+		//>> 使用maxL切割.
+		bool inMaxLine = false;
+		for(int i = 0; i < 4; i++)
+		{
+			E[i].x = i/3.0;
+			E[i].y = maxL[0]*lineToClip.points[i].x+maxL[1]*lineToClip.points[i].y+maxL[2];
+			if(E[i].y > 0.0)
+			{
+				inMaxLine = true;
+			}
+		}
+
+		if(!inMaxLine)
+		{
+			return result;
+		}
+
+		if(E[0].y < 0.0)
+		{
+			//得到E0到其他端点连成的线,例如E0-E1,E0-E2,E0-E3...
+			for(int i = 0; i < 3; i++)
+			{
+				LE[i].points[0] = E[0];
+				LE[i].points[1] = E[i];
+				vx[i] = -LE[i].c()/LE[i].a();
+				if(vx[i] > 0.0 && vx[i] < 1.0 && minT > vx[i])
+				{
+					minT = vx[i];
+				}
+			}
+		}
+
+		if(E[3].y < 0.0)
+		{
+			//得到E3到其他端点连成的线,例如E3-E2,E3-E1,E3-E0...
+			for(int i = 2; i >= 0; i--)
+			{
+				LE[i].points[0] = E[3];
+				LE[i].points[1] = E[i];
+				vx[i] = -LE[i].c()/LE[i].a();
+				if(vx[i] > 0.0 && vx[i] < 1.0 && maxT < vx[i])
+				{
+					maxT = vx[i];
+				}
+			}
+		}
+
+		if(minT > 0.0 && minT < 1.0 && maxT > 0.0 && maxT < 1.0)
+		{
+			//assert(minT < maxT);
+			if(minT > maxT)
+			{
+				result.push_back(lineToClip);
+			}
+			else
+			{
+				std::vector<CubicBezierLine> subCurve = split(minT,maxT);
+				if(subCurve.size() == 3)
+				{
+					result.push_back(subCurve[1]);
+				}
+				else
+				{
+					//
+				}
+			}
+			return result;
+		}
+		else if(minT > 0.0 && minT < 1.0)
+		{
+			std::vector<CubicBezierLine> subCurve = split(minT);
+			assert(subCurve.size() == 2);
+			result.push_back(subCurve[1]);
+			return result;
+		}
+		else if(maxT > 0.0 && maxT < 1.0)
+		{
+			std::vector<CubicBezierLine> subCurve = split(maxT);
+			assert(subCurve.size() == 2);
+			result.push_back(subCurve[0]);
+			return result;
+		}
+		else
+		{
+			result.push_back(lineToClip);
+			return result;
+		}
+		
+	}
+
+	std::vector<CubicBezierLine> split(float t1,float t2)
+	{
+		assert(t1 <= t2);
+		if(FloatEqual(t1,0.0))
+		{
+			return split(t2);
+		}
+		else if(FloatEqual(t2,1.0))
+		{
+			return split(t1);
+		}
+		else
+		{
+			std::vector<CubicBezierLine> result;
+			std::vector<CubicBezierLine> subCurve1 = split(t1);
+			assert(subCurve1.size() == 2);
+			result.push_back(subCurve1[0]);
+			t2 = (t2-t1)/(1.0-t1);
+			std::vector<CubicBezierLine> subCurve2 = 
+				subCurve1[1].split(t2);
+			assert(subCurve2.size() == 2);
+			result.push_back(subCurve2[0]);
+			result.push_back(subCurve2[1]);
+			return result;
+		}
 	}
 
 	std::vector<float> getInflections()
@@ -288,7 +600,7 @@ public:
 		return refineNearest(p,t,dist,precision/2.0);
 	}
 
-	UCubicBezierLine align(Point start, Point end)
+	CubicBezierLine align(Point start, Point end)
 	{
 		float angle = atan2(end.y-start.y,end.x-start.x);
 		float ca = cos(-angle);
@@ -310,7 +622,7 @@ public:
 			alignedPoints.push_back(Point(alignedX,alignedY));
 		}
 
-		return UCubicBezierLine(alignedPoints);
+		return CubicBezierLine(alignedPoints);
 	}
 	std::vector<float> findAllRoots()
 	{
@@ -451,15 +763,20 @@ public:
 		assert(index < points.size());
 		return points[index];
 	}
+
+	//originBeginT和originEndT记录了该条曲线的t的范围.
+	//假如不是0,1,则说明该曲线是被分割出来的一条子曲线.
+	float originBeginT;
+	float originEndT;
 };
 
 inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, const Line &bezier)
 {
 	std::vector<Point> result;
 
-	UCubicBezierLine origin = ((UCubicBezierLine &)bezier);
+	CubicBezierLine origin = ((CubicBezierLine &)bezier);
 
-	UCubicBezierLine aligned = 
+	CubicBezierLine aligned = 
 		origin.align(straight.point(0),straight.point(1));
 
 	std::vector<float> roots = aligned.findAllRoots();
@@ -513,6 +830,73 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 	const Line &lineA, const Line &lineB)
 {
 	std::vector<Point> result;
+
+	CubicBezierLine &lA = (CubicBezierLine &)lineA;
+	CubicBezierLine &lB = (CubicBezierLine &)lineB;
+
+	std::vector<CubicBezierLine> groupA;
+	std::vector<CubicBezierLine> groupB;
+	groupA.push_back(lA);
+	groupB.push_back(lB);
+	int counter = 0;
+	while(!groupA.empty() && !groupB.empty())
+	{
+		CubicBezierLine a = groupA.back();
+		groupA.pop_back();
+		CubicBezierLine b = groupB.back();
+		groupB.pop_back();
+
+		//假如a,b足够小,则认为找到了交点.
+
+		if(a.originTRange() < 0.000001)
+		{
+			float t = (a.originEndT+a.originBeginT)/2.0;
+			result.push_back(Point(a.getX(t),a.getY(t)));
+		}
+		else if(b.originTRange() < 0.000001)
+		{
+			float t = (b.originEndT+b.originBeginT)/2.0;
+			result.push_back(Point(b.getX(t),b.getY(t)));
+		}
+		else
+		{
+			counter++;
+			if(counter%2 == 0)
+			{
+				std::vector<CubicBezierLine> sub = a.clipByFatLine(b);
+				if(sub.size() == 1)
+				{
+					sub = b.split(0.5);
+				}
+
+				for(int i = 0; i < sub.size(); i++)
+				{
+					groupA.push_back(a);
+					groupB.push_back(sub[i]);
+				}
+			}
+			else
+			{
+				std::vector<CubicBezierLine> sub = b.clipByFatLine(a);
+				if(sub.size() == 1)
+				{
+					sub = a.split(0.5);
+				}
+				for(int i = 0; i < sub.size(); i++)
+				{
+					groupA.push_back(sub[i]);
+					groupB.push_back(b);
+				}
+			}
+
+			if(counter > 10000)
+			{
+				assert(false);
+				break;
+			}
+		}
+	}
+
 	return result;
 }
 
