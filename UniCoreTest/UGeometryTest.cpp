@@ -5,6 +5,7 @@
 
 using namespace uni;
 
+//求直线交点可用.
 TEST(UGeometryTest,LineLineIntersection_Works)
 {
 	StraightLine lineA(15,10,54,29);
@@ -16,6 +17,18 @@ TEST(UGeometryTest,LineLineIntersection_Works)
 	ASSERT_EQ(1,result.size());
 	ASSERT_FLOAT_EQ(35.812351,result[0].x);
 	ASSERT_FLOAT_EQ(20.139351,result[0].y);
+}
+
+//平行的直线没有交点.
+TEST(UGeometryTest,IntersectParallelLine_NoIntersection)
+{
+	StraightLine lineA(15,10,54,29);
+	StraightLine lineB(30,20,69,39);
+
+	auto result = Intersect(lineA,lineB);
+
+	//result(36.0,20.1)
+	ASSERT_EQ(0,result.size());
 }
 
 int round(float a)
@@ -31,10 +44,10 @@ TEST(UGeometryTest,LineBezierIntersection_Works)
 	auto result = Intersect(lineA,lineB);
 
 	ASSERT_EQ(3,result.size());
-	ASSERT_EQ(134,round(result[0].x));
-	ASSERT_EQ(339,round(result[0].y));
-	ASSERT_EQ(346,round(result[1].x));
-	ASSERT_EQ(364,round(result[1].y));
+	ASSERT_EQ(346,round(result[0].x));
+	ASSERT_EQ(364,round(result[0].y));
+	ASSERT_EQ(134,round(result[1].x));
+	ASSERT_EQ(339,round(result[1].y));
 	ASSERT_EQ(217,round(result[2].x));
 	ASSERT_EQ(349,round(result[2].y));
 
@@ -50,6 +63,34 @@ TEST(UGeometryTest,StraightLineProjection_Works)
 	ASSERT_EQ(1,point.y);
 }
 
+//投射到水平线段.
+TEST(UGeometryTest,StraightLineProjection_Works1)
+{
+	StraightLine line(2,2,8,2);
+	Point p(0,2);
+	Point point = line.getNearestPoint(p);
+	EXPECT_EQ(2,point.x);
+	EXPECT_EQ(2,point.y);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+//投射到垂直线段.
+TEST(UGeometryTest,StraightLineProjection_Works2)
+{
+	StraightLine line(2,2,2,-8);
+	Point p(0,0);
+	Point point = line.getProjectionPoint(p);
+	EXPECT_EQ(2,point.x);
+	EXPECT_EQ(0,point.y);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
 TEST(UGeometryTest,StraightLineNearestPoint_Works)
 {
 	StraightLine line(2,2,5,5);
@@ -59,7 +100,7 @@ TEST(UGeometryTest,StraightLineNearestPoint_Works)
 	ASSERT_EQ(2,point.y);
 }
 
-TEST(UGeometryTest,StraightLineProjection_Works2)
+TEST(UGeometryTest,StraightLineProjection_Works3)
 {
 	StraightLine line(71.68,738.22,141.05,738.55);
 	Point p(92.46,739.40);
@@ -68,7 +109,7 @@ TEST(UGeometryTest,StraightLineProjection_Works2)
 	ASSERT_LT(point.x,141.05);
 }
 
-TEST(UGeometryTest,StraightLineProjection_Works3)
+TEST(UGeometryTest,StraightLineProjection_Works4)
 {
 	StraightLine line(-4.78,-2.10,-7.34,1.68);
 	Point p(-5.98,-2.43);
@@ -116,6 +157,20 @@ TEST(UGeometryTest,Bezier_Intersection_Works)
 	EXPECT_EQ(3,result.size());
 	float x1 = a.getX(0.895);
 	float y1 = a.getY(0.895);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+//直线的Bounding Box.
+TEST(UGeometryTest,StraightLine_BoundingBox_Ok)
+{
+	StraightLine line(2,-2,-5,0);
+	EXPECT_EQ(-5,line.boundingBox().l);
+	EXPECT_EQ(-2,line.boundingBox().t);
+	EXPECT_EQ(2,line.boundingBox().r);
+	EXPECT_EQ(0,line.boundingBox().b);
 	if(HasNonfatalFailure())
 	{
 		FAIL();

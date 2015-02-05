@@ -1,5 +1,5 @@
-/*!	\file UGeometry.h
-    \brief °üº¬ÁËÏß,ÇúÏß,¼¸ºÎÍ¼ĞÎµÈµÄ´¦ÀíÂß¼­.
+ï»¿/*!	\file UGeometry.h
+    \brief åŒ…å«äº†çº¿,æ›²çº¿,å‡ ä½•å›¾å½¢ç­‰çš„å¤„ç†é€»è¾‘.
 	
 	\author uni
 	\date 2014-10-29
@@ -16,25 +16,11 @@
 namespace uni
 {
 
-inline bool FloatEqual(float x,float y)
-{
-	return (fabs(x-y) <= FLT_EPSILON * std::max(1.0f, std::max(fabs(x), fabs(y))) );
+bool FloatEqual(float x,float y);
+
+template <typename T> int sgn(T val) {
+	return (T(0) < val) - (val < T(0));
 }
-
-
-class Rect
-{
-public:
-	Rect(float l1,float t1,float r1,float b1)
-		:l(l1),t(t1),r(r1),b(b1)
-	{
-
-	}
-	float l;
-	float t;
-	float r;
-	float b;
-};
 
 class Point
 {
@@ -60,14 +46,54 @@ inline Point Lerp(Point a,Point b,float t)
 	return Point(x,y);
 }
 
+class Rect
+{
+public:
+	Rect()
+		:l(0),t(0),r(0),b(0)
+	{
 
-//! ¼ÆËãµãaºÍµãb¼äµÄ,ÓÃÓÚ±È½ÏµÄ¾àÀë.
+	}
+	Rect(float l1,float t1,float r1,float b1)
+		:l(l1),t(t1),r(r1),b(b1)
+	{
+
+	}
+	bool contains(Point p)
+	{
+		if(p.x < l)
+		{
+			return false;
+		}
+		if(p.x > r)
+		{
+			return false;
+		}
+		if(p.y < t)
+		{
+			return false;
+		}
+		if(p.y > b)
+		{
+			return false;
+		}
+		return true;
+	}
+	float l;
+	float t;
+	float r;
+	float b;
+};
+
+
+
+//! è®¡ç®—ç‚¹aå’Œç‚¹bé—´çš„,ç”¨äºæ¯”è¾ƒçš„è·ç¦».
 /*!
-	²»ÊÇÊµ¼Ê¾àÀë,²»»á¿ªÆ½·½¸ù.
+	ä¸æ˜¯å®é™…è·ç¦»,ä¸ä¼šå¼€å¹³æ–¹æ ¹.
 */
 float RawDistance(Point a, Point b);
 
-//! ÏßÌõ
+//! çº¿æ¡
 class Line
 {
 public:
@@ -80,11 +106,13 @@ public:
 	virtual Type type() const = 0;
 	virtual int pointCount() const = 0;
 	virtual Point point(int index) const = 0;
+	virtual Point midpoint() const = 0;
 	virtual Point getNearestPoint(Point p) = 0;
+	virtual Rect boundingBox() const = 0;
 	std::vector<Point> points;
 };
 
-//! Ö±Ïß¶Î
+//! ç›´çº¿æ®µ
 class StraightLine : public Line
 {
 public:
@@ -103,9 +131,9 @@ public:
 		points.push_back(a1);
 		points.push_back(a2);
 	}
-	//! »ñµÃµãpÔÚ¸ÃÏß¶ÎËùÊôÖ±ÏßÉÏµÄÍ¶Ó°µã.
+	//! è·å¾—ç‚¹påœ¨è¯¥çº¿æ®µæ‰€å±ç›´çº¿ä¸Šçš„æŠ•å½±ç‚¹.
 	/*!
-		Í¶Ó°µã¿ÉÄÜÔÚÏß¶ÎÍâ.
+		æŠ•å½±ç‚¹å¯èƒ½åœ¨çº¿æ®µå¤–.
 	*/
 	Point getProjectionPoint(Point p)
 	{
@@ -113,6 +141,20 @@ public:
 		Point pB = points[1];
 		double deltaX = pB.x-pA.x;
 		double deltaY = pB.y-pA.y;
+
+		if(FloatEqual(deltaY,0))
+		{
+			double x1 = p.x;
+			double y1 = (pA.y + pB.y)/2.0;
+			return Point(x1,y1);
+		}
+
+		if(FloatEqual(deltaX,0))
+		{
+			double x1 = (pA.x+pB.x)/2.0;
+			double y1 = p.y;
+			return Point(x1,y1);
+		}
 
 		double k = deltaY/deltaX;
 		double k1 = -1/k;
@@ -123,11 +165,11 @@ public:
 		return Point(x1,y1);
 	}
 
-	//! »ñµÃ¸ÃÏß¶ÎÉÏµÄ,Àëµãp×î½üµÄµã.
+	//! è·å¾—è¯¥çº¿æ®µä¸Šçš„,ç¦»ç‚¹pæœ€è¿‘çš„ç‚¹.
 	virtual Point getNearestPoint(Point p)
 	{
 		Point projectionPoint = getProjectionPoint(p);
-		//Èç¹ûprojectionPointÔÚÏß¶ÎÍâ,Ôò·µ»ØÏß¶ÎµÄ¶Ëµã.
+		//å¦‚æœprojectionPointåœ¨çº¿æ®µå¤–,åˆ™è¿”å›çº¿æ®µçš„ç«¯ç‚¹.
 
 		float minX = points[0].x;
 		float maxX = points[0].x;
@@ -156,7 +198,7 @@ public:
 		if(projectionPoint.x < minX || projectionPoint.x > maxX
 			|| projectionPoint.y < minY || projectionPoint.y > maxY)
 		{
-			//Í¶ÉäµãÔÚÏß¶ÎÍâ,Ê¹ÓÃÏß¶Î¶Ëµã×÷Îª×î½üµã.
+			//æŠ•å°„ç‚¹åœ¨çº¿æ®µå¤–,ä½¿ç”¨çº¿æ®µç«¯ç‚¹ä½œä¸ºæœ€è¿‘ç‚¹.
 			float distanceA = RawDistance(projectionPoint,points[0]);
 			float distanceB = RawDistance(projectionPoint,points[1]);
 
@@ -173,6 +215,11 @@ public:
 		return projectionPoint;
 	}
 
+	virtual Point midpoint() const
+	{
+		return Point((points[0].x+points[1].x)/2.0,(points[0].y+points[1].y)/2.0);
+	}
+
 	virtual Type type() const {return Straight;}
 	virtual int pointCount() const {return points.size();}
 	virtual Point point(int index) const
@@ -182,7 +229,25 @@ public:
 		return points[index];
 	}
 
-	//¼ÙÈçÊ¹ÓÃAx + By + C = 0±íÊ¾¸ÃÖ±Ïß,µÃµ½¶ÔÓ¦µÄa,b,cÖµ.
+	virtual Rect boundingBox() const
+	{
+		Rect result;
+		result.l = points[0].x;
+		result.r = points[1].x;
+		result.t = points[0].y;
+		result.b = points[1].y;
+		if(result.l > result.r)
+		{
+			std::swap(result.l,result.r);
+		}
+		if(result.t > result.b)
+		{
+			std::swap(result.t,result.b);
+		}
+		return result;
+	}
+
+	//å‡å¦‚ä½¿ç”¨Ax + By + C = 0è¡¨ç¤ºè¯¥ç›´çº¿,å¾—åˆ°å¯¹åº”çš„a,b,cå€¼.
 	float a()
 	{
 		return points[0].y - points[1].y;
@@ -205,7 +270,7 @@ static float binomials[][5] =
 	{1,3,3,1,0},
 };
 
-//! Èı´Î±´Èû¶ûÇúÏß
+//! ä¸‰æ¬¡è´å¡å°”æ›²çº¿
 class CubicBezierLine : public Line
 {
 public:
@@ -243,9 +308,9 @@ public:
 		points.assign(&points1[0],&points1[4]);
 	}
 
-	//! Ê¹ÓÃde Casteljau's algorithm·Ö¸î3´Î±´Èû¶ûÇúÏß.
+	//! ä½¿ç”¨de Casteljau's algorithmåˆ†å‰²3æ¬¡è´å¡å°”æ›²çº¿.
 	/*!
-		tÌ«Ğ¡»á·Ö¸îÊ§°Ü.
+		tå¤ªå°ä¼šåˆ†å‰²å¤±è´¥.
 	*/
 	std::vector<CubicBezierLine> split(float t)
 	{
@@ -295,28 +360,28 @@ public:
 		return result;
 	}
 
-	//! »ñµÃoriginTµÄ·¶Î§.
+	//! è·å¾—originTçš„èŒƒå›´.
 	float originTRange() 
 	{
 		assert(originEndT >= originBeginT);
 		return originEndT-originBeginT;
 	}
 
-	//! Ê¹ÓÃfat lineÇĞ¸îline,¶ªÆúfat lineÖ®ÍâµÄ²¿·Ö.
+	//! ä½¿ç”¨fat lineåˆ‡å‰²line,ä¸¢å¼ƒfat lineä¹‹å¤–çš„éƒ¨åˆ†.
 	std::vector<CubicBezierLine> clipByFatLine(CubicBezierLine lineToClip)
 	{
 		std::vector<CubicBezierLine> result;
 
-		//LÎª¹ıP0ºÍP3µÄÏß¶Î.
+		//Lä¸ºè¿‡P0å’ŒP3çš„çº¿æ®µ.
 		StraightLine L(points[0],points[3]);
-		//ÕÒµ½¹ı¿ØÖÆµãÇÒºÍLÆ½ĞĞµÄÏß.
+		//æ‰¾åˆ°è¿‡æ§åˆ¶ç‚¹ä¸”å’ŒLå¹³è¡Œçš„çº¿.
 
 		float a = L.a();
 		float b = L.b();
 		float c = L.c();
 		float c1 = -a*points[1].x-b*points[1].y;
 		float c2 = -a*points[2].x-b*points[2].y;
-		//ÕÒµ½×î´óºÍ×îĞ¡µÄc.
+		//æ‰¾åˆ°æœ€å¤§å’Œæœ€å°çš„c.
 		float minC = c;
 		float maxC = c;
 		if(minC > c1)
@@ -345,7 +410,7 @@ public:
 		StraightLine LE[3];
 		float vx[3] = {};
 
-		//Ê¹ÓÃminLÇĞ¸î.
+		//ä½¿ç”¨minLåˆ‡å‰².
 		bool inMinLine = false;
 		for(int i = 0; i < 4; i++)
 		{
@@ -364,7 +429,7 @@ public:
 		
 		if(E[0].y < 0.0)
 		{
-			//µÃµ½E0µ½ÆäËû¶ËµãÁ¬³ÉµÄÏß,ÀıÈçE0-E1,E0-E2,E0-E3...
+			//å¾—åˆ°E0åˆ°å…¶ä»–ç«¯ç‚¹è¿æˆçš„çº¿,ä¾‹å¦‚E0-E1,E0-E2,E0-E3...
 			for(int i = 0; i < 3; i++)
 			{
 				LE[i].points[0] = E[0];
@@ -379,7 +444,7 @@ public:
 
 		if(E[3].y < 0.0)
 		{
-			//µÃµ½E3µ½ÆäËû¶ËµãÁ¬³ÉµÄÏß,ÀıÈçE3-E2,E3-E1,E3-E0...
+			//å¾—åˆ°E3åˆ°å…¶ä»–ç«¯ç‚¹è¿æˆçš„çº¿,ä¾‹å¦‚E3-E2,E3-E1,E3-E0...
 			for(int i = 2; i >= 0; i--)
 			{
 				LE[i].points[0] = E[3];
@@ -392,7 +457,7 @@ public:
 			}
 		}
 
-		//>> Ê¹ÓÃmaxLÇĞ¸î.
+		//>> ä½¿ç”¨maxLåˆ‡å‰².
 		bool inMaxLine = false;
 		for(int i = 0; i < 4; i++)
 		{
@@ -411,7 +476,7 @@ public:
 
 		if(E[0].y < 0.0)
 		{
-			//µÃµ½E0µ½ÆäËû¶ËµãÁ¬³ÉµÄÏß,ÀıÈçE0-E1,E0-E2,E0-E3...
+			//å¾—åˆ°E0åˆ°å…¶ä»–ç«¯ç‚¹è¿æˆçš„çº¿,ä¾‹å¦‚E0-E1,E0-E2,E0-E3...
 			for(int i = 0; i < 3; i++)
 			{
 				LE[i].points[0] = E[0];
@@ -426,7 +491,7 @@ public:
 
 		if(E[3].y < 0.0)
 		{
-			//µÃµ½E3µ½ÆäËû¶ËµãÁ¬³ÉµÄÏß,ÀıÈçE3-E2,E3-E1,E3-E0...
+			//å¾—åˆ°E3åˆ°å…¶ä»–ç«¯ç‚¹è¿æˆçš„çº¿,ä¾‹å¦‚E3-E2,E3-E1,E3-E0...
 			for(int i = 2; i >= 0; i--)
 			{
 				LE[i].points[0] = E[3];
@@ -509,7 +574,7 @@ public:
 		}
 	}
 
-	std::vector<float> getInflections()
+	std::vector<float> getInflections() const
 	{
 		std::vector<float> result;
 
@@ -519,12 +584,14 @@ public:
 
 		std::vector<float> roots;
 
+		//æ±‚1é˜¶å’Œ2é˜¶å¯¼æ•°çš„æ ¹.
+
 		//findAllRoots()
 
 		return result;
 	}
 
-	Rect boundingBox()
+	virtual Rect boundingBox() const
 	{
 		std::vector<float> inflections = getInflections();
 		bool inited = false;
@@ -572,6 +639,11 @@ public:
 		minT = refineNearest(p,minT,minDist,1.0/1.01*lutResolusion);
 
 		return Point(getX(minT),getY(minT));
+	}
+
+	virtual Point midpoint() const
+	{
+		return Point(getX(0.5),getY(0.5));
 	}
 
 	float refineNearest(Point p,float t,float dist,float precision)
@@ -624,75 +696,123 @@ public:
 
 		return CubicBezierLine(alignedPoints);
 	}
-	std::vector<float> findAllRoots()
+
+	std::vector<float> root(float p0,float p1,float p2,float p3,int derivative)
 	{
-		std::vector<float> result;
-
-		for(float t = 0.0; t <= 1.0; t += 0.01)
+		if(derivative == 0)
 		{
-			
-			float root = findRoot(t,0);
-			if(root < 0.0 || root > 1.0)
+
+			float a = -p0 + 3*p1 + -3*p2 + p3;
+			float b = 3*p0 - 6*p1 + 3*p2;
+			float c = -3*p0 + 3*p1;
+			float d = p0;
+
+			std::vector<float> roots = cubicRoot(a,b,c,d);
+			return roots;
+		}
+		else if(derivative == 1)
+		{
+			//3â‹…(Bâˆ’A), 3â‹…(Câˆ’B), 3â‹…(Dâˆ’C)
+			float pp0 = 3*(p1-p0);
+			float pp1 = 3*(p2-p1);
+			float pp2 = 3*(p3-p2);
+			float a = pp0-2*pp1+pp2;
+			float b = 2*pp1-2*pp0;
+			float c = pp0;
+			std::vector<float> roots = quadraticRoot(a,b,c);
+			return std::vector<float>();
+		}
+		else if(derivative == 2)
+		{
+			float pp0 = 3*(p1-p0);
+			float pp1 = 3*(p2-p1);
+			float pp2 = 3*(p3-p2);
+			//{2â‹…(Bâ€²âˆ’Aâ€²), 2â‹…(Câ€²âˆ’Bâ€²)}
+			float ppp0 = 2*(pp1-pp0);
+			float ppp1 = 2*(pp2-pp1);
+
+			float a = ppp1-ppp0;
+			float b = ppp0;
+
+			std::vector<float> roots = linearRoot(a,b);
+			return roots;
+		}
+		else
+		{
+			assert(false);
+		}
+
+	}
+
+	//! æ±‚ä¸€å…ƒä¸€æ¬¡æ–¹ç¨‹.
+	std::vector<float> linearRoot(float a,float b)
+	{
+		return std::vector<float>();
+	}
+
+	//! æ±‚ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹.
+	std::vector<float> quadraticRoot(float a,float b,float c)
+	{
+		return std::vector<float>();
+	}
+
+	//! æ±‚ä¸€å…ƒä¸‰æ¬¡æ–¹ç¨‹.å‚è€ƒwikipediaä¸­æ±‚æ ¹å…¬å¼æ³•å’Œä¸‰è§’å‡½æ•°è§£.
+	std::vector<float> cubicRoot(float a,float b,float c,float d)
+	{
+		const float PI = 3.1415926;
+		float A = b/a;
+		float B = c/a;
+		float C = d/a;
+
+		float Q, R, D, S, T, Im;
+
+		Q = (3*B - pow(A, 2))/9.0;
+		R = (9*A*B - 27*C - 2*pow(A, 3))/54.0;
+		D = pow(Q, 3) + pow(R, 2);    // polynomial discriminant
+
+		float t[3] = {};
+
+		if (D >= 0)                                 // complex or duplicate roots
+		{
+			S = sgn(R + sqrt(D))*pow(abs(R + sqrt(D)),(1/3));
+			T = sgn(R - sqrt(D))*pow(abs(R - sqrt(D)),(1/3));
+
+			t[0] = -A/3 + (S + T);                    // real root
+			t[1] = -A/3 - (S + T)/2;                  // real part of complex root
+			t[2] = -A/3 - (S + T)/2;                  // real part of complex root
+			Im = abs(sqrt(3.0)*(S - T)/2);    // complex part of root pair   
+
+			/*discard complex roots*/
+			if (Im!=0)
 			{
-				continue;
-			}
-			if(abs(root-t) <= 0.000001) 
-			{
-				continue;
+				t[1]=-1;
+				t[2]=-1;
 			}
 
-			bool found = false;
-			for(int i = 0; i < result.size(); i++)
-			{
-				if(abs(result[i]-root) <= 0.00001)
-				{
-					found = true;
-					break;
-				}
-			}
-			if(found)
-			{
-				continue;
-			}
+		}
+		else                                          // distinct real roots
+		{
+			float th = acos(R/sqrt(-pow(Q, 3)));
 
-			result.push_back(root);
+			t[0] = 2*sqrt(-Q)*cos(th/3) - A/3;
+			t[1] = 2*sqrt(-Q)*cos((th + 2*PI)/3) - A/3;
+			t[2] = 2*sqrt(-Q)*cos((th + 4*PI)/3) - A/3;
+			Im = 0.0;
+		}
+
+		/*discard out of spec roots*/
+		std::vector<float> result;
+		for (int i=0;i<3;i++) 
+		{
+			if (t[i]>0 && t[i]<1.0) 
+			{
+				result.push_back(t[i]);
+			}
 		}
 
 		return result;
 	}
-	float findRoot(float t,int depth)
-	{
-		std::vector<float> v;
-		for(int i = 0; i < points.size(); i++)
-		{
-			v.push_back(points[i].y);
-		}
-		float f = getDerivative(0,t,v);
-		float df = getDerivative(1,t,v);
-		float t2 = t-(f/df);
 
-		if(df == 0)
-		{
-			t2 = t - f;
-		}
-		
-		if(depth > 12)
-		{
-			if(abs(t-t2) < 0.000001)
-			{
-				return t2;
-			}
-
-			//assert(false);
-		}
-
-		if(abs(t-t2) > 0.000001)
-		{
-			return findRoot(t2,depth+1);
-		}
-
-		return t2;
-	}
 	float getDerivative(int derivative, float t, const std::vector<float> v)
 	{
 		int n = v.size()-1;
@@ -701,7 +821,7 @@ public:
 			return 0;
 		}
 
-		//Áã½×µ¼Êı,¾ÍÊÇ×ÔÉí.
+		//é›¶é˜¶å¯¼æ•°,å°±æ˜¯è‡ªèº«.
 		if(derivative == 0)
 		{
 			float value = 0;
@@ -723,7 +843,7 @@ public:
 			return getDerivative(derivative - 1, t, newV);
 		}
 	}
-	float getX(float t)
+	float getX(float t) const
 	{
 		const int n = 3;
 		float result = 0;
@@ -739,7 +859,7 @@ public:
 
 		return result;
 	}
-	float getY(float t)
+	float getY(float t) const
 	{
 		const int n = 3;
 		float result = 0;
@@ -764,8 +884,8 @@ public:
 		return points[index];
 	}
 
-	//originBeginTºÍoriginEndT¼ÇÂ¼ÁË¸ÃÌõÇúÏßµÄtµÄ·¶Î§.
-	//¼ÙÈç²»ÊÇ0,1,ÔòËµÃ÷¸ÃÇúÏßÊÇ±»·Ö¸î³öÀ´µÄÒ»Ìõ×ÓÇúÏß.
+	//originBeginTå’ŒoriginEndTè®°å½•äº†è¯¥æ¡æ›²çº¿çš„tçš„èŒƒå›´.
+	//å‡å¦‚ä¸æ˜¯0,1,åˆ™è¯´æ˜è¯¥æ›²çº¿æ˜¯è¢«åˆ†å‰²å‡ºæ¥çš„ä¸€æ¡å­æ›²çº¿.
 	float originBeginT;
 	float originEndT;
 };
@@ -779,11 +899,20 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 	CubicBezierLine aligned = 
 		origin.align(straight.point(0),straight.point(1));
 
-	std::vector<float> roots = aligned.findAllRoots();
+	float p0 = aligned.points[0].y;
+	float p1 = aligned.points[1].y;
+	float p2 = aligned.points[2].y;
+	float p3 = aligned.points[3].y;
+
+	std::vector<float> roots = aligned.root(p0,p1,p2,p3,0);
 
 	for(int i = 0; i < roots.size(); i++)
 	{
-		result.push_back(Point(origin.getX(roots[i]),origin.getY(roots[i])));
+		Point p(origin.getX(roots[i]),origin.getY(roots[i]));
+		if(straight.boundingBox().contains(p))
+		{
+			result.push_back(p);
+		}
 	}
 
 	return result;
@@ -808,7 +937,7 @@ inline std::vector<Point> IntersectStraightLine(const Line &lineA, const Line &l
 	float C2 = A2*lineB.point(0).x+B2*lineB.point(0).y;
 
 	float det = A1*B2 - A2*B1;
-	if(det == 0)
+	if(FloatEqual(det,0))
 	{
 
 	}
@@ -816,11 +945,14 @@ inline std::vector<Point> IntersectStraightLine(const Line &lineA, const Line &l
 	{
 		float x = (B2*C1 - B1*C2)/det;
 		float y = (A1*C2 - A2*C1)/det;
+		Point p(x,y);
 
-		//ÅĞ¶Ï½»µãÊÇ·ñÔÚÁ½ÌõÏß¶ÎÉÏ.
-
-
-		result.push_back(Point(x,y));
+		//åˆ¤æ–­äº¤ç‚¹æ˜¯å¦åœ¨ä¸¤æ¡çº¿æ®µä¸Š.
+		if(lineA.boundingBox().contains(p)
+			&& lineB.boundingBox().contains(p))
+		{
+			result.push_back(Point(x,y));
+		}
 	}
 
 	return result;
@@ -846,7 +978,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 		CubicBezierLine b = groupB.back();
 		groupB.pop_back();
 
-		//¼ÙÈça,b×ã¹»Ğ¡,ÔòÈÏÎªÕÒµ½ÁË½»µã.
+		//å‡å¦‚a,bè¶³å¤Ÿå°,åˆ™è®¤ä¸ºæ‰¾åˆ°äº†äº¤ç‚¹.
 
 		if(a.originTRange() < 0.000001)
 		{
@@ -900,7 +1032,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 	return result;
 }
 
-//! ¼ÆËã½»µã.
+//! è®¡ç®—äº¤ç‚¹.
 inline std::vector<Point> Intersect(const Line &lineA, const Line &lineB)
 {
 	std::vector<Point> result;
