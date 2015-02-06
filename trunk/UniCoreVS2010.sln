@@ -29,6 +29,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UniCoreTempTest", "UniCoreT
 		{DB29D200-F23C-47D5-A1D1-B1B645F5F138} = {DB29D200-F23C-47D5-A1D1-B1B645F5F138}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UTestPainter", "UTestPainter\UTestPainter.vcxproj", "{CCC0641B-E598-482B-AC78-D23F44790FEB}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = UniCoreVS2010.vsmdi
@@ -138,6 +140,18 @@ Global
 		{42D01CC3-6E12-442B-811E-CCD832DC5F15}.MTd|Win32.Build.0 = Release|Win32
 		{42D01CC3-6E12-442B-811E-CCD832DC5F15}.Release|Win32.ActiveCfg = Release|Win32
 		{42D01CC3-6E12-442B-811E-CCD832DC5F15}.Release|Win32.Build.0 = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.Debug|Win32.Build.0 = Debug|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MD|Win32.ActiveCfg = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MD|Win32.Build.0 = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MDd|Win32.ActiveCfg = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MDd|Win32.Build.0 = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MT|Win32.ActiveCfg = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MT|Win32.Build.0 = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MTd|Win32.ActiveCfg = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.MTd|Win32.Build.0 = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.Release|Win32.ActiveCfg = Release|Win32
+		{CCC0641B-E598-482B-AC78-D23F44790FEB}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
