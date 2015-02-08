@@ -54,6 +54,7 @@ TEST(UGeometryTest,LineBezierIntersection_Works)
 	//result t(0.109,0.484,0.896).
 }
 
+
 TEST(UGeometryTest,StraightLineProjection_Works)
 {
 	StraightLine line(2,2,5,5);
@@ -157,6 +158,28 @@ TEST(UGeometryTest,Bezier_Intersection_Works)
 	EXPECT_EQ(3,result.size());
 	float x1 = a.getX(0.895);
 	float y1 = a.getY(0.895);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+
+//tightBoundingRectø…”√.
+TEST(UGeometryTest,tightBoundingBox_Works)
+{
+	CubicBezierLine a(10,100,90,30,40,140,220,240);
+	XRect rect = a.tightBoundingBox();
+
+	EXPECT_GT(rect.points[0].x,0);
+	EXPECT_GT(rect.points[0].y,0);
+	EXPECT_GT(rect.points[1].x,0);
+	EXPECT_GT(rect.points[1].y,0);
+	EXPECT_GT(rect.points[2].x,0);
+	EXPECT_GT(rect.points[2].y,0);
+	EXPECT_GT(rect.points[3].x,0);
+	EXPECT_GT(rect.points[3].y,0);
+
 	if(HasNonfatalFailure())
 	{
 		FAIL();
