@@ -170,7 +170,7 @@ void CUTestPainterDlg::OnPaint()
 		for(int i = 0; i < clines.size(); i++)
 		{
 			dc.MoveTo(clines[i].getX(0.0),clines[i].getY(0.0));
-			for(float t = 0.0; t < 1.0; t+= 0.05)
+			for(float t = 0.0; t <= 1.0; t+= 0.05)
 			{
 				dc.LineTo(clines[i].getX(t),clines[i].getY(t));
 			}
@@ -214,6 +214,6 @@ void CUTestPainterDlg::waitNextFrame()
 	_itow_s(m_flame,buf,10);
 	SetWindowText(buf);
 	Invalidate(TRUE);
-	Sleep(5000);
+	Sleep(1000);
 }
 

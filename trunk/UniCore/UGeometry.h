@@ -705,7 +705,7 @@ public:
 		const float PI = 3.1415926;
 		float ox = points[0].x;
 		float oy = points[0].y;
-		float angle = atan2(points[3].y - points[0].y, points[3].x - points[0].x) + PI;
+		float angle = atan2(points[3].y - points[0].y, points[3].x - points[0].x);
 		float ca = cos(angle);
 		float sa = sin(angle);
 		float nx,ny;
@@ -1136,12 +1136,12 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 		//假如a,b足够小,则认为找到了交点.
 
-		if(a.originTRange() < 0.001)
+		if(a.originTRange() < 0.00001)
 		{
 			float t = (a.originEndT+a.originBeginT)/2.0;
 			result.push_back(Point(a.getX(t),a.getY(t)));
 		}
-		else if(b.originTRange() < 0.001)
+		else if(b.originTRange() < 0.00001)
 		{
 			float t = (b.originEndT+b.originBeginT)/2.0;
 			result.push_back(Point(b.getX(t),b.getY(t)));
@@ -1166,7 +1166,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 				//假如切割得不够大,继续用boundingRect切割.
 				if(sub.size() == 1
 					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.55)
+					&& sub[0].originTRange()/a.originTRange() > 0.0)
 				{
 					//继续切割.
 					a = sub[0];
@@ -1194,7 +1194,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.55)
+					&& sub[0].originTRange()/a.originTRange() > 0.0)
 				{
 					a = sub[0];
 					StraightLine clip1(bb.points[1],bb.points[2]);
@@ -1220,7 +1220,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.25)
+					&& sub[0].originTRange()/a.originTRange() > 0.0)
 				{
 					a = sub[0];
 					sub = a.split(0.5);
@@ -1256,7 +1256,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.55)
+					&& sub[0].originTRange()/b.originTRange() > 0.0)
 				{
 					//继续切割.
 					b = sub[0];
@@ -1284,7 +1284,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.55)
+					&& sub[0].originTRange()/b.originTRange() > 0.0)
 				{
 					b = sub[0];
 					StraightLine clip1(bb.points[1],bb.points[2]);
@@ -1310,7 +1310,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.25)
+					&& sub[0].originTRange()/b.originTRange() > 0.0                                                                                                                                                                                           )
 				{
 					b = sub[0];
 					sub = b.split(0.5);
