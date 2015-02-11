@@ -164,6 +164,26 @@ TEST(UGeometryTest,Bezier_Intersection_Works)
 	}
 }
 
+//贝塞尔曲线相交,性能测试.
+TEST(UGeometryTest,Bezier_Intersection_Perf)
+{
+	CubicBezierLine a(10,100,90,30,40,140,220,240);
+	CubicBezierLine b(5,150,180,20,80,280,210,190);
+	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
+	for(int i = 0; i < 100; i++)
+	{
+		IntersectBezierAndBezierLine(a,b);
+	}
+	EXPECT_EQ(3,result.size());
+	float x1 = a.getX(0.895);
+	float y1 = a.getY(0.895);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+
 
 //tightBoundingRect可用.
 TEST(UGeometryTest,tightBoundingBox_Works)
