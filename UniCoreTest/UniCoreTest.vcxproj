@@ -54,6 +54,7 @@
     <PostBuildEventUseInBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</PostBuildEventUseInBuild>
     <CustomBuildBeforeTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     </CustomBuildBeforeTargets>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\gtest;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -119,7 +120,6 @@ $(TargetPath)
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\gtest\src\gmock-all.cc" />
     <ClCompile Include="..\gtest\src\gtest-all.cc" />
     <ClCompile Include="IntegrationTest.cpp" />
     <ClCompile Include="stdafx.cpp" />

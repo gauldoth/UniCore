@@ -12,6 +12,7 @@
 #include <cassert>
 #include <algorithm>
 #include <cfloat>
+#include <utility>
 
 namespace uni
 {
@@ -119,6 +120,15 @@ public:
 		CubicBezier,
 	};
 	Line() {}
+	Line(const Line &line)
+	{
+		points.resize(4);
+		for(int i = 0; i < line.points.size(); i++)
+		{
+			points[i] = line.points[i];
+		}
+		//points.assign(line.points.begin(),line.points.end());
+	}
 	virtual Type type() const = 0;
 	virtual int pointCount() const = 0;
 	virtual Point point(int index) const = 0;
@@ -314,14 +324,22 @@ public:
 		:originBeginT(0)
 		,originEndT(1)
 	{
-		points = points1;
+		points.resize(4);
+		for(int i = 0; i < points1.size(); i++)
+		{
+			points[i] = points1[i];
+		}
 	}
 
 	CubicBezierLine(Point points1[4])
 		:originBeginT(0)
 		,originEndT(1)
 	{
-		points.assign(&points1[0],&points1[4]);
+		for(int i = 0; i < 4; i++)
+		{
+			points.reserve(4);
+			points.push_back(points1[i]);
+		}
 	}
 
 	//! 使用de Casteljau's algorithm分割3次贝塞尔曲线.
@@ -435,6 +453,8 @@ public:
 		{
 			return result;
 		}
+
+		//float roots = root(E[0].y,E[1].y,E[2].y,E[3].y,0);
 
 		if(E[0].y < 0.0)
 		{
@@ -624,11 +644,11 @@ public:
 		else
 		{
 			std::vector<CubicBezierLine> result;
-			std::vector<CubicBezierLine> subCurve1 = split(t1);
+			std::vector<CubicBezierLine> &subCurve1 = split(t1);
 			assert(subCurve1.size() == 2);
 			result.push_back(subCurve1[0]);
 			t2 = (t2-t1)/(1.0-t1);
-			std::vector<CubicBezierLine> subCurve2 = 
+			std::vector<CubicBezierLine> &subCurve2 = 
 				subCurve1[1].split(t2);
 			assert(subCurve2.size() == 2);
 			result.push_back(subCurve2[0]);
@@ -641,10 +661,12 @@ public:
 	{
 		std::vector<float> result;
 
+		result.reserve(20);
+
 		result.push_back(0);
 		result.push_back(1);
 
-		std::vector<float> roots;
+		
 
 		//求1阶和2阶导数的根.
 		float p0 = points[0].x;
@@ -652,7 +674,7 @@ public:
 		float p2 = points[2].x;
 		float p3 = points[3].x;
 		
-		roots = root(p0,p1,p2,p3,1);
+		std::vector<float> &&roots = root(p0,p1,p2,p3,1);
 		result.insert(result.end(),roots.begin(),roots.end());
 
 		roots = root(p0,p1,p2,p3,2);
@@ -1119,6 +1141,8 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 	std::vector<CubicBezierLine> groupA;
 	std::vector<CubicBezierLine> groupB;
+	groupA.reserve(5);
+	groupB.reserve(5);
 	groupA.push_back(lA);
 	groupB.push_back(lB);
 	int counter = 0;
@@ -1166,7 +1190,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 				//假如切割得不够大,继续用boundingRect切割.
 				if(sub.size() == 1
 					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.0)
+					&& sub[0].originTRange()/a.originTRange() > 0.50)
 				{
 					//继续切割.
 					a = sub[0];
@@ -1194,7 +1218,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.0)
+					&& sub[0].originTRange()/a.originTRange() > 0.50)
 				{
 					a = sub[0];
 					StraightLine clip1(bb.points[1],bb.points[2]);
@@ -1220,7 +1244,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.0)
+					&& sub[0].originTRange()/a.originTRange() > 0.50)
 				{
 					a = sub[0];
 					sub = a.split(0.5);
@@ -1256,7 +1280,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.0)
+					&& sub[0].originTRange()/b.originTRange() > 0.50)
 				{
 					//继续切割.
 					b = sub[0];
@@ -1284,7 +1308,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.0)
+					&& sub[0].originTRange()/b.originTRange() > 0.50)
 				{
 					b = sub[0];
 					StraightLine clip1(bb.points[1],bb.points[2]);
@@ -1310,7 +1334,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				if(sub.size() == 1
 					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.0                                                                                                                                                                                           )
+					&& sub[0].originTRange()/b.originTRange() > 0.50)
 				{
 					b = sub[0];
 					sub = b.split(0.5);

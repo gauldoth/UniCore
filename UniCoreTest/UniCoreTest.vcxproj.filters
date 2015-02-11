@@ -30,9 +30,6 @@
     <ClCompile Include="..\gtest\src\gtest-all.cc">
       <Filter>gtest</Filter>
     </ClCompile>
-    <ClCompile Include="..\gtest\src\gmock-all.cc">
-      <Filter>gtest</Filter>
-    </ClCompile>
     <ClCompile Include="IntegrationTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
