@@ -14,7 +14,8 @@ float RawDistance( Point a, Point b )
 
 bool FloatEqual( float x,float y )
 {
-	return (fabs(x-y) <= FLT_EPSILON * std::max(1.0f, std::max(fabs(x), fabs(y))) );
+	float delta = fabs(x-y);
+	return (delta <= FLT_EPSILON * std::max(1.0f, std::max(fabs(x), fabs(y))) );
 }
 
 
