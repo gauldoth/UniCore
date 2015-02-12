@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <cfloat>
 #include <utility>
+#include <limits>
 
 namespace uni
 {
@@ -264,11 +265,15 @@ public:
 		result.b = points[1].y;
 		if(result.l > result.r)
 		{
-			std::swap(result.l,result.r);
+			float temp = result.r;
+			result.r = result.l;
+			result.l = temp;
 		}
 		if(result.t > result.b)
 		{
-			std::swap(result.t,result.b);
+			float temp = result.t;
+			result.t = result.b;
+			result.b = temp;
 		}
 		return result;
 	}
@@ -722,6 +727,32 @@ public:
 		return Rect(minX,minY,maxX,maxY);
 	}
 
+	Rect looseBoundingBox() const
+	{
+		bool inited = false;
+		float minX = 0;
+		float minY = 0;
+		float maxX = 0;
+		float maxY = 0;
+		for(int i=0; i< points.size(); i++) {
+			float x = points[i].x;
+			float y = points[i].y;
+			if(!inited)
+			{
+				minX = maxX = x;
+				minY = maxY = y;
+				inited = true;
+			}
+			if(x < minX) { minX = x; }
+			if(x > maxX) { maxX = x; }
+			if(y < minY) { minY = y; }
+			if(y > maxY) { maxY = y; }
+		}
+
+		return Rect(minX,minY,maxX,maxY);
+
+	}
+
 	XRect tightBoundingBox()
 	{
 		const float PI = 3.1415926;
@@ -1060,6 +1091,17 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 
 	CubicBezierLine origin = ((CubicBezierLine &)bezier);
 
+	Rect bezierBoundingBox = origin.looseBoundingBox();
+	Rect straightBoundingBox = straight.boundingBox();
+
+	if(bezierBoundingBox.l > straightBoundingBox.r
+		|| bezierBoundingBox.r < straightBoundingBox.l
+		|| bezierBoundingBox.t > straightBoundingBox.b
+		|| bezierBoundingBox.b < straightBoundingBox.t)
+	{
+		return result;
+	}
+
 	CubicBezierLine aligned = 
 		origin.align(straight.point(0),straight.point(1));
 
@@ -1073,7 +1115,7 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 	for(int i = 0; i < roots.size(); i++)
 	{
 		Point p(origin.getX(roots[i]),origin.getY(roots[i]));
-		if(straight.boundingBox().contains(p))
+		if(straightBoundingBox.contains(p))
 		{
 			result.push_back(p);
 		}
@@ -1082,45 +1124,61 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 	return result;
 }
 
-inline std::vector<Point> IntersectStraightLine(const Line &lineA, const Line &lineB)
-{
-	std::vector<Point> result;
+ inline void IntersectStraightLine(const Line &lineA, const Line &lineB, std::vector<Point> &points)
+ {
+ 	//std::vector<Point> result;
+ 
+ 	float lineA_x1 = lineA.points[0].x;
+ 	float lineA_y1 = lineA.points[0].y;
+ 	float lineA_x2 = lineA.points[1].x;
+ 	float lineA_y2 = lineA.points[1].y;
+	float lineB_x1 = lineB.points[0].x;
+	float lineB_y1 = lineB.points[0].y;
+	float lineB_x2 = lineB.points[1].x;
+	float lineB_y2 = lineB.points[1].y;
 
-	float lineA_x1 = lineA.point(0).x;
-	float lineA_y1 = lineA.point(0).y;
-	float lineA_x2 = lineA.point(1).x;
-	float lineA_y2 = lineA.point(1).y;
+	Rect lineABoundingBox = lineA.boundingBox();
+	Rect lineBBoundingBox = lineB.boundingBox();
 
-
-	float A1 = lineA.point(1).y - lineA.point(0).y;
-	float B1 = lineA.point(0).x - lineA.point(1).x;
-	float C1 = A1*lineA.point(0).x+B1*lineA.point(0).y;
-
-	float A2 = lineB.point(1).y - lineB.point(0).y;
-	float B2 = lineB.point(0).x - lineB.point(1).x;
-	float C2 = A2*lineB.point(0).x+B2*lineB.point(0).y;
-
-	float det = A1*B2 - A2*B1;
-	if(FloatEqual(det,0))
+	if(lineABoundingBox.l > lineBBoundingBox.r
+		|| lineABoundingBox.r < lineBBoundingBox.l
+		|| lineABoundingBox.t > lineBBoundingBox.b
+		|| lineABoundingBox.b < lineBBoundingBox.t)
 	{
-
+		return;
 	}
-	else
-	{
-		float x = (B2*C1 - B1*C2)/det;
-		float y = (A1*C2 - A2*C1)/det;
+ 
+ 	float A1 = lineA_y2 - lineA_y1;
+ 	float B1 = lineA_x1 - lineA_x2;
+ 	float C1 = A1*lineA_x1+B1*lineA_y1;
+ 
+ 	float A2 = lineB_y2 - lineB_y1;
+ 	float B2 = lineB_x1 - lineB_x2;
+ 	float C2 = A2*lineB_x1+B2*lineB_y1;
+ 
+ 	float det = A1*B2 - A2*B1;
+ 	if(det < std::numeric_limits<float>::epsilon())
+ 	{
+ 
+ 	}
+ 	else
+ 	{
+ 		float x = (B2*C1 - B1*C2)/det;
+ 		float y = (A1*C2 - A2*C1)/det;
 		Point p(x,y);
-
-		//判断交点是否在两条线段上.
-		if(lineA.boundingBox().contains(p)
-			&& lineB.boundingBox().contains(p))
+ 
+ 		//判断交点是否在两条线段上.
+		if(lineABoundingBox.contains(p)
+			&& lineBBoundingBox.contains(p))
 		{
-			result.push_back(Point(x,y));
+			 points.push_back(p);
 		}
-	}
+ 	}
+ 
+ 	//return result;
+ }
 
-	return result;
-}
+
 
 class TestPainter
 {
@@ -1373,7 +1431,7 @@ inline std::vector<Point> Intersect(const Line &lineA, const Line &lineB)
 	if(lineA.type() == Line::Straight
 		&& lineB.type() == Line::Straight)
 	{
-		result = IntersectStraightLine(lineA,lineB);
+		IntersectStraightLine(lineA,lineB,result);
 	}
 	else if(lineA.type() == Line::Straight && lineB.type() == Line::CubicBezier)
 	{

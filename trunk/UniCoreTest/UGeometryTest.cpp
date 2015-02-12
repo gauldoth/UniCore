@@ -164,24 +164,6 @@ TEST(UGeometryTest,Bezier_Intersection_Works)
 	}
 }
 
-//贝塞尔曲线相交,性能测试.
-TEST(UGeometryTest,Bezier_Intersection_Perf)
-{
-	CubicBezierLine a(10,100,90,30,40,140,220,240);
-	CubicBezierLine b(5,150,180,20,80,280,210,190);
-	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
-	for(int i = 0; i < 100; i++)
-	{
-		IntersectBezierAndBezierLine(a,b);
-	}
-	EXPECT_EQ(3,result.size());
-	float x1 = a.getX(0.895);
-	float y1 = a.getY(0.895);
-	if(HasNonfatalFailure())
-	{
-		FAIL();
-	}
-}
 
 
 
@@ -218,4 +200,47 @@ TEST(UGeometryTest,StraightLine_BoundingBox_Ok)
 	{
 		FAIL();
 	}
+}
+
+
+
+//贝塞尔曲线相交,性能测试.
+TEST(UGeometryPerfTest,Bezier_Intersection_Perf)
+{
+	CubicBezierLine a(10,100,90,30,40,140,220,240);
+	CubicBezierLine b(5,150,180,20,80,280,210,190);
+	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
+	for(int i = 0; i < 100; i++)
+	{
+		result = IntersectBezierAndBezierLine(a,b);
+	}
+	EXPECT_EQ(3,result.size());
+	float x1 = a.getX(0.895);
+	float y1 = a.getY(0.895);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+//直线和直线相交,性能测试.
+TEST(UGeometryPerfTest,LineLineIntersection_Perf)
+{
+	StraightLine lineA(15,10,54,29);
+	StraightLine lineB(41,4,32,32);
+
+	auto result = Intersect(lineA,lineB);
+	for(int i = 0; i < 6000000; i++)
+	{
+		result = Intersect(lineA,lineB);
+		if(result.size() >= 5900000)
+		{
+			break;
+		}
+	}
+
+	//result(36.0,20.1)
+// 	ASSERT_EQ(1,result.size());
+// 	ASSERT_FLOAT_EQ(35.812351,result[0].x);
+// 	ASSERT_FLOAT_EQ(20.139351,result[0].y);
 }
