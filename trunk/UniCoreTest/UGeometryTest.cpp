@@ -19,6 +19,22 @@ TEST(UGeometryTest,LineLineIntersection_Works)
 	ASSERT_FLOAT_EQ(20.139351,result[0].y);
 }
 
+//直线交点.
+//lineA = {points=[2]({x=211.08000 y=591.17896 },{x=299.03000 y=642.29706 }) }
+//lineB = {points=[2]({x=191.83101 y=629.68298 },{x=300.69000 y=573.91803 }) }
+TEST(UGeometryTest,LineLineIntersection_Works2)
+{
+	StraightLine lineA(211.08000,591.17896,299.03000,642.29706);
+	StraightLine lineB(191.83101,629.68298,300.69000,573.91803);
+
+	auto result = Intersect(lineA,lineB);
+
+	//result(36.0,20.1)
+	ASSERT_EQ(1,result.size());
+// 	ASSERT_FLOAT_EQ(35.812351,result[0].x);
+// 	ASSERT_FLOAT_EQ(20.139351,result[0].y);
+}
+
 //平行的直线没有交点.
 TEST(UGeometryTest,IntersectParallelLine_NoIntersection)
 {
