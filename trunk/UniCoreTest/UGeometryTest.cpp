@@ -36,6 +36,7 @@ int round(float a)
 	return (int)(a+0.5);
 }
 
+//直线和贝塞尔曲线相交.
 TEST(UGeometryTest,LineBezierIntersection_Works)
 {
 	StraightLine lineA(53,329,401,371);
@@ -52,6 +53,19 @@ TEST(UGeometryTest,LineBezierIntersection_Works)
 	ASSERT_EQ(349,round(result[2].y));
 
 	//result t(0.109,0.484,0.896).
+}
+
+//直线和贝塞尔曲线相交2.
+//straight = {points=[2]({x=407.88898 y=779.05499 },{x=407.88898 y=709.05499 }) }
+//bezier = {points=[4]({x=371.71402 y=739.22205 },{x=397.60101 y=746.52502 },{x=429.13000 y=747.18896 },{x=469.28799 y=737.89404 }) }
+TEST(UGeometryTest,LineBezierIntersection_Works2)
+{
+	StraightLine lineA(407.88898,779.05499,407.88898,709.05499);
+	CubicBezierLine lineB(371.71402,739.22205,397.60101,746.52502,429.13000,747.18896,469.28799,737.89404);
+
+	auto result = Intersect(lineA,lineB);
+
+	ASSERT_EQ(1,result.size());
 }
 
 
@@ -164,8 +178,25 @@ TEST(UGeometryTest,Bezier_Intersection_Works)
 	}
 }
 
-
-
+// 67.705 649.599 m
+// 155.885 644.03 60.4841 529.948 178.092 569.971 c
+// S
+// 30.2017 546.699 m
+// 100.87 596.934 171.388 576.8 195.813 550.35 c
+// S//贝塞尔曲线相交.
+TEST(UGeometryTest,Bezier_Intersection_Works1)
+{
+	CubicBezierLine a(67.705,649.599,155.885,644.03,60.4841,529.948,178.092,569.971);
+	CubicBezierLine b(30.2017,546.699,100.87,596.934,171.388,576.8,195.813,550.35);
+	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
+	EXPECT_EQ(2,result.size());
+	float x1 = a.getX(0.895);
+	float y1 = a.getY(0.895);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
 
 //tightBoundingRect可用.
 TEST(UGeometryTest,tightBoundingBox_Works)
@@ -243,4 +274,13 @@ TEST(UGeometryPerfTest,LineLineIntersection_Perf)
 // 	ASSERT_EQ(1,result.size());
 // 	ASSERT_FLOAT_EQ(35.812351,result[0].x);
 // 	ASSERT_FLOAT_EQ(20.139351,result[0].y);
+}
+
+//分割贝塞尔曲线.
+TEST(UGeometryTest,Bezier_split_test1)
+{
+	CubicBezierLine cubic(442.81189,599.61261,533.04486,576.13934,
+		623.64673,636.77960,636.44458,729.12103);
+	std::vector<CubicBezierLine> subCurve = cubic.split(1.0359697e-007,0.99999994);
+	ASSERT_EQ(2,subCurve.size());
 }
