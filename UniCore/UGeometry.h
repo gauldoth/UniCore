@@ -1161,7 +1161,7 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
  	float C2 = A2*lineB_x1+B2*lineB_y1;
  
  	float det = A1*B2 - A2*B1;
- 	if(det < std::numeric_limits<float>::epsilon())
+ 	if(FloatEqual(det,0))
  	{
  
  	}
@@ -1417,9 +1417,9 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 				}
 			}
 
-			if(counter > 10000)
+			if(counter > 1000)
 			{
-				assert(!"Intersect Bezier does not converge.");
+				//assert(!"Intersect Bezier does not converge.");
 				break;
 			}
 		}
