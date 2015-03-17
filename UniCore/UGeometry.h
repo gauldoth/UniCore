@@ -68,19 +68,19 @@ public:
 	}
 	bool contains(Point p)
 	{
-		if(p.x < l)
+		if(p.x < l && !FloatEqual(p.x,l))
 		{
 			return false;
 		}
-		if(p.x > r)
+		if(p.x > r && !FloatEqual(p.x,l))
 		{
 			return false;
 		}
-		if(p.y < t)
+		if(p.y < t && !FloatEqual(p.x,l))
 		{
 			return false;
 		}
-		if(p.y > b)
+		if(p.y > b && !FloatEqual(p.x,l))
 		{
 			return false;
 		}
@@ -833,7 +833,7 @@ public:
 
 	CubicBezierLine align(Point start, Point end)
 	{
-		float angle = atan2(end.y-start.y,end.x-start.x);
+		float angle = atan2(end.y-start.y,end.x-start.x) /*+ 3.1415926*/;
 		float ca = cos(-angle);
 		float sa = sin(-angle);
 		float ox = start.x;
@@ -954,9 +954,10 @@ public:
 		}
 	}
 
-	//! 求一元三次方程.参考wikipedia中求根公式法和三角函数解.
+	//! 求一元三次方程.参考wikipedia中求根公式法和三角函数解法.
 	std::vector<float> cubicRoot(float a,float b,float c,float d) const
 	{
+		//\todo 存在浮点数相关问题.
 		const float PI = 3.1415926;
 		float A = b/a;
 		float B = c/a;
@@ -964,23 +965,25 @@ public:
 
 		float Q, R, D, S, T, Im;
 
-		Q = (3*B - pow(A, 2))/9.0;
-		R = (9*A*B - 27*C - 2*pow(A, 3))/54.0;
+		Q = (3.0*B - pow(A, 2))/9.0;
+		R = (9.0*A*B - 27.0*C - 2*pow(A, 3))/54.0;
 		D = pow(Q, 3) + pow(R, 2);    // polynomial discriminant
 
 		float t[3] = {};
 
 		if (D >= 0)                                 // complex or duplicate roots
 		{
-			S = sgn(R + sqrt(D))*pow(abs(R + sqrt(D)),(1/3));
-			T = sgn(R - sqrt(D))*pow(abs(R - sqrt(D)),(1/3));
+			//求根公式法.
+			S = sgn(R + sqrt(D))*pow(abs(R + sqrt(D)),(1.0f/3.0f));
+			T = sgn(R - sqrt(D))*pow(abs(R - sqrt(D)),(1.0f/3.0f));
 
-			t[0] = -A/3 + (S + T);                    // real root
-			t[1] = -A/3 - (S + T)/2;                  // real part of complex root
-			t[2] = -A/3 - (S + T)/2;                  // real part of complex root
-			Im = abs(sqrt(3.0)*(S - T)/2);    // complex part of root pair   
+			t[0] = -A/3.0 + (S + T);                    // real root
+			t[1] = -A/3.0 - (S + T)/2.0;                  // real part of complex root
+			t[2] = -A/3.0 - (S + T)/2.0;                  // real part of complex root
+			Im = abs(sqrt(3.0)*(S - T)/2.0);    // complex part of root pair   
 
 			/*discard complex roots*/
+			//虚部不为0,则为复根.
 			if (Im!=0)
 			{
 				t[1]=-1;
@@ -990,11 +993,12 @@ public:
 		}
 		else                                          // distinct real roots
 		{
+			//三角函数法.
 			float th = acos(R/sqrt(-pow(Q, 3)));
 
-			t[0] = 2*sqrt(-Q)*cos(th/3) - A/3;
-			t[1] = 2*sqrt(-Q)*cos((th + 2*PI)/3) - A/3;
-			t[2] = 2*sqrt(-Q)*cos((th + 4*PI)/3) - A/3;
+			t[0] = 2.0*sqrt(-Q)*cos(th/3.0) - A/3.0;
+			t[1] = 2.0*sqrt(-Q)*cos((th + 2*PI)/3.0) - A/3.0;
+			t[2] = 2.0*sqrt(-Q)*cos((th + 4*PI)/3.0) - A/3.0;
 			Im = 0.0;
 		}
 
