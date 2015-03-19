@@ -84,6 +84,19 @@ TEST(UGeometryTest,LineBezierIntersection_Works2)
 	ASSERT_EQ(1,result.size());
 }
 
+//直线和贝塞尔曲线相交3.
+//straight = {points=[2]({x=413.50000 y=645.75000 },{x=413.50000 y=571.75000 }) }
+//bezier = {points=[4]({x=388.25000 y=638.00000 },{x=430.50000 y=625.75000 },{x=433.00000 y=586.50000 },{x=390.00000 y=574.25000 }) }
+TEST(UGeometryTest,LineBezierIntersection_Works3)
+{
+	StraightLine lineA(413.50000,645.75000,413.50000,571.75000);
+	CubicBezierLine lineB(388.25000,638.00000,430.50000,625.75000,433.00000,586.50000,390.00000,574.25000);
+
+	auto result = Intersect(lineA,lineB);
+
+	ASSERT_EQ(2,result.size());
+}
+
 
 TEST(UGeometryTest,StraightLineProjection_Works)
 {
@@ -194,16 +207,12 @@ TEST(UGeometryTest,Bezier_Intersection_Works)
 	}
 }
 
-// 67.705 649.599 m
-// 155.885 644.03 60.4841 529.948 178.092 569.971 c
-// S
-// 30.2017 546.699 m
-// 100.87 596.934 171.388 576.8 195.813 550.35 c
-// S//贝塞尔曲线相交.
+//lineA = {points=[4]({x=29.869799 y=749.17999 },{x=82.259300 y=769.42804 },{x=126.58900 y=732.07898 },{x=96.247299 y=685.11597 }) }
+//lineB = {points=[4]({x=51.442501 y=774.73901 },{x=46.796101 y=729.59601 },{x=67.041199 y=693.41504 },{x=136.40599 y=706.02899 }) }//贝塞尔曲线相交.
 TEST(UGeometryTest,Bezier_Intersection_Works1)
 {
-	CubicBezierLine a(67.705,649.599,155.885,644.03,60.4841,529.948,178.092,569.971);
-	CubicBezierLine b(30.2017,546.699,100.87,596.934,171.388,576.8,195.813,550.35);
+	CubicBezierLine a(29.869799,749.17999,82.259300,769.42804,126.58900,732.07898,96.247299,685.11597);
+	CubicBezierLine b(51.442501,774.73901,46.796101,729.59601,67.041199,693.41504,136.40599,706.02899);
 	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
 	EXPECT_EQ(2,result.size());
 	float x1 = a.getX(0.895);
@@ -257,10 +266,10 @@ TEST(UGeometryPerfTest,Bezier_Intersection_Perf)
 	CubicBezierLine a(10,100,90,30,40,140,220,240);
 	CubicBezierLine b(5,150,180,20,80,280,210,190);
 	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
-	for(int i = 0; i < 100; i++)
-	{
-		result = IntersectBezierAndBezierLine(a,b);
-	}
+// 	for(int i = 0; i < 100; i++)
+// 	{
+// 		result = IntersectBezierAndBezierLine(a,b);
+// 	}
 	EXPECT_EQ(3,result.size());
 	float x1 = a.getX(0.895);
 	float y1 = a.getY(0.895);
@@ -277,14 +286,14 @@ TEST(UGeometryPerfTest,LineLineIntersection_Perf)
 	StraightLine lineB(41,4,32,32);
 
 	auto result = Intersect(lineA,lineB);
-	for(int i = 0; i < 6000000; i++)
-	{
-		result = Intersect(lineA,lineB);
-		if(result.size() >= 5900000)
-		{
-			break;
-		}
-	}
+// 	for(int i = 0; i < 6000000; i++)
+// 	{
+// 		result = Intersect(lineA,lineB);
+// 		if(result.size() >= 5900000)
+// 		{
+// 			break;
+// 		}
+// 	}
 
 	//result(36.0,20.1)
 // 	ASSERT_EQ(1,result.size());
@@ -299,4 +308,12 @@ TEST(UGeometryTest,Bezier_split_test1)
 		623.64673,636.77960,636.44458,729.12103);
 	std::vector<CubicBezierLine> subCurve = cubic.split(1.0359697e-007,0.99999994);
 	ASSERT_EQ(2,subCurve.size());
+}
+
+//>>浮点数比较.
+
+//+0 == -0
+TEST(UFloatTests,ZeroEqualsMinusZero)
+{
+	ASSERT_TRUE(AlmostEqualAbs(0.0,-0.0,1));
 }
