@@ -479,6 +479,7 @@ public:
 		if(AlmostEqualUlpsAndAbs(c1,c2,fabs(std::max(c1,c2))*FLT_EPSILON,1))
 		{
 			result.push_back(sub(0.5,0.5));
+			return result;
 		}
 
 		double minL[3] = {};
@@ -915,12 +916,15 @@ public:
 
 		//计算lineA上的点到lineB的距离.
 		Point pA = lineA.points[0];
-		double distance = (a2*pA.x+b2*pA.y+c2)/sqrt(a2*a2+b2*b2);
-		if(AlmostEqualAbs(distance,0,FLT_EPSILON))
+		double enumerator = (a2*pA.x+b2*pA.y+c2);
+		double denominator = sqrt(a2*a2+b2*b2);
+		double distance = 0.0;
+		if(denominator != 0.0)
 		{
-			return result;
+			distance = enumerator/denominator;
 		}
-		else if(distance < 0)
+
+		if(distance < 0)
 		{
 			a2 = -a2;
 			b2 = -b2;
@@ -929,12 +933,14 @@ public:
 
 		//计算lineB上的点到lineA的距离.
 		Point pB = lineB.points[0];
-		distance = (a1*pB.x+b1*pB.y+c1)/sqrt(a1*a1+b1*b1);
-		if(AlmostEqualAbs(distance,0,FLT_EPSILON))
+		enumerator = (a1*pB.x+b1*pB.y+c1);
+		denominator = sqrt(a1*a1+b1*b1);
+		distance = 0.0;
+		if(denominator != 0)
 		{
-			return result;
+			distance = enumerator/denominator;
 		}
-		else if(distance < 0)
+		if(distance < 0)
 		{
 			a1 = -a1;
 			b1 = -b1;
@@ -952,23 +958,64 @@ public:
 		StraightLine L(clipLine.points[0],clipLine.points[3]);
 		//找到过控制点且和L平行的线.
 
-		double a = L.a();
-		double b = L.b();
-		double c = L.c();
-		double c1 = -a*clipLine.points[1].x-b*clipLine.points[1].y;
-		double c2 = -a*clipLine.points[2].x-b*clipLine.points[2].y;
+		double a0 = L.a();
+		double b0 = L.b();
+		double c0 = L.c();
+		Point p0 = L.points[0];
+
+		Point p1 = clipLine.points[1];
+		double a1 = a0;
+		double b1 = b0;
+		double c1 = -a0*p1.x-b0*p1.y;
+
+		Point p2 = clipLine.points[2];
+		double a2 = a0;
+		double b2 = b0;
+		double c2 = -a0*p2.x-b0*p2.y;
 
 		//找到最大和最小的c.
+		if(c1 < c2)
+		{
+			if(c0 < c1)
+			{
+				c1 = c0;
+				p1 = p0;
+			}
+			
+			if(c0 > c2)
+			{
+				c2 = c0;
+				p2 = p0;
+			}
+		}
+		else if(c1 > c2)
+		{
+			if(c0 < c2)
+			{
+				c2 = c0;
+				p2 = p0;
+			}
 
-		double maxC = std::max(std::max(c,c1),c2);
-		double minC = std::min(std::min(c,c1),c2);
+			if(c0 > c1)
+			{
+				c1 = c0;
+				p1 = p0;
+			}
+		}
+		else
+		{
+			if(c0 < c1)
+			{
+				c1 = c0;
+				p1 = p0;
+			}
 
-		double a1 = a;
-		double b1 = b;
-		c1 = minC;
-		double a2 = a;
-		double b2 = b;
-		c2 = maxC;
+			if(c0 > c2)
+			{
+				c2 = c0;
+				p2 = p0;
+			}
+		}
 
  		//if(AlmostEqualUlpsAndAbs(c1,c2,fabs(maxC)*FLT_EPSILON,1))
  		//{
@@ -979,77 +1026,40 @@ public:
  		//	return result;
  		//}
 
- 		double numerator = (a1*clipLine.points[0].x+b1*clipLine.points[0].y+c1);
+ 		double numerator = (a1*p2.x+b1*p2.y+c1);
  		double denominator = sqrt(a1*a1+b1*b1);
-		//需要判断nan,infinity的情况.
-
 		double distance = 0.0;
 		if(denominator != 0.0)
 		{
 			distance = numerator/denominator;
 		}
 
-		if(AlmostEqualAbs(distance,0,fabs(maxC)*FLT_EPSILON))
+		if(distance < 0.0)
 		{
-
-		}
-		else if(distance > 0)
-		{
-			a2 = -a2;
-			b2 = -b2;
-			c2 = -c2;
-
-			return clipByParallelLine(a1,b1,c1,a2,b2,c2);
-		}
-		else
-		{
-			assert(distance < 0);
-
+			assert(distance < 0.0);
 			a1 = -a1;
 			b1 = -b1;
 			c1 = -c1;
 
-			return clipByParallelLine(a1,b1,c1,a2,b2,c2);
 		}
 
 		distance = 0.0;
-		numerator = (a2*clipLine.points[0].x+b2*clipLine.points[0].y+c2);
+		numerator = (a2*p1.x+b2*p1.y+c2);
 		denominator = sqrt(a2*a2+b2*b2);
 		if(denominator != 0)
 		{
 			distance = numerator/denominator;
 		}
 
-		if(AlmostEqualAbs(distance,0,fabs(maxC)*FLT_EPSILON))
+		if(distance < 0.0)
 		{
-
-		}
-		else if(distance > 0)
-		{
-			a1 = -a1;
-			b1 = -b1;
-			c1 = -c1;
-
-			return clipByParallelLine(a1,b1,c1,a2,b2,c2);
-		}
-		else
-		{
-			if(!(distance <0))
-			{
-				a2 = 1;
-			}
-			assert(distance < 0);
+			assert(distance < 0.0);
 			a2 = -a2;
 			b2 = -b2;
 			c2 = -c2;
-
-			return clipByParallelLine(a1,b1,c1,a2,b2,c2);
 		}
 
-		//Fatline接近于直线,直接返回原曲线.
-		std::vector<CubicBezierLine> result;
-		result.push_back(*this);
-		return result;
+		return clipByParallelLine(a1,b1,c1,a2,b2,c2);
 	}
 
 	//分割贝塞尔曲线.
