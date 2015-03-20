@@ -307,7 +307,7 @@ TEST(UGeometryTest,Bezier_split_test1)
 	CubicBezierLine cubic(442.81189,599.61261,533.04486,576.13934,
 		623.64673,636.77960,636.44458,729.12103);
 	std::vector<CubicBezierLine> subCurve = cubic.split(1.0359697e-007,0.99999994);
-	ASSERT_EQ(2,subCurve.size());
+	ASSERT_EQ(3,subCurve.size());
 }
 
 //>>浮点数比较.
