@@ -410,7 +410,7 @@ public:
 		std::vector<CubicBezierLine> subCurve = split(beginT,endT);
 		assert(subCurve.size() == 3);
 
-		return subCurve[0];
+		return subCurve[1];
 	}
 
 	//! 使用de Casteljau's algorithm分割3次贝塞尔曲线.
@@ -475,8 +475,11 @@ public:
 	std::vector<CubicBezierLine> clipByParallelLine(double a1,double b1,double c1,double a2,double b2,double c2)
 	{
 		std::vector<CubicBezierLine> result;
-// 		assert(FloatEqual(a1,a2));
-// 		assert(FloatEqual(b1,b2));
+
+		if(AlmostEqualUlpsAndAbs(c1,c2,fabs(std::max(c1,c2))*FLT_EPSILON,1))
+		{
+			result.push_back(sub(0.5,0.5));
+		}
 
 		double minL[3] = {};
 		double maxL[3] = {};
@@ -815,11 +818,6 @@ public:
 
 		}
 
-		if(result.empty())
-		{
-			result.push_back(*this);
-		}
-
 		return result;
 
 // 		if(!inMaxLine)
@@ -972,18 +970,25 @@ public:
 		double b2 = b;
 		c2 = maxC;
 
-// 		if(AlmostEqualUlpsAndAbs(c1,c2,fabs(maxC)*FLT_EPSILON,1))
-// 		{
-// 			//Fatline接近于直线,直接返回原曲线.
-// 			std::vector<CubicBezierLine> result;
-// 			result.push_back(*this);
-// 			return result;
-// 		}
+ 		//if(AlmostEqualUlpsAndAbs(c1,c2,fabs(maxC)*FLT_EPSILON,1))
+ 		//{
+ 		//	//Fatline接近于直线,直接返回原曲线.
+			//
+ 		//	std::vector<CubicBezierLine> result;
+ 		//	result.push_back(*this);
+ 		//	return result;
+ 		//}
 
-// 		double numerator = (a1*clipLine.points[0].x+b1*clipLine.points[0].y+c1);
-// 		double denominator = sqrt(a1*a1+b1*b1);
+ 		double numerator = (a1*clipLine.points[0].x+b1*clipLine.points[0].y+c1);
+ 		double denominator = sqrt(a1*a1+b1*b1);
 		//需要判断nan,infinity的情况.
-		double distance = (a1*clipLine.points[0].x+b1*clipLine.points[0].y+c1)/sqrt(a1*a1+b1*b1);
+
+		double distance = 0.0;
+		if(denominator != 0.0)
+		{
+			distance = numerator/denominator;
+		}
+
 		if(AlmostEqualAbs(distance,0,fabs(maxC)*FLT_EPSILON))
 		{
 
@@ -1007,7 +1012,14 @@ public:
 			return clipByParallelLine(a1,b1,c1,a2,b2,c2);
 		}
 
-		distance = (a2*clipLine.points[0].x+b2*clipLine.points[0].y+c2)/sqrt(a2*a2+b2*b2);
+		distance = 0.0;
+		numerator = (a2*clipLine.points[0].x+b2*clipLine.points[0].y+c2);
+		denominator = sqrt(a2*a2+b2*b2);
+		if(denominator != 0)
+		{
+			distance = numerator/denominator;
+		}
+
 		if(AlmostEqualAbs(distance,0,fabs(maxC)*FLT_EPSILON))
 		{
 
@@ -1022,6 +1034,10 @@ public:
 		}
 		else
 		{
+			if(!(distance <0))
+			{
+				a2 = 1;
+			}
 			assert(distance < 0);
 			a2 = -a2;
 			b2 = -b2;
@@ -1618,7 +1634,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 		//假如a,b都足够小,则认为找到了交点.
 
-		if(a.originTRange() < 0.0005 && b.originTRange() < 0.0005)
+		if(a.originTRange() < 0.001 && b.originTRange() < 0.001)
 		{
 			float t = (a.originEndT+a.originBeginT)/2.0;
 			result.push_back(Point(a.getX(t),a.getY(t)));

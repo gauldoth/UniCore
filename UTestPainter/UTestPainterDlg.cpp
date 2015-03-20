@@ -74,8 +74,10 @@ unsigned __stdcall TestPainterFunc(void *p)
 {
 	CUTestPainterDlg *dlg = static_cast<CUTestPainterDlg *>(p);
 
-	uni::CubicBezierLine a(29.869799,749.17999,82.259300,769.42804,126.58900,732.07898,96.247299,685.11597);
-	uni::CubicBezierLine b(51.442501,774.73901,46.796101,729.59601,67.041199,693.41504,136.40599,706.02899);
+// 	uni::CubicBezierLine a(29.869799,749.17999,82.259300,769.42804,126.58900,732.07898,96.247299,685.11597);
+// 	uni::CubicBezierLine b(51.442501,774.73901,46.796101,729.59601,67.041199,693.41504,136.40599,706.02899);
+	uni::CubicBezierLine a(10,100,90,30,40,140,220,240);
+	uni::CubicBezierLine b(5,150,180,20,80,280,210,190);
 	std::vector<uni::Point> result = uni::IntersectBezierAndBezierLine(a,b,dlg);
 	int count = result.size();
 	float x1 = a.getX(0.895);
@@ -175,17 +177,17 @@ void CUTestPainterDlg::OnPaint()
 		//
 		for(int i = 0; i < clines.size(); i++)
 		{
-			dc.MoveTo(clines[i].getX(0.0)*2,(clines[i].getY(0.0)-550)*2);
+			dc.MoveTo(clines[i].getX(0.0)*2,(clines[i].getY(0.0))*2);
 			for(float t = 0.0; t <= 1.0; t+= 0.02)
 			{
-				dc.LineTo(clines[i].getX(t)*2,(clines[i].getY(t)-550)*2);
+				dc.LineTo(clines[i].getX(t)*2,(clines[i].getY(t))*2);
 			}
 		}
 				dc.SelectObject(&pen1);
 		for(int i = 0; i < slines.size(); i++)
 		{
-			dc.MoveTo(slines[i].points[0].x*2,(slines[i].points[0].y-550)*2);
-			dc.LineTo(slines[i].points[1].x*2,(slines[i].points[1].y-550)*2);
+			dc.MoveTo(slines[i].points[0].x*2,(slines[i].points[0].y)*2);
+			dc.LineTo(slines[i].points[1].x*2,(slines[i].points[1].y)*2);
 		}
 	}
 }
