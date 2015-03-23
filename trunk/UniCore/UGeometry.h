@@ -15,12 +15,12 @@
 #include <utility>
 #include <limits>
 #include <xutility>
+#include "UMiniLog.h"
 
 namespace uni
 {
 
-bool FloatEqual(float x,float y);
-
+//! 判断浮点数a和浮点数b是否相等,maxUlpsDiff为最多允许的ulp差值(units in the last place).
 inline bool AlmostEqualUlps(float a, float b, int maxUlpsDiff)
 {
 	int iA = *(int *)&a;
@@ -43,6 +43,7 @@ inline bool AlmostEqualUlps(float a, float b, int maxUlpsDiff)
 	return false;
 }
 
+//! 判断浮点数a和浮点数b是否相等,maxDiff为允许的绝对差异,maxUlpsDiff为允许的ulp差值(units in the last place).
 inline bool AlmostEqualUlpsAndAbs(float a, float b,
 	float maxDiff, int maxUlpsDiff)
 {
@@ -72,6 +73,7 @@ inline bool AlmostEqualUlpsAndAbs(float a, float b,
 	return false;
 }
 
+//! 判断浮点数a和浮点数b是否相等,maxDiff为允许的绝对差异.
 inline bool AlmostEqualAbs(float a, float b,float maxDiff)
 {
 	float absDiff = fabs(a - b);
@@ -80,6 +82,7 @@ inline bool AlmostEqualAbs(float a, float b,float maxDiff)
 	return false;
 }
 
+//! 计算val的符号.若为正则返回1,为负则返回-1.
 template <typename T> inline int sgn(T val) {
 	return (T(0) < val) - (val < T(0));
 }
@@ -126,6 +129,8 @@ public:
 	{
 
 	}
+
+	//! 点是否在矩形范围内.
 	bool contains(Point p)
 	{
 		if((p.x > l || AlmostEqualUlps(p.x,l,1)) 
@@ -161,7 +166,7 @@ public:
 	std::vector<Point> points;
 };
 
-//! 计算点a和点b间的,用于比较的距离.
+//! 计算点a和点b间的,可以用于比较的距离.
 /*!
 	不是实际距离,不会开平方根.
 */
@@ -179,15 +184,9 @@ public:
 	Line() {}
 	Line(const Line &line)
 	{
-		points.resize(4);
-		for(int i = 0; i < line.points.size(); i++)
-		{
-			points[i] = line.points[i];
-		}
+		points = line.points;
 	}
 	virtual Type type() const = 0;
-	virtual int pointCount() const = 0;
-	virtual Point point(int index) const = 0;
 	virtual Point midpoint() const = 0;
 	virtual Point getNearestPoint(Point p) = 0;
 	virtual Rect boundingBox() const = 0;
@@ -224,14 +223,14 @@ public:
 		double deltaX = pB.x-pA.x;
 		double deltaY = pB.y-pA.y;
 
-		if(FloatEqual(deltaY,0))
+		if(AlmostEqualAbs(deltaY,0,fabs(pB.y)*FLT_EPSILON))
 		{
 			double x1 = p.x;
 			double y1 = (pA.y + pB.y)/2.0;
 			return Point(x1,y1);
 		}
 
-		if(FloatEqual(deltaX,0))
+		if(AlmostEqualAbs(deltaX,0,fabs(pB.x)*FLT_EPSILON))
 		{
 			double x1 = (pA.x+pB.x)/2.0;
 			double y1 = p.y;
@@ -240,6 +239,8 @@ public:
 
 		double k = deltaY/deltaX;
 		double k1 = -1/k;
+
+		assert(k1 != k);
 
 		double x1 = (pA.y-k*pA.x-p.y+k1*p.x)/(k1-k);
 		double y1 = (pA.y*k1+pA.x-k*p.y-p.x)/(k1-k);
@@ -251,8 +252,7 @@ public:
 	virtual Point getNearestPoint(Point p)
 	{
 		Point projectionPoint = getProjectionPoint(p);
-		//如果projectionPoint在线段外,则返回线段的端点.
-
+		//如果投射点在线段外,则返回距离p最近的线段的端点.
 		float minX = points[0].x;
 		float maxX = points[0].x;
 		float minY = points[0].y;
@@ -303,14 +303,8 @@ public:
 	}
 
 	virtual Type type() const {return Straight;}
-	virtual int pointCount() const {return points.size();}
-	virtual Point point(int index) const
-	{
-		assert(index >= 0);
-		assert(index < points.size());
-		return points[index];
-	}
 
+	//! 获得直线段的Bounding Box.
 	virtual Rect boundingBox() const
 	{
 		Rect result;
@@ -348,6 +342,7 @@ public:
 	}
 };
 
+//Binomial Coefficient
 static float binomials[][5] = 
 {
 	{1,0,0,0,0},
@@ -384,11 +379,7 @@ public:
 		:originBeginT(0.0)
 		,originEndT(1.0)
 	{
-		points.resize(4);
-		for(int i = 0; i < points1.size(); i++)
-		{
-			points[i] = points1[i];
-		}
+		points = points1;
 	}
 
 	CubicBezierLine(Point points1[4])
@@ -397,7 +388,6 @@ public:
 	{
 		for(int i = 0; i < 4; i++)
 		{
-			points.reserve(4);
 			points.push_back(points1[i]);
 		}
 	}
@@ -425,6 +415,7 @@ public:
 		Point rightSplit[4] = {};
 		Point span[10] = {};
 		assert(points.size() == 4);
+
 		span[0] = points[0];
 		span[1] = points[1];
 		span[2] = points[2];
@@ -440,7 +431,11 @@ public:
 			{
 				Point p1 = span[next-c-1];
 				Point p2 = span[next-c];
-				Point p3 = Lerp(p1,p2,t);  //p3为p1和p2之间的点,t为比例.
+				Point p3;  //p3为p1和p2之间的点,t为比例.
+
+				p3.x = p1.x + (p2.x-p1.x)*t;
+				p3.y = p1.y + (p2.y-p1.y)*t;
+
 				span[next++] = p3;
 			}
 			rightSplit[r--] = span[next-c-1];
@@ -448,12 +443,14 @@ public:
 		leftSplit[l] = span[next-1];
 		rightSplit[0] = span[next-1];
 
+		//左边的子曲线.
 		CubicBezierLine leftBezier(leftSplit);
 		leftBezier.originBeginT = originBeginT;
 		leftBezier.originEndT = originBeginT+t*(originEndT-originBeginT);
 
 		assert(leftBezier.originEndT >= leftBezier.originBeginT);
 
+		//右边的子曲线.
 		CubicBezierLine rightBezier(rightSplit);
 		assert(leftBezier.originEndT <= originEndT);
 		rightBezier.originBeginT = leftBezier.originEndT;
@@ -476,46 +473,14 @@ public:
 	{
 		std::vector<CubicBezierLine> result;
 
-		if(AlmostEqualUlpsAndAbs(c1,c2,fabs(std::max(c1,c2))*FLT_EPSILON,1))
-		{
-			result.push_back(sub(0.5,0.5));
-			return result;
-		}
-
-		double minL[3] = {};
-		double maxL[3] = {};
-
-		minL[0] = a1;
-		minL[1] = b1;
-		minL[2] = c1;
-		maxL[0] = a2;
-		maxL[1] = b2;
-		maxL[2] = c2;
-
-		//Point E[4];
-		double minT = 1.1;
-		double maxT = -0.1;
-		//StraightLine LE[3];
-		//double vx[3] = {};
-
 		//使用minL切割. 计算出有效的t区间.
-		//这里E[4]代表贝塞尔曲线到直线间距离的explicit bezier.
-		bool inMinLine = false;
+		//这里E[4]代表贝塞尔曲线到直线间距离的explicit bezier的4个点.
 		Point EA[4];
 		for(int i = 0; i < 4; i++)
 		{
 			EA[i].x = i/3.0;
-			EA[i].y = minL[0]*points[i].x+minL[1]*points[i].y+minL[2];
-			if(EA[i].y > 0.0)
-			{
-				inMinLine = true;
-			}
+			EA[i].y = a1*points[i].x+b1*points[i].y+c1;
 		}
-
-// 		if(!inMinLine)
-// 		{
-// 			return result;
-// 		}
 
 		//计算根.
 		std::vector<float> rootsA = root(EA[0].y,EA[1].y,EA[2].y,EA[3].y,0);
@@ -533,47 +498,24 @@ public:
 			derivativesA.push_back(derivative);
 		}
 
-// 		if(E[0].y < 0.0)
-// 		{
-// 			//得到E0到其他端点连成的线,例如E0-E1,E0-E2,E0-E3...
-// 			for(int i = 0; i < 3; i++)
-// 			{
-// 				LE[i].points[0] = E[0];
-// 				LE[i].points[1] = E[i];
-// 				vx[i] = -LE[i].c()/LE[i].a();
-// 				if(vx[i] > 0.0 && vx[i] < 1.0 && minT > vx[i])
-// 				{
-// 					minT = vx[i];
-// 				}
-// 			}
-// 		}
-
-// 		if(E[3].y < 0.0)
-// 		{
-// 			//得到E3到其他端点连成的线,例如E3-E2,E3-E1,E3-E0...
-// 			for(int i = 2; i >= 0; i--)
-// 			{
-// 				LE[i].points[0] = E[3];
-// 				LE[i].points[1] = E[i];
-// 				vx[i] = -LE[i].c()/LE[i].a();
-// 				if(vx[i] > 0.0 && vx[i] < 1.0 && maxT < vx[i])
-// 				{
-// 					maxT = vx[i];
-// 				}
-// 			}
-// 		}
+		if(AlmostEqualUlpsAndAbs(fabs(c1),fabs(c2),fabs(std::max(c1,c2))*FLT_EPSILON,1))
+		{
+			//平行线靠得太近,接近于一条直线.
+			//随意找一条直线,算出和曲线到这条直线距离为0的点.
+			//之后对于每个点,返回t范围为0的子曲线.
+			for(int i = 0; i < rootsA.size(); i++)
+			{
+				result.push_back(sub(rootsA[i],rootsA[i]));
+			}
+			return result;
+		}
 
 		//>> 使用maxL切割. 计算出有效的t区间.
 		Point EB[4];
-		bool inMaxLine = false;
 		for(int i = 0; i < 4; i++)
 		{
 			EB[i].x = i/3.0;
-			EB[i].y = maxL[0]*points[i].x+maxL[1]*points[i].y+maxL[2];
-			if(EB[i].y > 0.0)
-			{
-				inMaxLine = true;
-			}
+			EB[i].y = a2*points[i].x+b2*points[i].y+c2;
 		}
 
 		//计算根.
@@ -625,10 +567,6 @@ public:
 		float currentBeginT = 0.0;
 		//如果都没有根,则根据当前的符号判断是要截取整条曲线还是要丢弃整条曲线.
 
-		//[0.3 0.5]
-		//[]
-		//indexA = 0;
-		//indexB = 0;/
 		while(true)
 		{
 			float rootA = 1.0;
@@ -820,83 +758,6 @@ public:
 		}
 
 		return result;
-
-// 		if(!inMaxLine)
-// 		{
-// 			return result;
-// 		}
-
-// 		if(E[0].y < 0.0)
-// 		{
-// 			//得到E0到其他端点连成的线,例如E0-E1,E0-E2,E0-E3...
-// 			for(int i = 0; i < 3; i++)
-// 			{
-// 				LE[i].points[0] = E[0];
-// 				LE[i].points[1] = E[i];
-// 				vx[i] = -LE[i].c()/LE[i].a();
-// 				if(vx[i] > 0.0 && vx[i] < 1.0 && minT > vx[i])
-// 				{
-// 					minT = vx[i];
-// 				}
-// 			}
-// 		}
-// 
-// 		if(E[3].y < 0.0)
-// 		{
-// 			//得到E3到其他端点连成的线,例如E3-E2,E3-E1,E3-E0...
-// 			for(int i = 2; i >= 0; i--)
-// 			{
-// 				LE[i].points[0] = E[3];
-// 				LE[i].points[1] = E[i];
-// 				vx[i] = -LE[i].c()/LE[i].a();
-// 				if(vx[i] > 0.0 && vx[i] < 1.0 && maxT < vx[i])
-// 				{
-// 					maxT = vx[i];
-// 				}
-// 			}
-// 		}
-
-// 		if(minT > 0.0 && minT < 1.0 && maxT > 0.0 && maxT < 1.0)
-// 		{
-// 			//assert(minT < maxT);
-// 			if(minT > maxT)
-// 			{
-// 				result.push_back(*this);
-// 			}
-// 			else
-// 			{
-// 				std::vector<CubicBezierLine> subCurve = split(minT,maxT);
-// 				if(subCurve.size() == 3)
-// 				{
-// 					result.push_back(subCurve[1]);
-// 				}
-// 				else
-// 				{
-// 					assert(false);
-// 				}
-// 			}
-// 			return result;
-// 		}
-// 		else if(minT > 0.0 && minT < 1.0)
-// 		{
-// 			std::vector<CubicBezierLine> subCurve = split(minT);
-// 			assert(subCurve.size() == 2);
-// 			result.push_back(subCurve[1]);
-// 			return result;
-// 		}
-// 		else if(maxT > 0.0 && maxT < 1.0)
-// 		{
-// 			std::vector<CubicBezierLine> subCurve = split(maxT);
-// 			assert(subCurve.size() == 2);
-// 			result.push_back(subCurve[0]);
-// 			return result;
-// 		}
-// 		else
-// 		{
-// 			result.push_back(*this);
-// 			return result;
-// 		}
-
 	}
 
 	//! 使用两条平行线切割当前曲线,丢弃掉平行线外的部分.
@@ -913,6 +774,8 @@ public:
 		double a2 = lineB.a();
 		double b2 = lineB.b();
 		double c2 = lineB.c();
+
+		//>> 以下代码保证了两条平行线间的点到这两条平行线的距离均为正的.
 
 		//计算lineA上的点到lineB的距离.
 		Point pA = lineA.points[0];
@@ -1002,7 +865,7 @@ public:
 				p1 = p0;
 			}
 		}
-		else
+		else//c1 == c2
 		{
 			if(c0 < c1)
 			{
@@ -1017,15 +880,7 @@ public:
 			}
 		}
 
- 		//if(AlmostEqualUlpsAndAbs(c1,c2,fabs(maxC)*FLT_EPSILON,1))
- 		//{
- 		//	//Fatline接近于直线,直接返回原曲线.
-			//
- 		//	std::vector<CubicBezierLine> result;
- 		//	result.push_back(*this);
- 		//	return result;
- 		//}
-
+		//>> 以下代码保证了两条平行线间的点到这两条平行线的距离均为正的.
  		double numerator = (a1*p2.x+b1*p2.y+c1);
  		double denominator = sqrt(a1*a1+b1*b1);
 		double distance = 0.0;
@@ -1036,7 +891,6 @@ public:
 
 		if(distance < 0.0)
 		{
-			assert(distance < 0.0);
 			a1 = -a1;
 			b1 = -b1;
 			c1 = -c1;
@@ -1053,7 +907,6 @@ public:
 
 		if(distance < 0.0)
 		{
-			assert(distance < 0.0);
 			a2 = -a2;
 			b2 = -b2;
 			c2 = -c2;
@@ -1075,8 +928,14 @@ public:
 		std::vector<CubicBezierLine> subCurve1 = split(t1);
 		assert(subCurve1.size() == 2);
 		result.push_back(subCurve1[0]);
-		t2 = (t2-t1)/(1.0-t1);
-		std::vector<CubicBezierLine> &subCurve2 = 
+
+		if(t2 != 1.0)
+		{
+			assert(t1 != 1.0);
+			t2 = (t2-t1)/(1.0-t1);
+		}
+
+		std::vector<CubicBezierLine> subCurve2 = 
 			subCurve1[1].split(t2);
 		assert(subCurve2.size() == 2);
 		result.push_back(subCurve2[0]);
@@ -1084,6 +943,10 @@ public:
 		return result;
 	}
 
+	//! 计算inflection(拐点).
+	/*!
+		用于计算贝塞尔曲线的包围矩形(tight bounding box).
+	*/
 	std::vector<float> getInflections() const
 	{
 		std::vector<float> result;
@@ -1092,8 +955,6 @@ public:
 
 		result.push_back(0);
 		result.push_back(1);
-
-		
 
 		//求1阶和2阶导数的根.
 		float p0 = points[0].x;
@@ -1118,28 +979,35 @@ public:
 		roots = root(p0,p1,p2,p3,2);
 		result.insert(result.end(),roots.begin(),roots.end());
 		
-
 		return result;
 	}
 
+	//! 计算贝塞尔曲线的包围矩形.
+	/*!
+		这里得到的是包围矩形(bounding box).
+		得到的并不是包围该贝塞尔曲线的最小包围矩形,但是相比looseBoundingBox函数
+		得到的矩形要更小.
+	*/
 	virtual Rect boundingBox() const
 	{
 		std::vector<float> inflections = getInflections();
-		bool inited = false;
-		float minX = 0;
-		float minY = 0;
-		float maxX = 0;
-		float maxY = 0;
+
+		if(inflections.empty())
+		{
+			assert(!"inflections should not be empty!");
+			return Rect(0,0,0,0);
+		}
+
+		float minX = points[0].x;
+		float minY = points[0].y;
+		float maxX = points[0].x;
+		float maxY = points[0].y;
+
 		for(int i=0; i<inflections.size(); i++) {
 			float t = inflections[i];
 			float x = getX(t);
 			float y = getY(t);
-			if(!inited)
-			{
-				minX = maxX = getX(t);
-				minY = maxY = getY(t);
-				inited = true;
-			}
+
 			if(x < minX) { minX = x; }
 			if(x > maxX) { maxX = x; }
 			if(y < minY) { minY = y; }
@@ -1149,22 +1017,20 @@ public:
 		return Rect(minX,minY,maxX,maxY);
 	}
 
+	//! 得到松包围矩形.
+	/*!
+		为包围4个控制点的矩形.
+	*/
 	Rect looseBoundingBox() const
 	{
-		bool inited = false;
-		float minX = 0;
-		float minY = 0;
-		float maxX = 0;
-		float maxY = 0;
+		float minX = points[0].x;
+		float minY = points[0].y;
+		float maxX = points[0].x;
+		float maxY = points[0].y;
 		for(int i=0; i< points.size(); i++) {
 			float x = points[i].x;
 			float y = points[i].y;
-			if(!inited)
-			{
-				minX = maxX = x;
-				minY = maxY = y;
-				inited = true;
-			}
+
 			if(x < minX) { minX = x; }
 			if(x > maxX) { maxX = x; }
 			if(y < minY) { minY = y; }
@@ -1172,18 +1038,20 @@ public:
 		}
 
 		return Rect(minX,minY,maxX,maxY);
-
 	}
 
+	//! 获得紧包围矩形.
 	XRect tightBoundingBox()
 	{
-		const float PI = 3.1415926;
+		//将曲线旋转成和x轴平行,计算bounding box,之后再旋转回原角度.
+		//这样计算出的bounding box比未旋转直接计算要来得更小.
+		const double PI = 3.14159265358979323846264338327950288419716939937510582097494459;
 		float ox = points[0].x;
 		float oy = points[0].y;
 		float angle = atan2(points[3].y - points[0].y, points[3].x - points[0].x);
 		float ca = cos(angle);
 		float sa = sin(angle);
-		float nx,ny;
+
 		Rect boundingBox = align(points[0],points[3]).boundingBox();
 		XRect xBoundingBox(boundingBox);
 
@@ -1199,6 +1067,10 @@ public:
 		return xBoundingBox;
 	}
 
+	//! 获得曲线上的最近点.
+	/*!
+		采用数值解法计算当前点到贝塞尔曲线上的最近点.
+	*/
 	virtual Point getNearestPoint(Point p)
 	{
 		float minT = 0;
@@ -1222,11 +1094,16 @@ public:
 		return Point(getX(minT),getY(minT));
 	}
 
+	//! 获得中点.
+	/*!
+		得到的是t=0.5处的点,并非距离为一半的点.
+	*/
 	virtual Point midpoint() const
 	{
 		return Point(getX(0.5),getY(0.5));
 	}
 
+	//! 用于查找最近点.
 	float refineNearest(Point p,float t,float dist,float precision)
 	{
 		if(precision < 0.0001)
@@ -1336,7 +1213,7 @@ public:
 	std::vector<float> linearRoot(float a,float b) const
 	{
 		std::vector<float> result;
-		if(FloatEqual(a,0))
+		if(AlmostEqualAbs(a,0,FLT_EPSILON))
 		{
 			return result;
 		}
@@ -1348,9 +1225,9 @@ public:
 	std::vector<float> quadraticRoot(float a,float b,float c) const
 	{
 		std::vector<float> result;
-		if(FloatEqual(a,0))
+		if(AlmostEqualAbs(a,0,FLT_EPSILON))
 		{
-			if(FloatEqual(b,0))
+			if(AlmostEqualAbs(b,0,FLT_EPSILON))
 			{
 				return result;
 			}
@@ -1379,7 +1256,7 @@ public:
 	//! 求一元三次方程.参考wikipedia中求根公式法和三角函数解法.
 	std::vector<float> cubicRoot(float a,float b,float c,float d) const
 	{
-		//\todo 存在浮点数相关问题.
+		//\todo 存在浮点数相关问题,包括除0问题.
 		const double PI = 3.14159265358979323846264338327950288419716939937510582097494459;
 		double A = b/a;
 		double B = c/a;
@@ -1416,6 +1293,7 @@ public:
 		else                                          // distinct real roots
 		{
 			//三角函数法.
+			//\todo acos可能产生nan.
 			double th = acos(R/sqrt(-pow(Q, 3)));
 
 			t[0] = 2.0*sqrt(-Q)*cos(th/3.0) - A/3.0;
@@ -1497,13 +1375,6 @@ public:
 		return result;
 	}
 	virtual Type type() const {return CubicBezier;}
-	virtual int pointCount() const {return points.size();}
-	virtual Point point(int index) const 
-	{
-		assert(index >= 0);
-		assert(index < points.size());
-		return points[index];
-	}
 
 	//originBeginT和originEndT记录了该条曲线的t的范围.
 	//假如不是0,1,则说明该曲线是被分割出来的一条子曲线.
@@ -1529,7 +1400,7 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 	}
 
 	CubicBezierLine aligned = 
-		origin.align(straight.point(0),straight.point(1));
+		origin.align(straight.points[0],straight.points[1]);
 
 	float p0 = aligned.points[0].y;
 	float p1 = aligned.points[1].y;
@@ -1583,9 +1454,9 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
  	float C2 = A2*lineB_x1+B2*lineB_y1;
  
  	float det = A1*B2 - A2*B1;
- 	if(FloatEqual(det,0))
+ 	if(AlmostEqualUlps(A1*B2,A2*B1,1))
  	{
- 
+		//两直线平行.
  	}
  	else
  	{
@@ -1612,6 +1483,7 @@ public:
 	virtual void newFrame() {};
 	virtual void addBezier(CubicBezierLine line) {};
 	virtual void addLine(StraightLine line) {};
+	virtual void addPoint(Point p) {};
 	virtual void waitNextFrame() {};
 };
 
@@ -1648,6 +1520,10 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 		{
 			float t = (a.originEndT+a.originBeginT)/2.0;
 			result.push_back(Point(a.getX(t),a.getY(t)));
+
+			painter->newFrame();
+			painter->addPoint(Point(a.getX(t),a.getY(t)));
+			painter->waitNextFrame();
 		}
 // 		else if(b.originTRange() < 0.00005)
 // 		{
@@ -1663,68 +1539,66 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				std::vector<CubicBezierLine> sub = a.clipByFatLine(b);
 
-// 				painter->newFrame();
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->addBezier(b);
-// 				painter->waitNextFrame();
+ 				painter->newFrame();
+ 				for(int i = 0; i < sub.size(); i++)
+ 				{
+ 					painter->addBezier(sub[i]);
+ 				}
+ 				painter->addBezier(b);
+ 				painter->waitNextFrame();
 
 				//假如切割得不够大,继续用boundingRect切割.
 				if(sub.size() == 1
-					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.50)
+					&& sub[0].originTRange()/a.originTRange() > 0.80)
 				{
 					//继续切割.
 					a = sub[0];
 					StraightLine clip1(bb.points[0],bb.points[1]);
 					StraightLine clip2(bb.points[3],bb.points[2]);
 
-// 					painter->newFrame();
-// 					painter->addBezier(a);
-// 					painter->addBezier(b);
-// 					painter->addLine(clip1);
-// 					painter->addLine(clip2);
-// 					painter->waitNextFrame();
+					painter->newFrame();
+					painter->addBezier(a);
+					painter->addBezier(b);
+					painter->addLine(clip1);
+					painter->addLine(clip2);
+					painter->waitNextFrame();
 
 					sub = a.clipByParallelLine(clip1,clip2);
 
 				}
 
-// 				painter->newFrame();
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->addBezier(b);
-// 				painter->waitNextFrame();
+				painter->newFrame();
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->addBezier(b);
+				painter->waitNextFrame();
 
-				if(sub.size() == 1
-					&& !FloatEqual(a.originTRange(),0)
-					&& sub[0].originTRange()/a.originTRange() > 0.50)
+				if(sub.size() == 1 
+					&& sub[0].originTRange()/a.originTRange() > 0.80)
 				{
 					a = sub[0];
 					StraightLine clip1(bb.points[1],bb.points[2]);
 					StraightLine clip2(bb.points[0],bb.points[3]);
 
-// 					painter->newFrame();
-// 					painter->addBezier(a);
-// 					painter->addBezier(b);
-// 					painter->addLine(clip1);
-// 					painter->addLine(clip2);
-// 					painter->waitNextFrame();
+					painter->newFrame();
+					painter->addBezier(a);
+					painter->addBezier(b);
+					painter->addLine(clip1);
+					painter->addLine(clip2);
+					painter->waitNextFrame();
 
 					sub = a.clipByParallelLine(clip1,clip2);
 				}
 
-// 				painter->newFrame();
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->addBezier(b);
-// 				painter->waitNextFrame();
+				painter->newFrame();
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->addBezier(b);
+				painter->waitNextFrame();
 
 				if(sub.size() == 1
 					&& a.originTRange() > 0.05
@@ -1734,13 +1608,13 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 					sub = a.split(0.5);
 				}
 
-// 				painter->newFrame();
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->addBezier(b);
-// 				painter->waitNextFrame();
+				painter->newFrame();
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->addBezier(b);
+				painter->waitNextFrame();
 
 				for(int i = 0; i < sub.size(); i++)
 				{
@@ -1754,83 +1628,81 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 
 				std::vector<CubicBezierLine> sub = b.clipByFatLine(a);
 
-// 				painter->newFrame();
-// 				painter->addBezier(a);
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->waitNextFrame();
+				painter->newFrame();
+				painter->addBezier(a);
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->waitNextFrame();
 
 				if(sub.size() == 1
-					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.50)
+					&& sub[0].originTRange()/b.originTRange() > 0.80)
 				{
 					//继续切割.
 					b = sub[0];
 					StraightLine clip1(bb.points[0],bb.points[1]);
 					StraightLine clip2(bb.points[3],bb.points[2]);
 
-// 					painter->newFrame();
-// 					painter->addBezier(a);
-// 					painter->addBezier(b);
-// 					painter->addLine(clip1);
-// 					painter->addLine(clip2);
-// 					painter->waitNextFrame();
+					painter->newFrame();
+					painter->addBezier(a);
+					painter->addBezier(b);
+					painter->addLine(clip1);
+					painter->addLine(clip2);
+					painter->waitNextFrame();
 
 					sub = b.clipByParallelLine(clip1,clip2);
 
 				}
 
-// 				painter->newFrame();
-// 				painter->addBezier(a);
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->waitNextFrame();
+				painter->newFrame();
+				painter->addBezier(a);
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->waitNextFrame();
+
+				if(sub.size() == 1
+					&& sub[0].originTRange()/b.originTRange() > 0.80)
+				{
+					b = sub[0];
+					StraightLine clip1(bb.points[1],bb.points[2]);
+					StraightLine clip2(bb.points[0],bb.points[3]);
+
+					painter->newFrame();
+					painter->addBezier(a);
+					painter->addBezier(b);
+					painter->addLine(clip1);
+					painter->addLine(clip2);
+					painter->waitNextFrame();
+
+					sub = b.clipByParallelLine(clip1,clip2);
+				}
+
+				painter->newFrame();
+				painter->addBezier(a);
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->waitNextFrame();
 
 				if(sub.size() == 1
 					&& b.originTRange() > 0.05
 					&& sub[0].originTRange()/b.originTRange() > 0.50)
 				{
 					b = sub[0];
-					StraightLine clip1(bb.points[1],bb.points[2]);
-					StraightLine clip2(bb.points[0],bb.points[3]);
-
-// 					painter->newFrame();
-// 					painter->addBezier(a);
-// 					painter->addBezier(b);
-// 					painter->addLine(clip1);
-// 					painter->addLine(clip2);
-// 					painter->waitNextFrame();
-
-					sub = b.clipByParallelLine(clip1,clip2);
-				}
-
-// 				painter->newFrame();
-// 				painter->addBezier(a);
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->waitNextFrame();
-
-				if(sub.size() == 1
-					&& !FloatEqual(b.originTRange(),0)
-					&& sub[0].originTRange()/b.originTRange() > 0.50)
-				{
-					b = sub[0];
 					sub = b.split(0.5);
 				}
 
-// 				painter->newFrame();
-// 				painter->addBezier(a);
-// 				for(int i = 0; i < sub.size(); i++)
-// 				{
-// 					painter->addBezier(sub[i]);
-// 				}
-// 				painter->waitNextFrame();
+				painter->newFrame();
+				painter->addBezier(a);
+				for(int i = 0; i < sub.size(); i++)
+				{
+					painter->addBezier(sub[i]);
+				}
+				painter->waitNextFrame();
 
 				for(int i = 0; i < sub.size(); i++)
 				{
@@ -1839,14 +1711,13 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 				}
 			}
 
-			if(counter > 1000)
+			if(counter > 100)
 			{
 				//assert(!"Intersect Bezier does not converge.");
 				break;
 			}
 		}
 	}
-
 	return result;
 }
 

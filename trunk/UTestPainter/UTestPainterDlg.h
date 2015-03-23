@@ -44,11 +44,14 @@ protected:
 
 	virtual void addLine( uni::StraightLine line );
 
+	virtual void addPoint(uni::Point p);
+
 	virtual void waitNextFrame();
 
 private:
 	std::vector<uni::CubicBezierLine> clines;
 	std::vector<uni::StraightLine> slines;
+	std::vector<uni::Point> points;
 	int m_flame;
 
 };
