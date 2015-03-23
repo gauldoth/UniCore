@@ -266,10 +266,10 @@ TEST(UGeometryPerfTest,Bezier_Intersection_Perf)
 	CubicBezierLine a(10,100,90,30,40,140,220,240);
 	CubicBezierLine b(5,150,180,20,80,280,210,190);
 	std::vector<Point> result = IntersectBezierAndBezierLine(a,b);
-// 	for(int i = 0; i < 100; i++)
-// 	{
-// 		result = IntersectBezierAndBezierLine(a,b);
-// 	}
+ 	for(int i = 0; i < 100; i++)
+ 	{
+ 		result = IntersectBezierAndBezierLine(a,b);
+ 	}
 	EXPECT_EQ(3,result.size());
 	float x1 = a.getX(0.895);
 	float y1 = a.getY(0.895);
@@ -308,6 +308,42 @@ TEST(UGeometryTest,Bezier_split_test1)
 		623.64673,636.77960,636.44458,729.12103);
 	std::vector<CubicBezierLine> subCurve = cubic.split(1.0359697e-007,0.99999994);
 	ASSERT_EQ(3,subCurve.size());
+}
+
+//分割贝塞尔曲线,贝塞尔曲线的四个点都为0.0.
+TEST(UGeometryTest,Bezier_split_test2)
+{
+	CubicBezierLine cubic(0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0);
+	std::vector<CubicBezierLine> subCurve = cubic.split(0.5);
+	EXPECT_EQ(2,subCurve.size());
+	EXPECT_EQ(0.0,subCurve[0].originBeginT);
+	EXPECT_EQ(0.5,subCurve[0].originEndT);
+	EXPECT_EQ(0.5,subCurve[1].originBeginT);
+	EXPECT_EQ(1.0,subCurve[1].originEndT);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
+}
+
+//贝塞尔曲线被平行线分割.
+//uni::Line = {points=[4]({x=10.000000 y=100.00000 },{x=82.420639 y=36.631943 },{x=48.307312 y=120.77245 },{x=174.72665 y=211.46967 }) }
+//a = {originBeginT=0.00000000 originEndT=0.90525800 }
+//uni::Line = {points=[2]({x=64.813370 y=93.689224 },{x=155.92406 y=154.22185 }) }
+//uni::Line = {points=[2]({x=44.184212 y=124.73920 },{x=135.29491 y=185.27182 }) }
+TEST(UGeometryTest,Bezier_clipByParallelLine_Works)
+{
+	CubicBezierLine cubic(10.0,100.0,82.420639,36.631943,48.307312,120.77245,174.72665,211.46967);
+	StraightLine clip1(64.813370,93.689224,155.92406,154.22185);
+	StraightLine clip2(44.184212,124.73920,135.29491,185.27182);
+	std::vector<CubicBezierLine> subCurves = cubic.clipByParallelLine(clip1,clip2);
+	EXPECT_EQ(2,subCurves.size());
+	EXPECT_EQ(0.0,subCurves[0].originBeginT);
+	EXPECT_EQ(1.0,subCurves[1].originEndT);
+	if(HasNonfatalFailure())
+	{
+		FAIL();
+	}
 }
 
 //>>浮点数比较.

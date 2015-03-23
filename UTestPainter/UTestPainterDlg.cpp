@@ -183,11 +183,16 @@ void CUTestPainterDlg::OnPaint()
 				dc.LineTo(clines[i].getX(t)*2,(clines[i].getY(t))*2);
 			}
 		}
-				dc.SelectObject(&pen1);
+		dc.SelectObject(&pen1);
 		for(int i = 0; i < slines.size(); i++)
 		{
 			dc.MoveTo(slines[i].points[0].x*2,(slines[i].points[0].y)*2);
 			dc.LineTo(slines[i].points[1].x*2,(slines[i].points[1].y)*2);
+		}
+
+		for(int i = 0; i < points.size(); i++)
+		{
+			dc.Ellipse((points[i].x-2)*2,(points[i].y-2)*2,(points[i].x+2)*2,(points[i].y+2)*2);
 		}
 	}
 }
@@ -203,6 +208,7 @@ void CUTestPainterDlg::newFrame()
 {
 	clines.clear();
 	slines.clear();
+	points.clear();
 }
 
 void CUTestPainterDlg::addBezier( uni::CubicBezierLine line )
@@ -215,6 +221,11 @@ void CUTestPainterDlg::addLine( uni::StraightLine line )
 	slines.push_back(line);
 }
 
+void CUTestPainterDlg::addPoint(uni::Point p)
+{
+	points.push_back(p);
+}
+
 void CUTestPainterDlg::waitNextFrame()
 {
 	m_flame++;
@@ -222,6 +233,13 @@ void CUTestPainterDlg::waitNextFrame()
 	_itow_s(m_flame,buf,10);
 	SetWindowText(buf);
 	Invalidate(TRUE);
-	Sleep(3000);
+	if(m_flame >= 29)
+	{
+		Sleep(200);
+	}
+	else
+	{
+		Sleep(200);
+	}
 }
 
