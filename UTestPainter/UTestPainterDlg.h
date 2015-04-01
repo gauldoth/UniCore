@@ -14,7 +14,7 @@
 
 
 // CUTestPainterDlg 对话框
-class CUTestPainterDlg : public CDialogEx, public uni::TestPainter
+class CUTestPainterDlg : public CDialogEx, public uni::IntersectionTestPainter
 {
 // 构造
 public:

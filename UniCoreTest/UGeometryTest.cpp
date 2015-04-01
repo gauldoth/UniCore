@@ -47,7 +47,7 @@ TEST(UGeometryTest,IntersectParallelLine_NoIntersection)
 	ASSERT_EQ(0,result.size());
 }
 
-int round(float a)
+static int round(float a)
 {
 	return (int)(a+0.5);
 }

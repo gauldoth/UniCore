@@ -27,6 +27,7 @@ inline bool AlmostEqualUlps(float a, float b, int maxUlpsDiff)
 	int iB = *(int *)&b;
 
 	// Different signs means they do not match.
+	//\todo 这里的比较比较冒险,可能会是未定义行为.
 	if ((((unsigned int)iA)>>31) != (((unsigned int)iB)>>31))
 	{
 		// Check for equality to make sure +0==-0
@@ -87,6 +88,7 @@ template <typename T> inline int sgn(T val) {
 	return (T(0) < val) - (val < T(0));
 }
 
+//! 点.
 class Point
 {
 public:
@@ -102,17 +104,6 @@ public:
 	float x;
 	float y;
 };
-
-//! 求两点间的插值.
-/*!
-*/
-inline Point Lerp(Point a,Point b,float t)
-{
-	float x = a.x + (b.x-a.x)*t;
-	float y = a.y + (b.y-a.y)*t;
-
-	return Point(x,y);
-}
 
 
 //! 矩形,边和x或y轴平行.
@@ -152,7 +143,7 @@ public:
 	float b;
 };
 
-//! 矩形,可以是倾斜的.
+//! 矩形,和Rect不同的地方是,边可以是倾斜的.
 class XRect
 {
 public:
@@ -178,17 +169,21 @@ class Line
 public:
 	enum Type
 	{
-		Straight,
-		CubicBezier,
+		Straight,  //!< 直线段.
+		CubicBezier,  //!< 三次贝塞尔曲线.
 	};
 	Line() {}
 	Line(const Line &line)
 	{
 		points = line.points;
 	}
+	//! 获得线条的类型.
 	virtual Type type() const = 0;
+	//! 获得中点.
 	virtual Point midpoint() const = 0;
+	//! 获得最近点.
 	virtual Point getNearestPoint(Point p) = 0;
+	//! 获得包围矩形.
 	virtual Rect boundingBox() const = 0;
 	std::vector<Point> points;
 };
@@ -297,6 +292,7 @@ public:
 		return projectionPoint;
 	}
 
+	//! 中点.
 	virtual Point midpoint() const
 	{
 		return Point((points[0].x+points[1].x)/2.0,(points[0].y+points[1].y)/2.0);
@@ -342,7 +338,8 @@ public:
 	}
 };
 
-//Binomial Coefficient
+//二项式系数(Binomial Coefficient)
+//用于贝塞尔曲线相关计算.
 static float binomials[][5] = 
 {
 	{1,0,0,0,0},
@@ -462,13 +459,23 @@ public:
 		return result;
 	}
 
-	//! 获得originT的范围.
+	//! 获得当前曲线在分割前,对应原曲线的t的范围.
+	/*!
+		例如曲线a (t [0,1]),以t=0.3分割为曲线a1 (t [0,0.3]), a2 (t [0.3,1.0]).
+		这里a1的originTRange为0.3, a2的originTRange为1.0-0.3 = 0.7 .
+	*/
 	float originTRange() 
 	{
 		assert(originEndT >= originBeginT);
 		return originEndT-originBeginT;
 	}
 
+	//! 被平行线切割,返回位于平行线间的曲线部分.
+	/*!
+		两条平行线分别为,
+		a1*x+b1*y+c1 = 0.
+		a2*x+b2*y+c2 = 0.
+	*/
 	std::vector<CubicBezierLine> clipByParallelLine(double a1,double b1,double c1,double a2,double b2,double c2)
 	{
 		std::vector<CubicBezierLine> result;
@@ -498,7 +505,7 @@ public:
 			derivativesA.push_back(derivative);
 		}
 
-		if(AlmostEqualUlpsAndAbs(fabs(c1),fabs(c2),fabs(std::max(c1,c2))*FLT_EPSILON,1))
+		if(AlmostEqualUlpsAndAbs(fabs(c1),fabs(c2),fabs((std::max)(c1,c2))*FLT_EPSILON,1))
 		{
 			//平行线靠得太近,接近于一条直线.
 			//随意找一条直线,算出和曲线到这条直线距离为0的点.
@@ -814,7 +821,7 @@ public:
 	}
 
 
-	//! 使用fat line切割line,丢弃fat line之外的部分.
+	//! 使用clipLine这条曲线的fat line切割line,丢弃fat line之外的部分.
 	std::vector<CubicBezierLine> clipByFatLine(CubicBezierLine clipLine)
 	{
 		//L为过P0和P3的线段.
@@ -982,13 +989,12 @@ public:
 		return result;
 	}
 
-	//! 计算贝塞尔曲线的包围矩形.
+	//! 计算贝塞尔曲线的紧包围矩形.
 	/*!
-		这里得到的是包围矩形(bounding box).
-		得到的并不是包围该贝塞尔曲线的最小包围矩形,但是相比looseBoundingBox函数
+		得到的并不是包围该贝塞尔曲线的最小包围矩形,但是相比boundingBox函数
 		得到的矩形要更小.
 	*/
-	virtual Rect boundingBox() const
+	virtual Rect tightBoundingBox() const
 	{
 		std::vector<float> inflections = getInflections();
 
@@ -1017,11 +1023,11 @@ public:
 		return Rect(minX,minY,maxX,maxY);
 	}
 
-	//! 得到松包围矩形.
+	//! 得到包围矩形.
 	/*!
 		为包围4个控制点的矩形.
 	*/
-	Rect looseBoundingBox() const
+	virtual Rect boundingBox() const
 	{
 		float minX = points[0].x;
 		float minY = points[0].y;
@@ -1040,8 +1046,8 @@ public:
 		return Rect(minX,minY,maxX,maxY);
 	}
 
-	//! 获得紧包围矩形.
-	XRect tightBoundingBox()
+	//! 获得非常紧的包围矩形.
+	XRect veryTightBoundingBox()
 	{
 		//将曲线旋转成和x轴平行,计算bounding box,之后再旋转回原角度.
 		//这样计算出的bounding box比未旋转直接计算要来得更小.
@@ -1052,7 +1058,7 @@ public:
 		float ca = cos(angle);
 		float sa = sin(angle);
 
-		Rect boundingBox = align(points[0],points[3]).boundingBox();
+		Rect boundingBox = align(points[0],points[3]).tightBoundingBox();
 		XRect xBoundingBox(boundingBox);
 
 		for(int i = 0; i < xBoundingBox.points.size(); i++)
@@ -1067,7 +1073,7 @@ public:
 		return xBoundingBox;
 	}
 
-	//! 获得曲线上的最近点.
+	//! 获得曲线上离点p最近的点.
 	/*!
 		采用数值解法计算当前点到贝塞尔曲线上的最近点.
 	*/
@@ -1130,9 +1136,11 @@ public:
 		return refineNearest(p,t,dist,precision/2.0);
 	}
 
+	//! 将该曲线绕start,end连成的线段旋转,使线段和x轴平行.
 	CubicBezierLine align(Point start, Point end)
 	{
-		float angle = atan2(end.y-start.y,end.x-start.x) /*+ 3.1415926*/;
+		//! 旋转角度为-angle.
+		float angle = atan2(end.y-start.y,end.x-start.x);
 		float ca = cos(-angle);
 		float sa = sin(-angle);
 		float ox = start.x;
@@ -1155,6 +1163,10 @@ public:
 		return CubicBezierLine(alignedPoints);
 	}
 
+	//! 求根.
+	/*!
+		\param derivative 0为求根,1为求1阶导数的根,2为求2阶导数的根...
+	*/
 	std::vector<float> root(float p0,float p1,float p2,float p3,int derivative) const
 	{
 		std::vector<float> roots;
@@ -1227,37 +1239,30 @@ public:
 		std::vector<float> result;
 		if(AlmostEqualAbs(a,0,FLT_EPSILON))
 		{
-			if(AlmostEqualAbs(b,0,FLT_EPSILON))
-			{
-				return result;
-			}
-			float root = -c/b;
-			if(root >= 0.0 && root <= 1.0)
-			{
-				result.push_back(root);
-			}
-			return result;
+			return linearRoot(b,c);
 		}
-		else
+
+		float delta = b*b-4*a*c;
+		if(delta < 0)
 		{
-			float delta = b*b-4*a*c;
-			if(delta < 0)
-			{
-				return result;
-			}
-			float rootA = (-b+sqrt(delta))/(2*a);
-			float rootB = (-b-sqrt(delta))/(2*a);
-			result.push_back(rootA);
-			result.push_back(rootB);
 			return result;
 		}
+		float rootA = (-b+sqrt(delta))/(2*a);
+		float rootB = (-b-sqrt(delta))/(2*a);
+		result.push_back(rootA);
+		result.push_back(rootB);
+		return result;
 	}
 
 	//! 求一元三次方程.参考wikipedia中求根公式法和三角函数解法.
 	std::vector<float> cubicRoot(float a,float b,float c,float d) const
 	{
-		//\todo 存在浮点数相关问题,包括除0问题.
 		const double PI = 3.14159265358979323846264338327950288419716939937510582097494459;
+		if(AlmostEqualAbs(a,0,FLT_EPSILON))
+		{
+			return quadraticRoot(b,c,d);
+		}
+
 		double A = b/a;
 		double B = c/a;
 		double C = d/a;
@@ -1293,7 +1298,13 @@ public:
 		else                                          // distinct real roots
 		{
 			//三角函数法.
-			//\todo acos可能产生nan.
+			//R > 0, D < 0, 因此 Q < 0.
+			//以下sqrt(-Q)及sqrt(-pow(Q, 3))不会返回nan.
+			//因为R != 0 && R^2 + Q^3 < 0.
+			//因此abs(Q^3) > abs(R^2).
+			//因此R^2/Q^3在[-1,1]之间.
+			//因此R/Q^(3/2)在[-1,1]之间.
+			//下面acos中的R/sqrt(-pow(Q, 3))必定会在[-1,1]之间.
 			double th = acos(R/sqrt(-pow(Q, 3)));
 
 			t[0] = 2.0*sqrt(-Q)*cos(th/3.0) - A/3.0;
@@ -1312,6 +1323,11 @@ public:
 		return result;
 	}
 
+	//! 求导数.
+	/*!
+		\param derivative 几阶导数.
+		\param v 传入points中的所有x组成的数组,或者所有y组成的数组.
+	*/
 	float getDerivative(int derivative, float t, const std::vector<float> v)
 	{
 		int n = v.size()-1;
@@ -1342,6 +1358,8 @@ public:
 			return getDerivative(derivative - 1, t, newV);
 		}
 	}
+
+	//! 获得t位置处的x值.
 	float getX(float t) const
 	{
 		const int n = 3;
@@ -1358,6 +1376,8 @@ public:
 
 		return result;
 	}
+
+	//! 获得t位置处的y值.
 	float getY(float t) const
 	{
 		const int n = 3;
@@ -1382,13 +1402,14 @@ public:
 	float originEndT;
 };
 
+//! 计算直线和贝塞尔曲线的交点.
 inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, const Line &bezier)
 {
 	std::vector<Point> result;
 
 	CubicBezierLine origin = ((CubicBezierLine &)bezier);
 
-	Rect bezierBoundingBox = origin.looseBoundingBox();
+	Rect bezierBoundingBox = origin.boundingBox();
 	Rect straightBoundingBox = straight.boundingBox();
 
 	if(bezierBoundingBox.l > straightBoundingBox.r
@@ -1421,14 +1442,15 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 	return result;
 }
 
- inline void IntersectStraightLine(const Line &lineA, const Line &lineB, std::vector<Point> &points)
- {
- 	//std::vector<Point> result;
- 
- 	float lineA_x1 = lineA.points[0].x;
- 	float lineA_y1 = lineA.points[0].y;
- 	float lineA_x2 = lineA.points[1].x;
- 	float lineA_y2 = lineA.points[1].y;
+//计算直线和直线的交点.
+inline std::vector<Point> IntersectStraightLine(const Line &lineA, const Line &lineB)
+{
+	std::vector<Point> result;
+
+	float lineA_x1 = lineA.points[0].x;
+	float lineA_y1 = lineA.points[0].y;
+	float lineA_x2 = lineA.points[1].x;
+	float lineA_y2 = lineA.points[1].y;
 	float lineB_x1 = lineB.points[0].x;
 	float lineB_y1 = lineB.points[0].y;
 	float lineB_x2 = lineB.points[1].x;
@@ -1442,42 +1464,43 @@ inline std::vector<Point> IntersectStraightAndBezierLine(const Line &straight, c
 		|| lineABoundingBox.t > lineBBoundingBox.b
 		|| lineABoundingBox.b < lineBBoundingBox.t)
 	{
-		return;
+		return result;
 	}
- 
- 	float A1 = lineA_y2 - lineA_y1;
- 	float B1 = lineA_x1 - lineA_x2;
- 	float C1 = A1*lineA_x1+B1*lineA_y1;
- 
- 	float A2 = lineB_y2 - lineB_y1;
- 	float B2 = lineB_x1 - lineB_x2;
- 	float C2 = A2*lineB_x1+B2*lineB_y1;
- 
- 	float det = A1*B2 - A2*B1;
- 	if(AlmostEqualUlps(A1*B2,A2*B1,1))
- 	{
+
+	float A1 = lineA_y2 - lineA_y1;
+	float B1 = lineA_x1 - lineA_x2;
+	float C1 = A1*lineA_x1+B1*lineA_y1;
+
+	float A2 = lineB_y2 - lineB_y1;
+	float B2 = lineB_x1 - lineB_x2;
+	float C2 = A2*lineB_x1+B2*lineB_y1;
+
+	float det = A1*B2 - A2*B1;
+	if(AlmostEqualUlps(A1*B2,A2*B1,1))
+	{
 		//两直线平行.
- 	}
- 	else
- 	{
- 		float x = (B2*C1 - B1*C2)/det;
- 		float y = (A1*C2 - A2*C1)/det;
+	}
+	else
+	{
+		assert(det != 0.0);
+		float x = (B2*C1 - B1*C2)/det;
+		float y = (A1*C2 - A2*C1)/det;
 		Point p(x,y);
- 
- 		//判断交点是否在两条线段上.
+
+		//判断交点是否在两条线段上.
 		if(lineABoundingBox.contains(p)
 			&& lineBBoundingBox.contains(p))
 		{
-			 points.push_back(p);
+			result.push_back(p);
 		}
- 	}
- 
- 	//return result;
- }
+	}
+
+	return result;
+}
 
 
-
-class TestPainter
+//! 用于相交算法的测试.
+class IntersectionTestPainter
 {
 public:
 	virtual void newFrame() {};
@@ -1487,8 +1510,9 @@ public:
 	virtual void waitNextFrame() {};
 };
 
+//! 计算贝塞尔曲线和贝塞尔曲线的交点.
 inline std::vector<Point> IntersectBezierAndBezierLine(
-	const Line &lineA, const Line &lineB,TestPainter *painter = new TestPainter)
+	const Line &lineA, const Line &lineB,IntersectionTestPainter *painter = new IntersectionTestPainter)
 {
 	std::vector<Point> result;
 
@@ -1525,17 +1549,12 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 			painter->addPoint(Point(a.getX(t),a.getY(t)));
 			painter->waitNextFrame();
 		}
-// 		else if(b.originTRange() < 0.00005)
-// 		{
-// 			float t = (b.originEndT+b.originBeginT)/2.0;
-// 			result.push_back(Point(b.getX(t),b.getY(t)));
-// 		}
 		else
 		{
 			counter++;
 			if(counter%2 == 0)
 			{
-				XRect bb = b.tightBoundingBox();
+				XRect bb = b.veryTightBoundingBox();
 
 				std::vector<CubicBezierLine> sub = a.clipByFatLine(b);
 
@@ -1624,7 +1643,7 @@ inline std::vector<Point> IntersectBezierAndBezierLine(
 			}
 			else
 			{
-				XRect bb = a.tightBoundingBox();
+				XRect bb = a.veryTightBoundingBox();
 
 				std::vector<CubicBezierLine> sub = b.clipByFatLine(a);
 
@@ -1728,7 +1747,7 @@ inline std::vector<Point> Intersect(const Line &lineA, const Line &lineB)
 	if(lineA.type() == Line::Straight
 		&& lineB.type() == Line::Straight)
 	{
-		IntersectStraightLine(lineA,lineB,result);
+		result = IntersectStraightLine(lineA,lineB);
 	}
 	else if(lineA.type() == Line::Straight && lineB.type() == Line::CubicBezier)
 	{
@@ -1748,7 +1767,6 @@ inline std::vector<Point> Intersect(const Line &lineA, const Line &lineB)
 	}
 	return result;
 }
-
 
 
 }//namespace uni
