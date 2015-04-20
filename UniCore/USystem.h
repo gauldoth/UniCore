@@ -31,7 +31,7 @@ std::wstring CreateTempDirectory();
     \code
     std::wstring fullPath = L"D:\\temp\\a.txt";
     std::wstring dirPart = GetDirectoryPart(fullPath);
-    //dirPart equals L"D:\\temp".
+    //dirPart equals L"D:\\temp\\".
     \endcode
 */
 std::wstring GetDirectoryPart(const std::wstring &fullPath);
