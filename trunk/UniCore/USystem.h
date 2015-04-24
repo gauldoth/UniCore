@@ -70,10 +70,10 @@ std::wstring GetCurrentDir();
 
 //! 删除文件夹及所有包含内容.
 /*!
-    \param 文件夹全路径.
+    \param directory 要删除的目录,必须以'\'结尾.
     \return 是否删除成功.
 */
-bool DeleteDirectory(const std::wstring &path);
+bool DeleteDirectory(const std::wstring &directory);
 
 //! Checks whether a specified directory exists.
 /*!

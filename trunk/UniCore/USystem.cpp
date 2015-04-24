@@ -6,6 +6,7 @@
 #include "UCommon.h"
 #include <fstream>
 #include <regex>
+#include <cassert>
 
 #define AUTO_LINK_LIB_NAME "UniCore"
 #include "AutoLink.h"
@@ -208,23 +209,24 @@ bool DirectoryExists( const std::wstring &directory )
 	return false;
 }
 
-bool DeleteDirectory(const std::wstring &path)
+bool DeleteDirectory(const std::wstring &directory)
 {
-	if(path.empty())
+	if(directory.empty())
 	{
 		return false;
 	}
 	else
 	{
-		if(path[path.size()-1] != L'\\')
+		if(directory[directory.size()-1] != L'\\')
 		{
+			assert(!"Directory to delete should ends with '\\'");
 			return false;
 		}
 	}
 	WIN32_FIND_DATA ffd = {0};
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 
-	std::wstring filesToFind = path + L"*";
+	std::wstring filesToFind = directory + L"*";
 	hFind = FindFirstFile(filesToFind.c_str(), &ffd);
 
 	if (INVALID_HANDLE_VALUE == hFind) 
@@ -241,19 +243,19 @@ bool DeleteDirectory(const std::wstring &path)
 			{
 				continue;
 			}
-			if(!DeleteDirectory((path + ffd.cFileName + L"\\").c_str()))
+			if(!DeleteDirectory((directory + ffd.cFileName + L"\\").c_str()))
 			{
 				return false;
 			}
 		}
 		else
 		{
-			DeleteFileW((path + ffd.cFileName).c_str());
+			DeleteFileW((directory + ffd.cFileName).c_str());
 		}
 	}
 	while (FindNextFile(hFind, &ffd) != 0);
 
 	FindClose(hFind);
 
-	return RemoveDirectoryW(path.c_str());
+	return RemoveDirectoryW(directory.c_str());
 }
