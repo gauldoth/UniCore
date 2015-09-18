@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <functional>
 
 #define AUTO_LINK_LIB_NAME "UniCore"
 #include "AutoLink.h"
@@ -45,8 +46,53 @@
 */
 #define USE_DEFAULT_COPY(Class);
 
+
+
+#define UNI_NAME(name, line) name ## line
+#define ON_OUT_OF_SCOPE_2(lambda_body, line) UScopeGuard UNI_NAME(deleter_lambda_, line)([&]() { lambda_body; } );
+#define ON_OUT_OF_SCOPE(lambda_body) ON_OUT_OF_SCOPE_2(lambda_body, __LINE__)
+
 namespace uni
 {
+
+//! RAII Scope Guard
+class UScopeGuard {
+public: 
+	template<class Callable> 
+	UScopeGuard(Callable && undo_func) 
+		: func_(std::forward<Callable>(undo_func)) 
+	{
+
+	}
+
+	UScopeGuard(UScopeGuard && other) : func_(std::move(other.func_)) {
+		other.func_ = nullptr;
+	}
+
+	~UScopeGuard() {
+		if(func_) 
+		{
+			// must not throw
+			try
+			{
+				func_();
+			}
+			catch (...)
+			{
+			}
+		}
+	}
+
+	void dismiss() throw() {
+		func_ = nullptr;
+	}
+
+private:
+	UScopeGuard(const UScopeGuard&);
+	void operator = (const UScopeGuard&);
+	std::function<void()> func_;
+};
+
 //! 获得一个随机的角色名字。
 /*! 
     \param minSize 名字允许的最小长度，假如生成的名字长度小于该值，则重新生成。

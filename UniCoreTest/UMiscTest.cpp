@@ -47,3 +47,14 @@ TEST(UMiscTest,GenerateUUID_NotRepeat)
     std::wstring uuidB = GenerateUUID();
     ASSERT_NE(uuidA,uuidB);
 }
+
+TEST(UMiscTest,ScopeGuard_Works)
+{
+	int i = 0;
+	{
+		i++;
+		UScopeGuard guard([&](){i--;});
+	}
+
+	ASSERT_EQ(0,i);
+}
