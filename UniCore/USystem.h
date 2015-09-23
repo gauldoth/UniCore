@@ -11,6 +11,7 @@
 #include "AutoLink.h"
 
 #include <string>
+#include <vector>
 
 //! Get temp path.
 /*!
@@ -90,5 +91,13 @@ bool DirectoryExists(const std::wstring &directory);
 */
 bool CreateDirectories(const std::wstring &path);
 
+//! Get all file names from in a directory.
+/*!
+	\param directory The directory you want to look into for files.
+*/
+std::vector<std::wstring> GetFileNamesInDirectory(const std::wstring &directory);
+
+//! Combine two strings into a path.
+std::wstring PathCombine(const std::wstring &path1, const std::wstring &path2);
 
 #endif//UNICORE_USYSTEM_H

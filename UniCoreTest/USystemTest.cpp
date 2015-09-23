@@ -53,3 +53,8 @@ TEST(USystemTest,DirectoryExists_FilePath_ReturnsFalse)
 {
 	ASSERT_FALSE(DirectoryExists(L"C:\\Windows\\System32\\ntdll.dll"));
 }
+
+TEST(USystemTest,PathCombineWorks)
+{
+	ASSERT_EQ(L"C:\\Temp\\Test.txt",PathCombine(L"C:",L"Temp\\Test.txt"));
+}

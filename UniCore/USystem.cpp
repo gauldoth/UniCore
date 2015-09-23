@@ -259,3 +259,55 @@ bool DeleteDirectory(const std::wstring &directory)
 
 	return RemoveDirectoryW(directory.c_str());
 }
+
+std::vector<std::wstring> GetFileNamesInDirectory( const std::wstring &directory )
+{
+	std::vector<std::wstring> fileNames;
+
+	if(directory.empty())
+	{
+		return fileNames;
+	}
+
+	WIN32_FIND_DATAW ffd = {0};
+	HANDLE hFind = INVALID_HANDLE_VALUE;
+
+	std::wstring filesToFind = directory + L"*";
+	hFind = FindFirstFile(filesToFind.c_str(), &ffd);
+
+	if (INVALID_HANDLE_VALUE == hFind) 
+	{
+		return fileNames;
+	} 
+
+	do
+	{
+		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			if(wcscmp(ffd.cFileName,L".") == 0
+				|| wcscmp(ffd.cFileName,L"..") == 0)
+			{
+				continue;
+			}
+		}
+		else
+		{
+			fileNames.push_back(ffd.cFileName);
+		}
+	}
+	while (FindNextFile(hFind, &ffd) != 0);
+
+	FindClose(hFind);
+
+	return fileNames;
+}
+
+std::wstring PathCombine( const std::wstring &path1, const std::wstring &path2 )
+{
+	std::wstring result = path1;
+	if(result.back() != L'\\')
+	{
+		result.push_back(L'\\');
+	}
+	return result+path2;
+}
