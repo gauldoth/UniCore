@@ -272,7 +272,7 @@ std::vector<std::wstring> GetFileNamesInDirectory( const std::wstring &directory
 	WIN32_FIND_DATAW ffd = {0};
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 
-	std::wstring filesToFind = directory + L"*";
+	std::wstring filesToFind = PathCombine(directory,L"*");;
 	hFind = FindFirstFile(filesToFind.c_str(), &ffd);
 
 	if (INVALID_HANDLE_VALUE == hFind) 
