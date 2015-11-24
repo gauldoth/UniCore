@@ -188,6 +188,76 @@ std::wstring LCIDToRFC1766( LCID lcid )
     return result;
 }
 
+float GetCPUUsage( int pid )
+{
+	FILETIME sysIdle;
+	FILETIME sysKernel;
+	FILETIME sysUser;
+
+	FILETIME procCreation;
+	FILETIME procExit;
+	FILETIME procKernel;
+	FILETIME procUser;
+
+	static bool firstRun = true;
+	static float cpuUsage = 0;
+	static FILETIME prevSysKernel;
+	static FILETIME prevSysUser;
+	static FILETIME prevProcKernel;
+	static FILETIME prevProcUser;
+	
+	auto SubtractTimes = [](const FILETIME &t1, const FILETIME &t2)->ULONGLONG
+	{
+		LARGE_INTEGER a;
+		LARGE_INTEGER b;
+		a.LowPart = t1.dwLowDateTime;
+		a.HighPart = t1.dwHighDateTime;
+
+		b.LowPart = t2.dwLowDateTime;
+		b.HighPart = t2.dwHighDateTime;
+
+		return a.QuadPart-b.QuadPart;
+	};
+
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,FALSE,pid);
+	ON_OUT_OF_SCOPE(CloseHandle(hProcess));
+
+
+	if(!GetSystemTimes(&sysIdle,&sysKernel,&sysUser) 
+		|| !GetProcessTimes(hProcess,&procCreation,&procExit,&procKernel,&procUser))
+	{
+		return cpuUsage;
+	}
+	
+	//
+	if(!firstRun)
+	{
+		ULONGLONG sysKernelDiff = SubtractTimes(sysKernel,prevSysKernel);
+		ULONGLONG sysUserDiff = SubtractTimes(sysUser,prevSysUser);
+		ULONGLONG procKernelDiff = SubtractTimes(procKernel,prevProcKernel);
+		ULONGLONG procUserDiff = SubtractTimes(procUser,prevProcUser);
+
+		ULONGLONG totalSys = sysKernelDiff+sysUserDiff;
+		ULONGLONG totalProc = procKernelDiff+procUserDiff;
+
+		if(totalSys > 0)
+		{
+			cpuUsage = (float)totalProc/totalSys;
+		}
+	}
+	else
+	{
+		firstRun = false;
+	}
+
+	prevSysKernel = sysKernel;
+	prevSysUser = sysUser;
+	prevProcKernel = procKernel;
+	prevProcUser = procUser;
+
+	return cpuUsage;
+}
+
 
 
 }//namespace uni

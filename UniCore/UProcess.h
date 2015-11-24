@@ -67,7 +67,12 @@ bool SetTokenPrivilege(HANDLE hToken,wchar_t *privilege,bool enabled);
 */
 std::wstring LCIDToRFC1766(LCID lcid);
 
-
+//! 获得指定进程的CPU使用率.
+/*! 
+    \param pid 要得到CPU使用率的进程名.
+	\return CPU使用率,取值从0.0到1.0.
+*/
+float GetCPUUsage(int pid);
 
 
 }//namespace uni
