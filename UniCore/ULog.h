@@ -343,8 +343,12 @@ public:
             s += L"\r\n";
 
             int nLen = Edit_GetTextLength(hWnd_);
-            Edit_SetSel(hWnd_, nLen, -1);
-            Edit_ReplaceSel(hWnd_, s.c_str());
+			//使用SendMessageTimeout来减缓死锁问题,可能导致输出信息丢失.
+			DWORD_PTR result = 0;
+			SendMessageTimeout(hWnd_,EM_SETSEL,(WPARAM)nLen,(LPARAM)-1,
+				SMTO_ERRORONEXIT|SMTO_ABORTIFHUNG|SMTO_NORMAL,500,&result);
+			SendMessageTimeout(hWnd_,EM_REPLACESEL,0,(LPARAM)(LPCTSTR)(s.c_str()),
+				SMTO_ERRORONEXIT|SMTO_ABORTIFHUNG|SMTO_NORMAL,500,&result);
         }
     private:
         EditCtrlAppender(const EditCtrlAppender &);
