@@ -135,6 +135,7 @@ $(TargetPath)
     <ClCompile Include="UMiscTest.cpp" />
     <ClCompile Include="UniCoreTest.cpp" />
     <ClCompile Include="UProcessTest.cpp" />
+    <ClCompile Include="URTTITest.cpp" />
     <ClCompile Include="USharedMemoryTest.cpp" />
     <ClCompile Include="UStringTest.cpp" />
     <ClCompile Include="USystemTest.cpp" />

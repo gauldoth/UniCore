@@ -74,6 +74,12 @@ std::wstring LCIDToRFC1766(LCID lcid);
 */
 float GetCPUUsage(int pid);
 
+//! 检查指定的进程是32位还是64位.
+/*!
+	未实现,始终返回32.
+*/
+int GetProcessBitness(int pid);
+
 
 }//namespace uni
 

@@ -54,6 +54,15 @@
     <ClCompile Include="UGeometry.cpp">
       <Filter>Miscellany</Filter>
     </ClCompile>
+    <ClCompile Include="URTTIInfo.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="URTTIParser.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="UProcessMemory.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UCast.h">
@@ -103,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="UGeometry.h">
       <Filter>Miscellany</Filter>
+    </ClInclude>
+    <ClInclude Include="URTTIInfo.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="URTTIParser.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="UProcessMemory.h">
+      <Filter>Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

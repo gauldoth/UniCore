@@ -258,6 +258,10 @@ float GetCPUUsage( int pid )
 	return cpuUsage;
 }
 
+int GetProcessBitness(int pid)
+{
+	return 32;
+}
 
 
 }//namespace uni

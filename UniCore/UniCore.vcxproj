@@ -158,6 +158,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UProcessMemory.cpp" />
+    <ClCompile Include="URTTIInfo.cpp" />
+    <ClCompile Include="URTTIParser.cpp" />
     <ClCompile Include="UCast.cpp" />
     <ClCompile Include="UBuffer.cpp" />
     <ClCompile Include="UGeometry.cpp" />
@@ -172,6 +175,9 @@
     <ClCompile Include="USystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UProcessMemory.h" />
+    <ClInclude Include="URTTIInfo.h" />
+    <ClInclude Include="URTTIParser.h" />
     <ClInclude Include="UCast.h" />
     <ClInclude Include="UBuffer.h" />
     <ClInclude Include="UEnum.h" />
