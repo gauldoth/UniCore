@@ -78,35 +78,6 @@ string ws2s(const wstring &ws,_locale_t locale)
     return result;
 }
 
-void ws2s(char *dest,int len,const wchar_t *source,const char *locale )
-{
-    if(!dest || !len || !source || !locale)
-    {
-        return;
-    }
-    size_t numOfCharConverted = 0;
-    _locale_t loc = _create_locale(LC_CTYPE,locale);
-    if(!loc)
-    {
-        dest[0] = '\0';
-        return;
-    }
-    errno_t err = _wcstombs_s_l(&numOfCharConverted,dest,len,source,_TRUNCATE,loc);
-    _free_locale(loc);
-
-    if(err == 0)
-    {
-    }
-    else if(err == STRUNCATE)
-    {
-        OutputDebugStringA("UniCore ws2s 目标缓冲区不足，字符串被截断。");
-    }
-    else
-    {
-        OutputDebugStringA("UniCore ws2s 转换Unicode字符串到MBCS字符串时失败。");
-    }
-}
-
 std::string ws2s( const std::wstring &ws,int codepage )
 {
     string result;
@@ -223,34 +194,6 @@ std::wstring s2ws( const std::string &s,int codepage )
     delete []dest;
 
     return result;
-}
-
-void s2ws( wchar_t *dest,int len,const char *source,const char *locale )
-{
-    if(!dest || !len || !source || !locale)
-    {
-        return;
-    }
-    size_t numOfCharConverted = 0;
-    _locale_t loc = _create_locale(LC_CTYPE,locale);  //使用指定的locale。
-    if(!loc)
-    {
-        //指定的locale创建失败，使用实现指定的本地环境。
-        return;
-    }
-    errno_t err = _mbstowcs_s_l(&numOfCharConverted,dest,len,source,_TRUNCATE,loc);
-    _free_locale(loc);
-    if(err == 0)
-    {
-    }
-    else if(err == STRUNCATE)
-    {
-        OutputDebugStringA("UniCore ws2s 目标缓冲区不足，字符串被截断。");
-    }
-    else
-    {
-        OutputDebugStringA("UniCore s2ws 转换MBCS字符串到Unicode字符串时失败。");
-    }
 }
 
 std::string i2s(long long int i )
