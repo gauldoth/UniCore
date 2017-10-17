@@ -126,65 +126,6 @@ TEST(UCastTest,ws2s_codepage_CodepageInvalid_ReturnsEmptyString)
     ASSERT_TRUE(s.empty())<<s;
 }
 
-TEST(UCastTest,ws2s_CStyle_AsciiString_ConvertSuccessfully)
-{
-    char buf[1024] = "";
-    ws2s(buf,1024,L"eagle",".936");
-    ASSERT_STRCASEEQ("eagle",buf);
-}
-
-TEST(UCastTest,ws2s_CStyle_NonAsciiStrinig_ConvertSuccessfully)
-{
-    char buf[1024] = "";
-    ws2s(buf,1024,L"我们",".936");
-    ASSERT_STRCASEEQ("\xCE\xD2\xC3\xC7",buf);
-}
-
-TEST(UCastTest,ws2s_CStyle_EmptyString_ReturnsEmptyString)
-{
-    char buf[1024] = "";
-    ws2s(buf,1024,L"","");
-    ASSERT_EQ(0,strlen(buf));
-}
-
-TEST(UCastTest,ws2s_CStyle_MultiLanguage_ReturnsEmptyString)
-{
-    char buf[1024] = "";
-    ws2s(buf,1024,L"我们じゃない향찰/鄕札","");
-    ASSERT_EQ(0,strlen(buf));
-}
-
-TEST(UCastTest,ws2s_CStyle_CodePageInvalid_ReturnsEmptyString)
-{
-    char buf[1024] = "";
-    ws2s(buf,1024,L"我们","rondal's locket");
-    ASSERT_EQ(0,strlen(buf));
-}
-
-TEST(UCastTest,ws2s_CStyle_destAndLenEqualsToZero_NoThrow)
-{
-    ASSERT_NO_THROW(ws2s(0,0,L"asd",""));
-}
-
-TEST(UCastTest,ws2s_CStyle_destAndLenEqualsToZero_InvalidLocale_NoThrow)
-{
-    ASSERT_NO_THROW(ws2s(0,0,L"asd","throw away"));
-}
-
-TEST(UCastTest,ws2s_CStyle_sourceEqualsToZero_NoThrow)
-{
-    char buf[1] = "";
-    ASSERT_NO_THROW(ws2s(buf,1,0,""));
-}
-
-TEST(UCastTest,ws2s_CStyle_bufferTooSmall_ReturnsTruncatedString)
-{
-    char buf[2] = "";
-    ws2s(buf,2,L"apple","");
-    ASSERT_EQ('a',buf[0]);
-    ASSERT_EQ(0,buf[1]);
-}
-
 TEST(UCastTest,s2ws_AsciiString_ConvertSuccessfully)
 {
     std::wstring ws = s2ws("apple");
@@ -257,44 +198,6 @@ TEST(UCastTest,s2ws_codepage_Utf8String_CodePageIsUtf8_ConvertSuccessfully)
     ASSERT_EQ(L"我们じゃない향찰/鄕札",ws);
 }
 
-TEST(UCastTest,s2ws_CStyle_AsciiString_ConvertSuccessfully)
-{
-    wchar_t buf[1024] = L"";
-    s2ws(buf,1024,"apple","");
-    ASSERT_STREQ(L"apple",buf);
-}
-
-TEST(UCastTest,s2ws_CStyle_NonAsciiString_ConvertSuccessfully)
-{
-    wchar_t buf[1024] = L"";
-    s2ws(buf,1024,"\xCE\xD2\xC3\xC7",".936");
-    ASSERT_STREQ(L"我们",buf);
-}
-
-TEST(UCastTest,s2ws_CStyle_CodePageInvalid_ReturnsEmptyString)
-{
-    wchar_t buf[1024] = L"";
-    s2ws(buf,1024,"\xCE\xD2\xC3\xC7","invalid codepage");
-    ASSERT_STREQ(L"",buf);
-}
-
-TEST(UCastTest,s2ws_CStyle_destEqualsToZero_NoThrow)
-{
-    ASSERT_NO_THROW(s2ws(0,1024,"\xCE\xD2\xC3\xC7",""));
-}
-
-TEST(UCastTest,s2ws_CStyle_lenEqualsToZero_NoThrow)
-{
-    wchar_t buf[1024] = L"";
-    ASSERT_NO_THROW(s2ws(buf,0,"\xCE\xD2\xC3\xC7",""));
-}
-
-TEST(UCastTest,s2ws_CStyle_BufferTooSmall_Truncated)
-{
-    wchar_t buf[1] = L"";
-    s2ws(buf,1,"apple","");
-    ASSERT_EQ(0,buf[0]);
-}
 
 TEST(UCastTest,i2s_0_Returns0)
 {

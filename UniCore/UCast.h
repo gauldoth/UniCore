@@ -65,14 +65,15 @@ std::string ws2s(const std::wstring &ws,int codepage);
 */
 std::string ws2s(const std::wstring &ws,_locale_t locale);
 
-void ws2s(char *dest,int len,const wchar_t *source,const char *locale);
-
 //! 将std::string转换为std::wstring。
 /*!
     ws2s使用指定的locale转换MBCS字符串到Unicode字符串。
     \param s 源字符串。
     \param locale locale名字，请参考setlocale函数。
     \return 转换后的字符串。
+	\pre locale为有效的字符串。
+	\post 如果source可以通过指定locale转换，则返回转换后的字符串。否则返回空字符串。
+	这个函数只能保证尽量完成转换，但是始终会返回一个有效的字符串。
     使用方法：
     \code
     //Test.cpp
@@ -101,6 +102,7 @@ std::wstring s2ws(const std::string &s,int codepage);
     \param s 源字符串。
     \param locale 使用_create_locale函数可以创建，使用完后需调用_free_locale释放。
     \return 转换后的字符串。
+	该函数不保证一定能转换成功，在无法转换成功时，。
     使用方法：
     \code
     //Test.cpp
@@ -117,7 +119,6 @@ std::wstring s2ws(const std::string &s,int codepage);
 */
 std::wstring s2ws(const std::string &s,_locale_t locale); 
 
-void s2ws(wchar_t *dest,int len,const char *source,const char *locale);
 
 //! 整形转成字符串。
 /*!
