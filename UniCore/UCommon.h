@@ -48,9 +48,9 @@
 
 
 
-#define UNI_NAME(name, line) name ## line
-#define ON_OUT_OF_SCOPE_2(lambda_body, line) UScopeGuard UNI_NAME(deleter_lambda_, line)([&]() { lambda_body; } );
-#define ON_OUT_OF_SCOPE(lambda_body) ON_OUT_OF_SCOPE_2(lambda_body, __LINE__)
+#define SCOPEGUARD_LINENAME_CAT(name, line) name ## line
+#define SCOPEGUARD_LINENAME(lambda_body, line) UScopeGuard SCOPEGUARD_LINENAME_CAT(deleter_lambda_, line)([&]() { lambda_body; } );
+#define ON_SCOPE_EXIT(lambda_body) SCOPEGUARD_LINENAME(lambda_body, __LINE__)
 
 namespace uni
 {
