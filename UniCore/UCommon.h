@@ -43,13 +43,20 @@
         SOCKET socket;
         USE_DEFAULT_COPY(Server);  //在private处加入该宏以禁止类Server复制，Server无法被放入标准库容器。
     };
+	\endcode
 */
 #define USE_DEFAULT_COPY(Class);
 
 
-
 #define UNI_NAME(name, line) name ## line
 #define ON_OUT_OF_SCOPE_2(lambda_body, line) UScopeGuard UNI_NAME(deleter_lambda_, line)([&]() { lambda_body; } );
+/*! \def ON_OUT_OF_SCOPE
+	lambda_body will be called on scope exit.
+	\code
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,FALSE,pid);
+	ON_OUT_OF_SCOPE(CloseHandle(hProcess));  //CloseHandle will be called when scope exists.
+	\endcode
+*/
 #define ON_OUT_OF_SCOPE(lambda_body) ON_OUT_OF_SCOPE_2(lambda_body, __LINE__)
 
 namespace uni

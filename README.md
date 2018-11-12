@@ -1,2 +1,2 @@
 # UniCore
-A utility lib used by me
+A utility lib used by myself.
