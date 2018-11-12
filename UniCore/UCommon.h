@@ -1,4 +1,4 @@
-﻿/*! \file UCommon.h
+/*! \file UCommon.h
     \brief 包含了一些常用的函数。
 
     \date       2011-8-5
@@ -47,17 +47,17 @@
 */
 #define USE_DEFAULT_COPY(Class);
 
-
-#define UNI_NAME(name, line) name ## line
-#define ON_OUT_OF_SCOPE_2(lambda_body, line) UScopeGuard UNI_NAME(deleter_lambda_, line)([&]() { lambda_body; } );
-/*! \def ON_OUT_OF_SCOPE
+#define SCOPEGUARD_LINENAME_CAT(name, line) name ## line
+#define SCOPEGUARD_LINENAME(lambda_body, line) UScopeGuard SCOPEGUARD_LINENAME_CAT(deleter_lambda_, line)([&]() { lambda_body; } );
+/*! \def ON_SCOPE_EXIT
 	lambda_body will be called on scope exit.
 	\code
 	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,FALSE,pid);
-	ON_OUT_OF_SCOPE(CloseHandle(hProcess));  //CloseHandle will be called when scope exists.
+	ON_SCOPE_EXIT(CloseHandle(hProcess));  //CloseHandle will be called when scope exists.
 	\endcode
 */
-#define ON_OUT_OF_SCOPE(lambda_body) ON_OUT_OF_SCOPE_2(lambda_body, __LINE__)
+#define ON_SCOPE_EXIT(lambda_body) SCOPEGUARD_LINENAME(lambda_body, __LINE__)
+
 
 namespace uni
 {

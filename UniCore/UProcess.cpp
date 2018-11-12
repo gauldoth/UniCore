@@ -220,7 +220,7 @@ float GetCPUUsage( int pid )
 	};
 
 	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,FALSE,pid);
-	ON_OUT_OF_SCOPE(CloseHandle(hProcess));
+	ON_SCOPE_EXIT(CloseHandle(hProcess));
 
 
 	if(!GetSystemTimes(&sysIdle,&sysKernel,&sysUser) 
