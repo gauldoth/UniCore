@@ -1,4 +1,4 @@
-﻿/*! \file UCommon.h
+/*! \file UCommon.h
     \brief 包含了一些常用的函数。
 
     \date       2011-8-5
@@ -43,14 +43,21 @@
         SOCKET socket;
         USE_DEFAULT_COPY(Server);  //在private处加入该宏以禁止类Server复制，Server无法被放入标准库容器。
     };
+	\endcode
 */
 #define USE_DEFAULT_COPY(Class);
 
-
-
 #define SCOPEGUARD_LINENAME_CAT(name, line) name ## line
 #define SCOPEGUARD_LINENAME(lambda_body, line) UScopeGuard SCOPEGUARD_LINENAME_CAT(deleter_lambda_, line)([&]() { lambda_body; } );
+/*! \def ON_SCOPE_EXIT
+	lambda_body will be called on scope exit.
+	\code
+	HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION,FALSE,pid);
+	ON_SCOPE_EXIT(CloseHandle(hProcess));  //CloseHandle will be called when scope exists.
+	\endcode
+*/
 #define ON_SCOPE_EXIT(lambda_body) SCOPEGUARD_LINENAME(lambda_body, __LINE__)
+
 
 namespace uni
 {
